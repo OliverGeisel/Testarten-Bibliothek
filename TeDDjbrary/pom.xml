@@ -128,7 +128,7 @@
                     </copyright>
                     <vendor>Oliver Geisel</vendor>
                     <mainclass>de.olivergeisel.teddjbrary.TeddjbraryApplication</mainclass>
-                    <mainjar>TeDDjbrary-${version}.jar</mainjar>
+                    <mainjar>TeDDjbrary-${project.version}.jar</mainjar>
                     <description>TeDDjbrary is an example project to show various kinds of tests</description>
                     <!--<icon>${project.basedir}/src/main/resources/static/images/icon.png</icon> -->
                     <type>exe</type>
