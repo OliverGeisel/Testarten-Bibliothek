@@ -85,5 +85,94 @@ Es gibt einen weiteren Nutzer, der ein schlechtes Passwort hat. Finde ihn heraus
 * Nicht jeder Nutzername ist möglich.
 * Registriere ein paar Nutzer und schau dir an, was im Konto steht bzw. was nicht geht.
 * Das Passwort ist in der pass.txt enthalten.
-* Generiere eigene Nutzernamen. Entweder selbst oder mit Hydra direkt. 
+* Generiere eigene Nutzernamen. Entweder selbst oder mit Hydra direkt.
 
+## SQL-Injection
+
+Bei einer SQL-Injection wird versucht, eine SQL-Abfrage zu manipulieren, um Daten aus der Datenbank zu erhalten, die
+nicht für den Nutzer bestimmt sind.
+
+## Cross-Site-Scripting (XSS)
+
+Bei einem Cross-Site-Scripting (XSS) wird versucht, JavaScript-Code in eine Webseite einzuschleusen, um Daten von
+anderen Nutzern zu erhalten.
+Ein Beispiel ist, wenn ein Nutzer einen Kommentar schreibt und dieser Kommentar dann auf der Webseite angezeigt wird.
+Wenn der Kommentar nicht richtig gefiltert wird, kann ein Nutzer JavaScript-Code in den Kommentar schreiben, der dann
+von anderen Nutzern ausgeführt wird.
+Auch wenn der Nutzer nicht auf den Kommentar klickt, wird der Code ausgeführt.
+Im Normalfall wird der Code in einem `<script>`-Tag geschrieben. Jedoch kann auch ein Bild oder ein Link verwendet
+werden.
+
+Eine Springanwendung mit Thymeleaf filtert die Eingaben im Normalfall nicht. Jedoch kann durch die Nutzung von `th:text`
+ein XSS-Angriff verhindert werden.
+In diesem Fall werden Sonderzeichen wie `<` und `>` in HTML-Entities umgewandelt.
+Ein Beispiel ist `<` wird zu `&lt;` und `>` wird zu `&gt;`.\
+Es gibt aber auch `th:utext`, das die Eingabe nicht umwandelt.
+Hier können dann auch HTML-Tags verwendet werden. Somit ist auch `<script> alert('Hallo') </script>` möglich.
+
+Die TeDDjbrary hat eine XSS-Lücke. Diese ist im Gästebuch der Bibliothek.
+
+### Übung
+
+Finde die XSS-Lücke und schreibe einen Kommentar, der JavaScript-Code ausführt.
+Das Script soll eine Alert-Box mit dem Text "Hallo" anzeigen.
+Die Anwendung soll nicht untersucht werden. Nur durch die Eingabe bzw durch die Untersuchung des HTML-Codes, den der
+Client bekommt, soll die Lücke gefunden werden.
+
+#### Tipps
+
+* SCHAU DIR DEN HTML-CODE AN!
+* Prüfe, welche Eingabe gefiltert wird.
+* Nutze das Script aus der Erklärung.
+
+### Bonus - Stiehl den Session-Cookie
+
+Session-hijacken ist ein Angriff, bei dem der Angreifer die Session eines Nutzers übernimmt.
+Dazu muss der Angreifer die Session-ID des Nutzers kennen. In Spring ist diese Session-ID in einem Cookie gespeichert.
+Der Cookie hat den Namen `JSESSIONID`.
+Spring schützt seine Session-Cookies mit dem HttpOnly-Flag. Dieses Flag verhindert, dass JavaScript auf den Cookie
+zugreifen kann.
+Wir können aber einen anderen Cookie auslesen. Dieser ist nicht geschützt.
+Um das Prinzip zu verstehen, stehlen wir den ungeschützten Cookie und schreiben ihn in das Gästebuch.
+Der Zugriff auf den Cookie erfolgt über `document.cookie`.
+
+#### Aufgabe
+
+Schreibe ein Script, das die Cookies des Nutzers ausliest und direkt im Gästebuch anzeigt.
+
+#### Tipps
+
+* Nutze das Script aus der Erklärung.
+* Schau dir die Cookies an, die der Nutzer bekommt.
+
+#### Die SessionId wirklich stehlen
+
+Um die SessionId wirklich zu stehlen, muss der Cookie bearbeitet werden.
+Dazu muss das Attribut `httpOnly` auf `false` setzen. Wenn der Cookie dann gesetzt wird, kann JavaScript auf den Cookie
+zugreifen.
+Dafür gibt es die Seite `/insecure` auf der TeDDjbrary. Diese setzt den Cookie mit dem Attribut `httpOnly` auf `false`.
+Keine Sorge es gibt auch eine Seite, die den Cookie wieder richtig setzt. `/secure` setzt den Cookie wieder richtig.
+
+Es kann einen Geheimer Nutzer aktiviert werden.
+In `resources/application.properties` muss die Zeile `app.geheimeruser` auf `true` gesetzt werden. Alternativ kann
+auch `/start` aufgerufen werden.
+Damit läuft im Hintergrund ein Scheduled-Task, der ein Selenoide ausführt und einen Nutzer simuliert.  
+Dieser ruft alle 2 Minuten die Seite `/testimonials` auf. Die SESSIONID ist nicht httpOnly und kann somit ausgelesen
+werden.
+Wenn das Script richtig ist, steht die SessionId im Gästebuch.
+Dadurch kannst du die Session des Nutzers übernehmen. Kopiere die SessionId und füge sie in deinen Cookie ein.
+Du müsstest jetzt als der entsprechende Nutzer angemeldet sein.
+Damit hast du die Session eines Nutzers übernommen.
+
+#### Lösung
+
+Die Lösung ist in der Datei `xss.js` zu finden.
+
+## Cross-Site-Request-Forgery (CSRF)
+
+Bei einem Cross-Site-Request-Forgery (CSRF) wird versucht, eine Aktion auf einer Webseite auszuführen, ohne dass der
+Nutzer es merkt.
+Dazu wird ein Link oder ein Bild verwendet, das auf eine Seite verweist, die eine Aktion ausführt.
+Ein Beispiel ist, wenn ein Nutzer auf einer Webseite eingeloggt ist und ein Bild von einer anderen Webseite lädt.
+Wenn der Nutzer auf der anderen Webseite eingeloggt ist, kann die andere Webseite eine Aktion auf der ersten Webseite
+ausführen.
