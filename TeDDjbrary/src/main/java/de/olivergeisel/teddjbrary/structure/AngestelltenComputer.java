@@ -4,11 +4,11 @@ import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.core.ISBN;
 import de.olivergeisel.teddjbrary.inventory.BestandsVerwaltung;
 import de.olivergeisel.teddjbrary.inventory.RegalCode;
+import de.olivergeisel.teddjbrary.rooms.Arbeitsplatz;
+import de.olivergeisel.teddjbrary.rooms.Leseraum;
 import de.olivergeisel.teddjbrary.user.staff.Bibliothekar;
 import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 import de.olivergeisel.teddjbrary.user.visitor.Kundenregister;
-import de.olivergeisel.teddjbrary.rooms.Arbeitsplatz;
-import de.olivergeisel.teddjbrary.rooms.Leseraum;
 
 import java.util.Collection;
 
@@ -48,7 +48,7 @@ public class AngestelltenComputer extends Arbeitsplatz<Bibliothekar> implements 
 
 	@Override
 	public boolean ausleihen(Buch buch, Besucher besucher) {
-		return bestand.ausleihen(buch,besucher);
+        return bestand.ausleihen(buch, besucher);
 	}
 
 	@Override

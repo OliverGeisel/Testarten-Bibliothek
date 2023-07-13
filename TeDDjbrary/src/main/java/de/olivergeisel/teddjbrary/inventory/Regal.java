@@ -14,8 +14,8 @@ import java.util.function.Consumer;
  */
 @Entity
 public class Regal implements Verschmutzbar, Iterable<Buch> {
-    public final static int REGALBRETTER_DEFAULT = 5;
-    public final static int BUECHER_JE_BRETT_DEFAULT = 20;
+    public static final int REGALBRETTER_DEFAULT = 5;
+    public static final int BUECHER_JE_BRETT_DEFAULT = 20;
     public final int kapazitaet;
     @OneToMany
     private final List<RegalBrett> inhalt;
@@ -35,7 +35,7 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
             char randomChar = (char) (newCode.nextInt(26) + 'A');
             sb.append(randomChar);
         }
-        this.code = new RegalCode(sb.toString(), newCode.nextInt(10_000,99_999));
+        this.code = new RegalCode(sb.toString(), newCode.nextInt(10_000, 99_999));
         this.inhalt = new ArrayList<>(REGALBRETTER_DEFAULT);
         for (int i = 0; i < REGALBRETTER_DEFAULT; ++i) {
             this.inhalt.add(new RegalBrett());
@@ -53,10 +53,7 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
     }
 
     public long anzahlBuecherImRegal() {
-        return inhalt.stream()
-                .mapToLong(it ->
-                        it.getBuecher().stream().filter(Objects::nonNull).count())
-                .sum();
+        return inhalt.stream().mapToLong(it -> it.getBuecher().stream().filter(Objects::nonNull).count()).sum();
     }
 
     public List<Buch> alleBuecher() {

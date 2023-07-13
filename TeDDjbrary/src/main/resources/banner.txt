@@ -21,7 +21,7 @@ ${AnsiColor.BLUE}${AnsiBackground.BLACK}
                              \::/    /                \::/____/                \::/____/                                         \::/____/                \:|   |                  \::/    /                \:|   |
                               \/____/                  ~~                       ~~                                                ~~                       \|___|                   \/____/                  \|___|
 
-${application.title} ${application.version}
+  ${app.name} ${app.version}
 ${AnsiColor.BRIGHT_GREEN}  Powered by Spring Boot          ${spring-boot.version}
 
 ${AnsiStyle.NORMAL}

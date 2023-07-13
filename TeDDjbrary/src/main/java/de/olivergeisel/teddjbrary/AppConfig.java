@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Oliver Geisel
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package de.olivergeisel.teddjbrary;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,48 +26,53 @@ import java.time.LocalTime;
 @PropertySource("classpath:/application.properties")
 public class AppConfig {
 
+	private static final String TIME_FORMAT = "HH:mm";
+	private static final String TIME_ZONE = "Europe/Berlin";
+	private static AppConfig instance = null;
 	@Value("${app.name}")
 	private String name;
+	@Value("${app.geheimeruser}")
+	private boolean geheimerUser;
 
+	//region getter / setter
+	public static AppConfig getInstance() {
+		if (instance == null) {
+			instance = new AppConfig();
+		}
+		return instance;
+	}
 	@Value("${app.version}")
 	private String version;
-
 	@Value("${app.opentime}")
 	private LocalTime openTime;
-
 	@Value("${app.closetime}")
 	private LocalTime closeTime;
 
-	//
+	public boolean getGeheimerUser() {
+		return geheimerUser;
+	}
+
 	public LocalTime getCloseTime() {
 		return closeTime;
 	}
 
-	public void setCloseTime(LocalTime closeTime) {
-		this.closeTime = closeTime;
+	public void setGeheimerUser(boolean geheimerUser) {
+		this.geheimerUser = geheimerUser;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public LocalTime getOpenTime() {
 		return openTime;
 	}
 
-	public void setOpenTime(LocalTime openTime) {
-		this.openTime = openTime;
-	}
 
 	public String getVersion() {
 		return version;
 	}
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+//endregion
 }

@@ -1,32 +1,36 @@
 package de.olivergeisel.teddjbrary.user.visitor;
 
 import de.olivergeisel.teddjbrary.core.Buch;
-import de.olivergeisel.teddjbrary.user.Person;
 import de.olivergeisel.teddjbrary.structure.Terminal;
+import de.olivergeisel.teddjbrary.user.Person;
 import jakarta.persistence.*;
+import org.salespointframework.useraccount.UserAccount;
 
 import java.util.UUID;
 
 @Entity
 public abstract class Besucher implements Person {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", nullable = false)
-	private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
 
-	private String vorname;
-	private String nachname;
+    private String vorname;
+    private String nachname;
 
-	protected Besucher() {
+    @OneToOne
+    private UserAccount userAccount;
 
-	}
+    protected Besucher() {
 
-	protected Besucher(String vorname, String nachname) {
-		this.nachname = nachname;
-		this.vorname = vorname;
-	}
+    }
 
-	/**
+    protected Besucher(String vorname, String nachname) {
+        this.nachname = nachname;
+        this.vorname = vorname;
+    }
+
+    /**
 	 * @param buch
 	 * @return
 	 */
@@ -56,7 +60,7 @@ public abstract class Besucher implements Person {
 		return id.hashCode();
 	}
 
-//
+    //
 	@Override
 	public int getAlter() {
 		return 0;

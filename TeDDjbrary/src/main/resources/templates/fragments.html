@@ -1,0 +1,98 @@
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav class="navbar navbar-dark navbar-expand-lg fixed-top text-info bg-dark bg-gradient text-nowrap fs-1 text-bg-success visible clean-navbar"
+     th:fragment="nav">
+    <div class="container-fluid"><a class="navbar-brand logo" href="/">TeDDjbrary</a>
+        <button class="navbar-toggler" data-bs-target="#navcol-1" data-bs-toggle="collapse"><span
+                class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html" th:href="@{/}">Start</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalog-page.html">Katalog</a></li>
+                <li class="nav-item"><a class="nav-link" href="service-page.html" th:href="@{/rooms}">Räume</a></li>
+                <li class="nav-item"><a class="nav-link" href="features.html">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
+                <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                <li class="nav-item"><a class="nav-link" href="slider.html">Slider</a></li>
+                <li class="nav-item"><a class="nav-link" href="testimonials.html"
+                                        th:href="@{/testimonials}">Gästebuch</a></li>
+                <li class="nav-item" sec:authorize="not isAuthenticated()"><a class="nav-link" href="login.html"
+                                                                              style="margin-top: -7px;"
+                                                                              th:href="@{/login}">
+                    <i class="icon ion-log-in" style="height: 39px;font-size: 22px;"></i></a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="login.html"
+                                                                          style="margin-top: -7px;" th:href="@{/logout}">
+                    <i class="icon ion-log-out" style="height: 39px;font-size: 22px;"></i></a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<footer class="page-footer dark" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h5>Get started</h5>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="registration.html">Sign up</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5>About us</h5>
+                <ul>
+                    <li><a href="#">Company Information</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="#">Help desk</a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5>Legal</h5>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2023 Copyright Oliver Geisel</p>
+    </div>
+</footer>
+</body>
+</html>

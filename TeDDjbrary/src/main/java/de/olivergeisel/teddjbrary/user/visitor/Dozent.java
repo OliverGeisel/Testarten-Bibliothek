@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Dozent extends Besucher {
 
 	public Dozent(UUID id, String vorname, String nachname) {
-		super( vorname,nachname);
+		super(vorname, nachname);
 	}
 
 	public Dozent() {
@@ -19,7 +19,7 @@ public class Dozent extends Besucher {
 
 	@Override
 	public boolean ausleihen(Buch buch, Terminal terminal) {
-		return terminal.ausleihen(buch,this);
+        return terminal.ausleihen(buch, this);
 	}
 
 	@Override

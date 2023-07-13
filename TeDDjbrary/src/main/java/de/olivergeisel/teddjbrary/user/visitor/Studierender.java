@@ -6,18 +6,18 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Studierender extends Besucher {
-	public Studierender(int id, String vorname, String nachname) {
-		super(vorname,nachname);
-	}
+    public Studierender(String vorname, String nachname) {
+        super(vorname, nachname);
+    }
 
-	public Studierender() {
+    public Studierender() {
 
-	}
+    }
 
-	@Override
-	public boolean ausleihen(Buch buch, Terminal terminal) {
-		return terminal.ausleihen(buch,this);
-	}
+    @Override
+    public boolean ausleihen(Buch buch, Terminal terminal) {
+        return terminal.ausleihen(buch, this);
+    }
 
 	@Override
 	public boolean zurueckgeben(Buch buch, Terminal terminal) {

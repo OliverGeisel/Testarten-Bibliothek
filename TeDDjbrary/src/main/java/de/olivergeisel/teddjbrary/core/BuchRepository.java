@@ -15,7 +15,7 @@ public interface BuchRepository extends CrudRepository<Buch, UUID> {
 
 	long countDistinctByIsbnNot(@Nullable ISBN isbn);
 
-	default long countDistinctBooks(){
+	default long countDistinctBooks() {
 		return countDistinctByIsbnNot(null);
 	}
 

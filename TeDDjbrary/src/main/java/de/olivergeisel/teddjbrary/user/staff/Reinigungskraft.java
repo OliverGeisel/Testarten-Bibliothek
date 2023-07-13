@@ -2,8 +2,8 @@ package de.olivergeisel.teddjbrary.user.staff;
 
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.core.Verschmutzbar;
-import de.olivergeisel.teddjbrary.user.Geschlecht;
 import de.olivergeisel.teddjbrary.inventory.Regal;
+import de.olivergeisel.teddjbrary.user.Geschlecht;
 
 public class Reinigungskraft extends Angestellter {
 

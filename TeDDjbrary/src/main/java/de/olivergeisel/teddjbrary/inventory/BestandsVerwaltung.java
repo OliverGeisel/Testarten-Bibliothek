@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Oliver Geisel
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package de.olivergeisel.teddjbrary.inventory;
 
 import de.olivergeisel.teddjbrary.core.Buch;
@@ -8,6 +24,7 @@ import de.olivergeisel.teddjbrary.structure.NoMatchingBookException;
 import de.olivergeisel.teddjbrary.user.staff.VerwaltungsException;
 import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 import de.olivergeisel.teddjbrary.user.visitor.Kundenregister;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,7 +35,6 @@ public class BestandsVerwaltung {
 
     private final RegalRepository regale;
     private final BuchRepository buchRepository;
-
     private final Kundenregister kundenregister;
     private final Werkstatt werkstatt;
 
@@ -42,7 +58,15 @@ public class BestandsVerwaltung {
         return regale.findFirstByInhalt_Buecher(buch).orElseThrow().getCode();
     }
 
-    public Buch sucheNachISBN(ISBN isbn) {
+    /**
+     * Sucht nach dem Regal, das das gesuchte Buch enthält.
+     * <p>
+     *
+     * @param isbn ISBN des Buches zu dem das Regal gefunden werden soll.
+     * @return Regal in dem das Buch ist. Null wenn das Buch nicht gefunden wurde.
+     * @throws NoSuchElementException wenn das Buch in keinem Regal ist.
+     */
+    public Buch sucheNachISBN(ISBN isbn) throws NoMatchingBookException {
         var alleBuecher = buchRepository.findAll().toList();
         int index = Collections.binarySearch(alleBuecher, new Buch("Testbuch", isbn));
         if (index < 0) {
@@ -74,7 +98,17 @@ public class BestandsVerwaltung {
         return null;
     }
 
-    public void neuesBuchHinzufuegen(Buch buch, Regal regal) throws VerwaltungsException {
+    /**
+     * Gibt ein Regal zurück, das noch Platz hat.
+     * <p>
+     * Wenn kein Regal mehr Platz hat, wird null zurückgegeben.
+     *
+     * @param buch  Buch, das in ein Regal gestellt werden soll.
+     * @param regal Regal, in das das Buch gestellt werden soll.
+     * @throws VerwaltungsException  wenn das Buch bereits in der Bibliothek ist.
+     * @throws IllegalStateException wenn das Regal bereits voll ist.
+     */
+    public void neuesBuchHinzufuegen(Buch buch, Regal regal) throws VerwaltungsException, IllegalStateException {
         // TODO check wie handhaben
         if (buchRepository.existsById(buch.getId())) {
             throw new VerwaltungsException("Das Buch ist bereits in der Bibliothek");
@@ -89,6 +123,14 @@ public class BestandsVerwaltung {
         neuesBuchHinzufuegen(buch, regal);
     }
 
+    /**
+     * Gibt ein Regal zurück, das noch Platz hat.
+     * <p>
+     * Wenn kein Regal mehr Platz hat, wird null zurückgegeben.
+     *
+     * @param buch Buch, das in ein Regal gestellt werden soll.
+     * @return Regal, das noch Platz hat.
+     */
     public boolean zurueckgeben(Buch buch) {
         boolean back = kundenregister.gibBuchZurueck(buch);
         buch.verfuegbarMachen();
@@ -118,6 +160,13 @@ public class BestandsVerwaltung {
     }
 
 
+    /**
+     * Leiht ein Buch aus und verleiht es an den Benutzer
+     *
+     * @param buch     Buch, das ausgeliehen werden soll.
+     * @param besucher Benutzer, der das Buch ausleihen möchte.
+     * @return true, wenn das Buch ausgeliehen wurde; sonst false.
+     */
     public boolean ausleihen(Buch buch, Besucher besucher) {
         if (buch.isVerfuegbar()) {
             buch.ausleihen();
@@ -191,6 +240,14 @@ public class BestandsVerwaltung {
 
     public Werkstatt getWerkstatt() {
         return werkstatt;
+    }
+
+    public Streamable<Buch> findAll() {
+        return buchRepository.findAll();
+    }
+
+    public Optional<Buch> findById(UUID id) {
+        return buchRepository.findById(id);
     }
 //
 

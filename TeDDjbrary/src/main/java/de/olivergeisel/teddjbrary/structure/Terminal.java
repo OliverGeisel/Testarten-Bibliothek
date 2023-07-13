@@ -4,8 +4,8 @@ import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.core.ISBN;
 import de.olivergeisel.teddjbrary.core.Verschmutzbar;
 import de.olivergeisel.teddjbrary.inventory.RegalCode;
-import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 import de.olivergeisel.teddjbrary.rooms.Leseraum;
+import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 
 import java.util.Collection;
 

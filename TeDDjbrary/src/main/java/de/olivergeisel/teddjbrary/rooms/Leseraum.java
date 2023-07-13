@@ -11,43 +11,42 @@ import java.util.UUID;
 
 @Entity
 public class Leseraum implements Verschmutzbar {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", nullable = false)
-	private UUID id;
+    @OneToMany
+    private final List<Besucher> leser;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private UUID id;
+    private int maxPersonen;
+    private boolean besetzt;
+    private double verschmutzung;
+    private int imRaum;
 
-	@OneToMany
-	private final List<Besucher> leser;
-	private int maxPersonen;
-	private boolean besetzt;
-	private double verschmutzung;
-	private int imRaum;
-
-	public Leseraum() {
+    public Leseraum() {
 		leser = new LinkedList<>();
-	}
+    }
 
-	public UUID getId() {
-		return id;
-	}
+    public Leseraum(int leserSitze) {
+        this();
+        if (leserSitze < 1) {
+            throw new IllegalArgumentException("Es muss mindestens eine Person in den Raum passen");
+        }
+        maxPersonen = leserSitze;
+    }
 
-	public Leseraum(int leserSitze) {
-		this();
-		if (leserSitze < 1) {
-			throw new IllegalArgumentException("Es muss mindestens eine Person in den Raum passen");
-		}
-		maxPersonen=leserSitze;
-	}
+    public UUID getId() {
+        return id;
+    }
 
-	public Besucher[] betreten(Besucher... besucher) {
-		int i = 0;
-		List<Besucher> back = new LinkedList<>();
-		for (Besucher b : besucher) {
-			leser.add(b);
-			back.add(b);
-			i++;
-		}
-		besetzt = true;
+    public Besucher[] betreten(Besucher... besucher) {
+        int i = 0;
+        List<Besucher> back = new LinkedList<>();
+        for (Besucher b : besucher) {
+            leser.add(b);
+            back.add(b);
+            i++;
+        }
+        besetzt = true;
 		return back.toArray(new Besucher[1]);
 	}
 

@@ -1,18 +1,5 @@
 package de.olivergeisel.teddjbrary.structure;
 
-import de.olivergeisel.teddjbrary.inventory.BestandsVerwaltung;
-import de.olivergeisel.teddjbrary.inventory.Regal;
-import de.olivergeisel.teddjbrary.user.Person;
-import de.olivergeisel.teddjbrary.user.staff.AngestelltenVerwaltung;
-import de.olivergeisel.teddjbrary.user.visitor.Kundenregister;
-import de.olivergeisel.teddjbrary.rooms.Leseraum;
-import de.olivergeisel.teddjbrary.rooms.Werkstatt;
-
-import java.time.Duration;
-import java.time.LocalTime;
-import java.util.*;
-
-
 public class Bibliothek {
 /*
 	private final String name;

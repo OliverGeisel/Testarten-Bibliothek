@@ -3,12 +3,11 @@ package de.olivergeisel.teddjbrary.structure;
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.core.ISBN;
 import de.olivergeisel.teddjbrary.inventory.BestandsVerwaltung;
-import de.olivergeisel.teddjbrary.inventory.Regal;
 import de.olivergeisel.teddjbrary.inventory.RegalCode;
-import de.olivergeisel.teddjbrary.user.staff.VerwaltungsException;
-import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 import de.olivergeisel.teddjbrary.rooms.Arbeitsplatz;
 import de.olivergeisel.teddjbrary.rooms.Leseraum;
+import de.olivergeisel.teddjbrary.user.staff.VerwaltungsException;
+import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 
 import java.util.Collection;
 

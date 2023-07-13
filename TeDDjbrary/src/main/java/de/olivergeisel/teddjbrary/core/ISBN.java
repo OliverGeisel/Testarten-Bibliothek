@@ -55,6 +55,22 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	}
 
 	/**
+	 * Nimmt eine ISBN-Stringrepräsentation und gibt das passende ISBN-Objekt zurück.
+	 *
+	 * @param isbn String der eine ISBN-13 ist.
+	 * @return ISBN die zu dem angegeben String passt
+	 * @throws IllegalArgumentException, wenn der String keine gültige ISBN-13 ist.
+	 */
+	public static ISBN fromString(String isbn) throws IllegalArgumentException {
+		var numbers = isbn.split("-");
+		var intNumbers = Arrays.stream(numbers).mapToInt(Integer::parseInt).toArray();
+		if (intNumbers.length < 5) {
+			throw new IllegalArgumentException("ISBN nicht korrekt. Es wird eine ISBN-13 mit Trennstrichen benötigt!");
+		}
+		return new ISBN(intNumbers[0], intNumbers[1], intNumbers[2], intNumbers[3], intNumbers[4]);
+	}
+
+	/**
 	 * Gibt die ISBN mit Trennstrichen zurück.
 	 *
 	 * @return Die ISBN mit führenden Nullen und Trennstrichen.
@@ -72,27 +88,8 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 		return String.format("%d %d %05d %03d %d", praefix, gruppe, verlagnr, titelnr, pruefziffer);
 	}
 
-
-
-
 	@Override
 	public int compareTo(ISBN isbn) {
 		return mitTrennstrich().compareTo(isbn.mitTrennstrich());
-	}
-
-	/**
-	 * Nimmt eine ISBN-Stringrepräsentation und gibt das passende ISBN Objekt zurück.
-	 *
-	 * @param isbn String der eine ISBN-13 ist.
-	 * @return ISBN die zu dem angegeben String passt
-	 * @throws IllegalArgumentException, wenn der String keine gültige ISBN-13 ist.
-	 */
-	public static ISBN fromString(String isbn) throws IllegalArgumentException{
-		var numbers = isbn.split("-");
-		var intNumbers = Arrays.stream(numbers).mapToInt(Integer::parseInt).toArray();
-		if (intNumbers.length < 5) {
-			throw new IllegalArgumentException("ISBN nicht korrekt. Es wird eine ISBN-13 mit Trennstrichen benötigt!");
-		}
-		return new ISBN(intNumbers[0], intNumbers[1], intNumbers[2], intNumbers[3], intNumbers[4]);
 	}
 }
