@@ -10,35 +10,42 @@ import java.util.UUID;
 
 @Entity
 public abstract class Besucher implements Person {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private UUID id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", nullable = false)
+	private UUID id;
 
-    private String vorname;
-    private String nachname;
+	private String vorname;
+	private String nachname;
 
-    @OneToOne
-    private UserAccount userAccount;
+	@OneToOne(cascade = CascadeType.ALL)
+	private UserAccount userAccount;
 
-    protected Besucher() {
+	protected Besucher() {
 
-    }
+	}
 
-    protected Besucher(String vorname, String nachname) {
-        this.nachname = nachname;
-        this.vorname = vorname;
-    }
+	protected Besucher(String vorname, String nachname, UserAccount userAccount) {
+		this.nachname = nachname;
+		this.vorname = vorname;
+		this.userAccount = userAccount;
+	}
 
-    /**
-	 * @param buch
-	 * @return
+	/**
+	 * Lässt den Besucher ein Buch ausleihen
+	 *
+	 * @param terminal das Terminal, an dem das Buch ausgeliehen werden soll
+	 * @param buch     das Buch, das ausgeliehen werden soll
+	 * @return true, wenn keine Probleme beim Ausleihen gab, sonst false
 	 */
 	abstract boolean ausleihen(Buch buch, Terminal terminal);
 
 	/**
-	 * @param buch
-	 * @return
+	 * Ein Besucher gibt ein Buch zurück.
+	 *
+	 * @param terminal das Terminal, an dem das Buch zurückgegeben werden soll
+	 * @param buch     das Buch, das zurückgegeben werden soll
+	 * @return true, wenn keine Probleme beim Zurückgeben gab, sonst false
 	 */
 	abstract boolean zurueckgeben(Buch buch, Terminal terminal);
 
@@ -47,20 +54,7 @@ public abstract class Besucher implements Person {
 	 */
 	abstract boolean bezahlen(Terminal terminal);
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Besucher besucher)) return false;
-
-		return id.equals(besucher.id);
-	}
-
-	@Override
-	public int hashCode() {
-		return id.hashCode();
-	}
-
-    //
+	//region setter/getter
 	@Override
 	public int getAlter() {
 		return 0;
@@ -79,5 +73,23 @@ public abstract class Besucher implements Person {
 	public String getVorname() {
 		return vorname;
 	}
-//
+
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+//endregion
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Besucher besucher)) return false;
+
+		return id.equals(besucher.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
 }

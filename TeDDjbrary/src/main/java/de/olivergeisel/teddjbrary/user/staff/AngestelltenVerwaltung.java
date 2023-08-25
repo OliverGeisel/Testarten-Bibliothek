@@ -7,10 +7,10 @@ import java.util.*;
 @Service
 public class AngestelltenVerwaltung {
 	private final Map<Bereich, Set<Angestellter>> angestellte = new HashMap<>();
-	private final AngestellerRepository angestellerRepository;
+	private final AngestellterRepository          angestellterRepository;
 
-	public AngestelltenVerwaltung(AngestellerRepository angestellerRepository) {
-		this.angestellerRepository = angestellerRepository;
+	public AngestelltenVerwaltung(AngestellterRepository angestellterRepository) {
+		this.angestellterRepository = angestellterRepository;
 	}
 
 	public boolean isAngestellt(Angestellter angestellter) {
@@ -45,5 +45,8 @@ public class AngestelltenVerwaltung {
 		return Collections.unmodifiableSet(angestellte.get(bereich));
 	}
 
+	public <T extends Angestellter> T save(T angestellter) {
+		return angestellterRepository.save(angestellter);
+	}
 }
 

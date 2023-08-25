@@ -16,6 +16,8 @@
 
 package de.olivergeisel.teddjbrary.user;
 
+import de.olivergeisel.teddjbrary.user.staff.Bibliothekar;
+import de.olivergeisel.teddjbrary.user.visitor.Studierender;
 import org.salespointframework.core.DataInitializer;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.Role;
@@ -26,16 +28,31 @@ import org.springframework.stereotype.Component;
 public class UserInitializer implements DataInitializer {
 
 	private final UserAccountManagement userAccountManagement;
+	private final UserManager           userManager;
 
-	public UserInitializer(UserAccountManagement userAccountManagement) {
+	public UserInitializer(UserAccountManagement userAccountManagement, UserManager userManager) {
 		this.userAccountManagement = userAccountManagement;
+		this.userManager = userManager;
 	}
 
 	@Override
 	public void initialize() {
 		var account = userAccountManagement.create("admin", Password.UnencryptedPassword.of("root"), Role.of("ADMIN"));
+		account.setFirstname("Admin");
+		account.setLastname("BigBoss");
+		account.setEmail("superadmin@tebib.de");
+		var admin = new Bibliothekar(account, Geschlecht.MAENNLICH, 25);
 		userAccountManagement.save(account);
+		userManager.saveAngestellten(admin);
 		account = userAccountManagement.create("geheim", Password.UnencryptedPassword.of("Wasserfallschutzsystemüberwachungsbeamter"), Role.of("BESONDERS"));
 		userAccountManagement.save(account);
+
+		var besucherAccount = userAccountManagement.create("besucher", Password.UnencryptedPassword.of("besucher"),
+				Role.of("BESUCHER"));
+		besucherAccount.setFirstname("Hans");
+		besucherAccount.setLastname("Peter");
+		var besucher = new Studierender(besucherAccount);
+		userAccountManagement.save(besucherAccount);
+		userManager.saveBesucher(besucher);
 	}
 }

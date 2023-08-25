@@ -3,21 +3,28 @@ package de.olivergeisel.teddjbrary.user.visitor;
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.structure.Terminal;
 import jakarta.persistence.Entity;
+import org.salespointframework.useraccount.UserAccount;
 
 @Entity
 public class Studierender extends Besucher {
-    public Studierender(String vorname, String nachname) {
-        super(vorname, nachname);
-    }
 
-    public Studierender() {
 
-    }
+	public Studierender(String vorname, String nachname, UserAccount account) {
+		super(vorname, nachname, account);
+	}
 
-    @Override
-    public boolean ausleihen(Buch buch, Terminal terminal) {
-        return terminal.ausleihen(buch, this);
-    }
+	public Studierender(UserAccount account) {
+		super(account.getFirstname(), account.getLastname(), account);
+	}
+
+	public Studierender() {
+
+	}
+
+	@Override
+	public boolean ausleihen(Buch buch, Terminal terminal) {
+		return terminal.ausleihen(buch, this);
+	}
 
 	@Override
 	public boolean zurueckgeben(Buch buch, Terminal terminal) {

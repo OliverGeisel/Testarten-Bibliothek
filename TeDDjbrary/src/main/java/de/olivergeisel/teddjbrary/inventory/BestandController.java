@@ -17,7 +17,7 @@
 package de.olivergeisel.teddjbrary.inventory;
 
 import de.olivergeisel.teddjbrary.core.Buch;
-import de.olivergeisel.teddjbrary.user.visitor.Studierender;
+import de.olivergeisel.teddjbrary.user.visitor.BesucherRepository;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.stereotype.Controller;
@@ -33,10 +33,12 @@ import java.util.UUID;
 @RequestMapping("inventory")
 public class BestandController {
     private final BestandsVerwaltung verwaltung;
+    private final BesucherRepository besucherRepository;
 
 
-    public BestandController(BestandsVerwaltung verwaltung) {
+    public BestandController(BestandsVerwaltung verwaltung, BesucherRepository besucherRepository) {
         this.verwaltung = verwaltung;
+        this.besucherRepository = besucherRepository;
     }
 
     @GetMapping({"", "/"})
@@ -53,7 +55,7 @@ public class BestandController {
 
     @PostMapping("ausleihen/{id}")
     public String ausleihen(@PathVariable("id") Buch buch, @LoggedIn UserAccount account) {
-        verwaltung.ausleihen(buch, new Studierender("Oliver", "Geisel"));
+        besucherRepository.findByUserAccount(account).ifPresent(besucher -> verwaltung.ausleihen(buch, besucher));
         return "redirect:/inventory";
     }
 }

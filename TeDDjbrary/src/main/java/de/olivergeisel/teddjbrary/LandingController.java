@@ -62,7 +62,8 @@ public class LandingController {
 	}
 
 	@PostMapping("testimonials")
-	String addTestimonial(@RequestParam String content, @RequestParam String from, @RequestParam String role, Model model) {
+	String addTestimonial(@RequestParam String content, @RequestParam String from, @RequestParam String role,
+			Model model) {
 		basicService.createPost(content, from, role);
 		model.addAttribute("posts", basicService.getAllPosts());
 		return "redirect:/testimonials";
@@ -71,7 +72,8 @@ public class LandingController {
 	@GetMapping("insecure")
 	ResponseEntity<String> unsecure(HttpServletResponse response, HttpServletRequest request) {
 		var cookies = request.getCookies();
-		var sessioncookie = Arrays.stream(cookies).filter(it -> it.getName().equals("JSESSIONID")).findFirst().orElseThrow();
+		var sessioncookie =
+				Arrays.stream(cookies).filter(it -> it.getName().equals("JSESSIONID")).findFirst().orElseThrow();
 		sessioncookie.setHttpOnly(false);
 		response.addCookie(sessioncookie);
 		return ResponseEntity.ok("""
@@ -82,7 +84,8 @@ public class LandingController {
 	@GetMapping("secure")
 	ResponseEntity<String> secure(HttpServletResponse response, HttpServletRequest request) {
 		var cookies = request.getCookies();
-		var sessioncookie = Arrays.stream(cookies).filter(it -> it.getName().equals("JSESSIONID")).findFirst().orElseThrow();
+		var sessioncookie = Arrays.stream(cookies).filter(it -> it.getName().equals("JSESSIONID"))
+								  .findFirst().orElseThrow();
 		sessioncookie.setHttpOnly(true);
 		response.addCookie(sessioncookie);
 		return ResponseEntity.ok("""

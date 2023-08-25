@@ -26,53 +26,52 @@ import java.time.LocalTime;
 @PropertySource("classpath:/application.properties")
 public class AppConfig {
 
-	private static final String TIME_FORMAT = "HH:mm";
-	private static final String TIME_ZONE = "Europe/Berlin";
-	private static AppConfig instance = null;
+	private static final String    TIME_FORMAT = "HH:mm";
+	private static final String    TIME_ZONE   = "Europe/Berlin";
+	private static       AppConfig instance    = null;
+
 	@Value("${app.name}")
-	private String name;
+	private String  name;
 	@Value("${app.geheimeruser}")
 	private boolean geheimerUser;
+	@Value("${app.version}")
+	private String  version;
+	@Value("${app.opentime}")
+	private LocalTime openTime;
+	@Value("${app.closetime}")
+	private LocalTime closeTime;
 
-	//region getter / setter
+
+	//region setter/getter
 	public static AppConfig getInstance() {
 		if (instance == null) {
 			instance = new AppConfig();
 		}
 		return instance;
 	}
-	@Value("${app.version}")
-	private String version;
-	@Value("${app.opentime}")
-	private LocalTime openTime;
-	@Value("${app.closetime}")
-	private LocalTime closeTime;
 
 	public boolean getGeheimerUser() {
 		return geheimerUser;
-	}
-
-	public LocalTime getCloseTime() {
-		return closeTime;
 	}
 
 	public void setGeheimerUser(boolean geheimerUser) {
 		this.geheimerUser = geheimerUser;
 	}
 
+	public LocalTime getCloseTime() {
+		return closeTime;
+	}
+
 	public String getName() {
 		return name;
 	}
-
 
 	public LocalTime getOpenTime() {
 		return openTime;
 	}
 
-
 	public String getVersion() {
 		return version;
 	}
-
 //endregion
 }

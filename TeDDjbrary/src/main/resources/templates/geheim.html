@@ -1,0 +1,110 @@
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Das Geheimnis der Bibliothek</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+    <meta content="website" property="og:type">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
+          rel="stylesheet">
+    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="assets/fonts/simple-line-icons.min.css" rel="stylesheet">
+    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments::nav}"></div>
+<main class="page">
+    <div sec:authorize="not hasRole('BESONDERS')">
+        <h1>Das Geheimnis der Bibliothek</h1>
+        <p>Das Geheimnis der Bibliothek bleibt dir verborgen. <strong>NUR</strong> der Auserwählte kann es lüften.</p>
+        <p>Wenn du der Auserwählte bist, dann melde dich bitte an.</p>
+        <p>Wenn du es nicht bist, dann suche dir den klügsten,
+            den hübschesten, den stärksten, den schnellsten, den mutigsten, den weisesten, den
+            <strong>besten</strong> von allen, der jemals diese Bibliothek betreten wird.
+            Erst dann offenbart sich dir das Geheimnis.🚪⛔</p>
+    </div>
+    <div class="container" sec:authorize="hasRole('BESONDERS')">
+        <header class="heading ">
+            <h1>Du bist der <strong>Auserwählte!</strong></h1>
+        </header>
+        <section class="content container-fluid">
+
+            Das Geheimnis der Bibliothek ist:
+            <div id="geheimnis">
+                Unsere Mitarbeiter sind die Besten! Und das liegt an der Bezahlung. Wir bezahlen jeden Monat unsere
+                Mitarbeiter mit Plinsen. Plinsen sind eine Währung, die nur in der Bibliothek gültig ist.
+                <br>
+                Und die Mitarbeiter liebe diese Plinsen. Sie sind so glücklich, dass sie jeden Tag gerne zur Arbeit
+                kommen.
+                Und dies ist das Geheimrezept der Plinsen:
+                <h2>Zutaten für 1l Plinsenteig:</h2>
+                <ul>
+                    <li>250 g Mehl</li>
+                    <li>1 Prise Salz</li>
+                    <li>4 Eier</li>
+                    <li>500 ml Buttermilch</li>
+                    <li>4 EL geschmolzene Butter oder Öl</li>
+                    <li>Butter oder Öl zum Braten</li>
+                </ul>
+
+                <h2>Zubereitung:</h2>
+                <ol>
+                    <li>In einer großen Schüssel das Mehl (gesiebt) und eine Prise Salz vermengen.</li>
+                    <li>Die Eier in die Mehl-Salz-Mischung schlagen und gut vermengen.</li>
+                    <li>Nach und nach die Buttermilch hinzufügen, während du kontinuierlich rührst. Dadurch wird ein
+                        glatter Teig ohne Klumpen entstehen.
+                    </li>
+                    <li>Die geschmolzene Butter oder das Öl zum Teig geben und gut vermengen. Dies verleiht den Plinsen
+                        einen angenehmen Geschmack und sorgt dafür, dass sie nicht am Pfannenboden kleben.
+                    </li>
+                    <li>Den Teig für etwa 15-30 Minuten ruhen lassen. Während dieser Zeit kann das Mehl vollständig
+                        hydratisieren und der Teig wird leichter zu handhaben sein.
+                    </li>
+                    <li>Eine Pfanne mit etwas Butter oder Öl erhitzen. Den Teig portionsweise in die heiße Pfanne geben
+                        und gleichmäßig verteilen, indem du die Pfanne leicht schwenkst. Die Plinsen auf mittlerer Hitze
+                        braten, bis sie auf der Unterseite goldbraun sind.
+                    </li>
+                    <li>Die Plinsen vorsichtig mit einem Pfannenwender wenden und die andere Seite braten, bis sie
+                        ebenfalls goldbraun ist.
+                    </li>
+                    <li>Die gebackenen Plinsen auf einem Teller stapeln und nach Belieben füllen oder belegen. Du kannst
+                        sie mit süßen Toppings wie Marmelade, Nutella, frischem Obst oder Puderzucker servieren.
+                        Alternativ kannst du sie auch mit herzhaften Füllungen wie Käse, Gemüse oder Schinken genießen.
+                    </li>
+                    <li>Die Plinsen warm servieren und genießen!</li>
+                </ol>
+
+                <h2>Servierung</h2>
+                <p>Die Plinsen können mit süßen Toppings wie Marmelade, Nussnugatcreme, frischem Obst oder Puderzucker
+                    serviert werden. Alternativ können sie auch mit herzhaften Füllungen wie Käse, Gemüse oder Schinken
+                    genossen
+                    werden.</p>
+                <p> Die beste Variante ist jedoch Zucker mit Zimt. Das ist der absolute Hit! Genau das ist das
+                    Geheimnis der Bibliothek.</p>
+            </div>
+        </section>
+    </div>
+</main>
+<div th:replace="~{fragments::footer}"></div>
+</body>
+</html>

@@ -3,14 +3,17 @@ package de.olivergeisel.teddjbrary.user.visitor;
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.structure.Terminal;
 import jakarta.persistence.Entity;
-
-import java.util.UUID;
+import org.salespointframework.useraccount.UserAccount;
 
 @Entity
 public class Dozent extends Besucher {
 
-	public Dozent(UUID id, String vorname, String nachname) {
-		super(vorname, nachname);
+	public Dozent(String vorname, String nachname, UserAccount userAccount) {
+		super(vorname, nachname, userAccount);
+	}
+
+	public Dozent(UserAccount userAccount) {
+		super(userAccount.getFirstname(), userAccount.getLastname(), userAccount);
 	}
 
 	public Dozent() {
