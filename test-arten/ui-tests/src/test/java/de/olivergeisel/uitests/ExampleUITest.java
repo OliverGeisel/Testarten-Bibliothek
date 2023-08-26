@@ -19,34 +19,34 @@ import static com.codeborne.selenide.Selenide.*;
 @Owner("Oliver")
 class ExampleUITest {
 
-    @BeforeAll
-    static void init() {
+	@BeforeAll
+	static void init() {
 
-        Configuration.timeout = 5_000;
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
-                .screenshots(true)
-                .savePageSource(true)
-        );
-        // restliche Configuration in selenide.properties
-    }
+		Configuration.timeout = 5_000;
+		SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+				.screenshots(true)
+				.savePageSource(true)
+		);
+		// restliche Configuration in selenide.properties
+	}
 
-    @AfterAll
-    static void afterAll() {
-        closeWebDriver();
-    }
+	@AfterAll
+	static void afterAll() {
+		closeWebDriver();
+	}
 
-    @AfterEach
-    void tearDown() {
-        clearBrowserCookies();
-        clearBrowserLocalStorage();
-        //	closeWindow();
-    }
+	@AfterEach
+	void tearDown() {
+		clearBrowserCookies();
+		clearBrowserLocalStorage();
+		//	closeWindow();
+	}
 
-    @Feature("rooms")
-    @Test
-    void landingTest() {
-        open("rooms");
-        var inputField = $(".input");
-        inputField.shouldBe(Condition.visible);
-    }
+	@Feature("rooms")
+	@Test
+	void landingTest() {
+		open("rooms");
+		var inputField = $(".input");
+		inputField.shouldBe(Condition.visible);
+	}
 }
