@@ -53,7 +53,7 @@ public class PageRequest {
 	private final RestTemplate restTemplate;
 	Logger logger = LoggerFactory.getLogger(PageRequest.class);
 	private HttpHeaders headers;
-	private Cookie cookie;
+	private Cookie      cookie;
 
 	public PageRequest(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;

@@ -31,11 +31,11 @@ public class AppConfig {
 	private static       AppConfig instance    = null;
 
 	@Value("${app.name}")
-	private String  name;
+	private String    name;
 	@Value("${app.geheimeruser}")
-	private boolean geheimerUser;
+	private boolean   geheimerUser;
 	@Value("${app.version}")
-	private String  version;
+	private String    version;
 	@Value("${app.opentime}")
 	private LocalTime openTime;
 	@Value("${app.closetime}")

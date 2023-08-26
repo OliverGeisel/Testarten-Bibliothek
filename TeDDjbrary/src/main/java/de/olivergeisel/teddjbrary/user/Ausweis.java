@@ -4,7 +4,7 @@ package de.olivergeisel.teddjbrary.user;
 import java.util.Random;
 
 public class Ausweis<P extends Person> {
-	private final P person;
+	private final P   person;
 	private final int id;
 
 
@@ -13,6 +13,7 @@ public class Ausweis<P extends Person> {
 		id = new Random().nextInt(9000) + 1000;
 	}
 
+	//region setter/getter
 	public P getPerson() {
 		return person;
 	}
@@ -20,4 +21,5 @@ public class Ausweis<P extends Person> {
 	public int getId() {
 		return id;
 	}
+//endregion
 }

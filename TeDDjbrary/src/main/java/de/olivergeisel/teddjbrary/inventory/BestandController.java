@@ -32,30 +32,30 @@ import java.util.UUID;
 @Controller
 @RequestMapping("inventory")
 public class BestandController {
-    private final BestandsVerwaltung verwaltung;
-    private final BesucherRepository besucherRepository;
+	private final BestandsVerwaltung verwaltung;
+	private final BesucherRepository besucherRepository;
 
 
-    public BestandController(BestandsVerwaltung verwaltung, BesucherRepository besucherRepository) {
-        this.verwaltung = verwaltung;
-        this.besucherRepository = besucherRepository;
-    }
+	public BestandController(BestandsVerwaltung verwaltung, BesucherRepository besucherRepository) {
+		this.verwaltung = verwaltung;
+		this.besucherRepository = besucherRepository;
+	}
 
-    @GetMapping({"", "/"})
-    public String overview(Model model) {
-        model.addAttribute("items", verwaltung.findAll());
-        return "inventory";
-    }
+	@GetMapping({"", "/"})
+	public String overview(Model model) {
+		model.addAttribute("items", verwaltung.findAll());
+		return "inventory";
+	}
 
-    @GetMapping("{id}")
-    public String detail(@PathVariable("id") UUID id, Model model) {
-        model.addAttribute("item", verwaltung.findById(id));
-        return "inventory-detail";
-    }
+	@GetMapping("{id}")
+	public String detail(@PathVariable("id") UUID id, Model model) {
+		model.addAttribute("item", verwaltung.findById(id));
+		return "inventory-detail";
+	}
 
-    @PostMapping("ausleihen/{id}")
-    public String ausleihen(@PathVariable("id") Buch buch, @LoggedIn UserAccount account) {
-        besucherRepository.findByUserAccount(account).ifPresent(besucher -> verwaltung.ausleihen(buch, besucher));
-        return "redirect:/inventory";
-    }
+	@PostMapping("ausleihen/{id}")
+	public String ausleihen(@PathVariable("id") Buch buch, @LoggedIn UserAccount account) {
+		besucherRepository.findByUserAccount(account).ifPresent(besucher -> verwaltung.ausleihen(buch, besucher));
+		return "redirect:/inventory";
+	}
 }

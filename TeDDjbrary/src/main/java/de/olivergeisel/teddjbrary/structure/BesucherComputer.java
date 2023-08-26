@@ -13,9 +13,9 @@ import java.util.Collection;
 
 // Anzahl Bugs:
 public class BesucherComputer extends Arbeitsplatz<Besucher> implements Terminal {
-	private static int counter = 1;
-	private final int number;
-	private final BestandsVerwaltung bestand;
+	private static int                counter = 1;
+	private final  int                number;
+	private final  BestandsVerwaltung bestand;
 
 	public BesucherComputer(BestandsVerwaltung bestand) {
 		this.bestand = bestand;
@@ -87,14 +87,14 @@ public class BesucherComputer extends Arbeitsplatz<Besucher> implements Terminal
 		throw new UnsupportedOperationException("Diese Art Terminals unterstützt diese Funktionalität nicht!");
 	}
 
-
-	public String toString() {
-		// VLT. besser einen StringBuilder
-		return "Das ist Terminal " + number + ". Und es ist mit " + (nutzer != null ? "niemanden" : nutzer) + " bestzt.";
-	}
-
 	@Override
 	public void verschmutzen() {
 		verschmutzung += 0.1;
+	}
+
+	public String toString() {
+		// VLT. besser einen StringBuilder
+		return "Das ist Terminal " + number + ". Und es ist mit " + (nutzer != null ? "niemanden" : nutzer)
+			   + " bestzt.";
 	}
 }

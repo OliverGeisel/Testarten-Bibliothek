@@ -22,7 +22,7 @@ public class Dozent extends Besucher {
 
 	@Override
 	public boolean ausleihen(Buch buch, Terminal terminal) {
-        return terminal.ausleihen(buch, this);
+		return terminal.ausleihen(buch, this);
 	}
 
 	@Override

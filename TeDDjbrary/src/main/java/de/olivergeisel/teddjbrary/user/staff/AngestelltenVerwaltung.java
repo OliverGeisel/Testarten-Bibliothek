@@ -24,7 +24,8 @@ public class AngestelltenVerwaltung {
 
 	public void angestelltenHinzufuegen(Angestellter angestellter, Bereich bereich) {
 		if (isAngestellt(angestellter)) {
-			throw new VerwaltungsException(String.format("Der Angestellte %s ist bereits angestellt", angestellter.getVollerName()));
+			throw new VerwaltungsException(
+					String.format("Der Angestellte %s ist bereits angestellt", angestellter.getVollerName()));
 		}
 		Set<Angestellter> bereichsMitarbeiter;
 		if (angestellte.get(bereich) == null) {

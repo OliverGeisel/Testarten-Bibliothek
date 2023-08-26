@@ -14,7 +14,7 @@ import java.util.Collection;
 
 public class AngestelltenComputer extends Arbeitsplatz<Bibliothekar> implements Terminal {
 
-	private final Kundenregister kunden;
+	private final Kundenregister     kunden;
 	private final BestandsVerwaltung bestand;
 
 	private final Leseraum[] raeume;
@@ -48,7 +48,7 @@ public class AngestelltenComputer extends Arbeitsplatz<Bibliothekar> implements 
 
 	@Override
 	public boolean ausleihen(Buch buch, Besucher besucher) {
-        return bestand.ausleihen(buch, besucher);
+		return bestand.ausleihen(buch, besucher);
 	}
 
 	@Override

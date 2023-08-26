@@ -53,8 +53,9 @@ public class Kundenregister {
 
 	public boolean gibBuchZurueck(Buch buch) {
 		UUID besucherID = alleBesucher.entrySet().stream()
-				.filter(it -> it.getValue().getAusgelieheneBuecher().contains(buch)).map(Map.Entry::getKey)
-				.findFirst().orElseThrow();
+									  .filter(it -> it.getValue().getAusgelieheneBuecher().contains(buch))
+									  .map(Map.Entry::getKey)
+									  .findFirst().orElseThrow();
 		return gibtBuchZurueckIntern(buch, besucherID);
 	}
 
@@ -132,8 +133,8 @@ public class Kundenregister {
 	 */
 	private static final class BesucherStatus {
 		private final BesucherTyp besucherTyp;
-		private List<Buch> ausgelieheneBuecher;
-		private Double strafe = 0.0;
+		private       List<Buch>  ausgelieheneBuecher;
+		private       Double      strafe = 0.0;
 
 		private BesucherStatus(Besucher besucher) {
 			besucherTyp =
@@ -170,6 +171,7 @@ public class Kundenregister {
 			return ausgelieheneBuecher.remove(buch);
 		}
 
+		//region setter/getter
 		public List<Buch> getAusgelieheneBuecher() {
 			return Collections.unmodifiableList(ausgelieheneBuecher);
 		}
@@ -181,6 +183,7 @@ public class Kundenregister {
 		public Double getStrafe() {
 			return strafe;
 		}
+//endregion
 	}
 
 

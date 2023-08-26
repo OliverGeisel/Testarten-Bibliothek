@@ -44,7 +44,8 @@ public class UserInitializer implements DataInitializer {
 		var admin = new Bibliothekar(account, Geschlecht.MAENNLICH, 25);
 		userAccountManagement.save(account);
 		userManager.saveAngestellten(admin);
-		account = userAccountManagement.create("geheim", Password.UnencryptedPassword.of("Wasserfallschutzsystemüberwachungsbeamter"), Role.of("BESONDERS"));
+		account = userAccountManagement.create("geheim",
+				Password.UnencryptedPassword.of("Wasserfallschutzsystemüberwachungsbeamter"), Role.of("BESONDERS"));
 		userAccountManagement.save(account);
 
 		var besucherAccount = userAccountManagement.create("besucher", Password.UnencryptedPassword.of("besucher"),

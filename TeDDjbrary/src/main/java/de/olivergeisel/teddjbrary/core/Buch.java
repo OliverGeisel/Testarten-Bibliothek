@@ -15,51 +15,47 @@ import java.util.UUID;
 
 @Entity
 public class Buch implements Comparable<Buch>, Verschmutzbar {
-    private final String titel;
-    @Embedded
-    private final ISBN isbn;
-    @Column(nullable = false, unique = true)
-    private final long code;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private UUID id;
-    private String autor;
-    private boolean ausgeliehen;
-    private double beschaedigung;
+	private final String  titel;
+	@Embedded
+	private final ISBN    isbn;
+	@Column(nullable = false, unique = true)
+	private final long    code;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", nullable = false)
+	private       UUID    id;
+	private       String  autor;
+	private       boolean ausgeliehen;
+	private       double  beschaedigung;
 
-    private LocalDate ausleihdatum;
+	private LocalDate ausleihdatum;
 
-    private double verschmutzung;
+	private double verschmutzung;
 
-    public Buch() {
-        this("", new ISBN());
-    }
+	public Buch() {
+		this("", new ISBN());
+	}
 
 	public Buch(String titel, ISBN isbn) {
-        this(titel, "", isbn);
-    }
+		this(titel, "", isbn);
+	}
 
-    public Buch(String titel, String autor, ISBN isbn) {
-        this.titel = titel;
-        code = new Random().nextInt();
-        this.autor = autor;
-        this.isbn = isbn;
-    }
+	public Buch(String titel, String autor, ISBN isbn) {
+		this.titel = titel;
+		code = new Random().nextInt();
+		this.autor = autor;
+		this.isbn = isbn;
+	}
 
-    public UUID getId() {
-        return id;
-    }
+	/**
+	 * Setzt den Status auf ausgeliehen. Kann nicht ausgeliehen werden, wenn es nicht verfügbar ist.
+	 */
+	public void ausleihen() {
+		ausgeliehen = true;
+		ausleihdatum = LocalDate.now();
+	}
 
-    /**
-     * Setzt den Status auf ausgeliehen. Kann nicht ausgeliehen werden, wenn es nicht verfügbar ist.
-     */
-    public void ausleihen() {
-        ausgeliehen = true;
-        ausleihdatum = LocalDate.now();
-    }
-
-    /**
+	/**
 	 * Erlaubt das Ausleihen des Buches.
 	 */
 	public void verfuegbarMachen() {
@@ -79,47 +75,35 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	 */
 	public void starkBeschaedigen() {
 		beschaedigung = Math.max(0.8, beschaedigung + 0.1);
-    }
+	}
 
+	/**
+	 * Repariert das Buch wieder und macht es wieder nutzbar.
+	 */
+	public void reparieren() {
+		beschaedigung = 0.01;
+	}
 
-    /**
-     * Repariert das Buch wieder und macht es wieder nutzbar.
-     */
-    public void reparieren() {
-        beschaedigung = 0.01;
-    }
+	/**
+	 * Gibt Auskunft, ob ein Buch vom Inhalt her das Gleiche ist
+	 *
+	 * @param buch das zu vergleichende Buch
+	 * @return true, wenn die ISBN gleich ist.
+	 */
+	public boolean isGleichesBuch(Buch buch) {
+		return isbn.equals(buch.isbn);
+	}
 
-
-    /**
-     * Gibt Auskunft, ob ein Buch vom Inhalt her das Gleiche ist
-     *
-     * @param buch das zu vergleichende Buch
-     * @return true, wenn die ISBN gleich ist.
-     */
-    public boolean isGleichesBuch(Buch buch) {
-        return isbn.equals(buch.isbn);
-    }
-
-    /**
-     * Gibt Auskunft, ob ein Buch vom Inhalt und Code her das Gleiche ist.
-     * <br>
-     * Wenn equals() true zurückgibt, dann muss auch isIdentischesBuch() true zurückgeben.
-     *
-     * @param buch das zu vergleichende Buch
-     * @return true, wenn die ISBN und der Code gleich ist.
-     */
-    public boolean isIdentischesBuch(Buch buch) {
-        return this.isbn.equals(isbn) && this.code == buch.code;
-    }
-
-    /**
-     * Gibt Auskunft, ob ein Buch gereinigt werden sollte.
-     *
-     * @return true, wenn die Verschmutzung größer als 0.5 ist.
-     */
-    @Override
-    public boolean isDreckig() {
-        return verschmutzung > 0.5;
+	/**
+	 * Gibt Auskunft, ob ein Buch vom Inhalt und Code her das Gleiche ist.
+	 * <br>
+	 * Wenn equals() true zurückgibt, dann muss auch isIdentischesBuch() true zurückgeben.
+	 *
+	 * @param buch das zu vergleichende Buch
+	 * @return true, wenn die ISBN und der Code gleich ist.
+	 */
+	public boolean isIdentischesBuch(Buch buch) {
+		return this.isbn.equals(isbn) && this.code == buch.code;
 	}
 
 	/**
@@ -136,57 +120,6 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	@Override
 	public void verschmutzen() {
 		verschmutzung += 0.07;
-	}
-
-
-	public String getTitel() {
-		return titel;
-	}
-
-	public String getAutor() {
-		return autor;
-	}
-
-	public void setAutor(String autor) {
-		this.autor = autor;
-	}
-
-	public ISBN getIsbn() {
-		return isbn;
-	}
-
-	public long getCode() {
-		return code;
-	}
-
-	public double getBeschaedigung() {
-		return beschaedigung;
-	}
-
-	public LocalDate getAusleihdatum() {
-		return ausleihdatum;
-    }
-
-    public boolean isAusgeliehen() {
-        return ausgeliehen;
-	}
-
-	public boolean isVerfuegbar() {
-		return !isAusgeliehen();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Buch buch = (Buch) o;
-		return id.equals(buch.id);
-	}
-
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(isbn, code);
 	}
 
 	/**
@@ -232,6 +165,71 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	@Override
 	public int compareTo(Buch o) {
 		return this.isbn.compareTo(o.isbn);
+	}
+
+	//region setter/getter
+	public UUID getId() {
+		return id;
+	}
+
+	/**
+	 * Gibt Auskunft, ob ein Buch gereinigt werden sollte.
+	 *
+	 * @return true, wenn die Verschmutzung größer als 0.5 ist.
+	 */
+	@Override
+	public boolean isDreckig() {
+		return verschmutzung > 0.5;
+	}
+
+	public String getTitel() {
+		return titel;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
+	public ISBN getIsbn() {
+		return isbn;
+	}
+
+	public long getCode() {
+		return code;
+	}
+
+	public double getBeschaedigung() {
+		return beschaedigung;
+	}
+
+	public LocalDate getAusleihdatum() {
+		return ausleihdatum;
+	}
+
+	public boolean isAusgeliehen() {
+		return ausgeliehen;
+	}
+
+	public boolean isVerfuegbar() {
+		return !isAusgeliehen();
+	}
+//endregion
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Buch buch = (Buch) o;
+		return id.equals(buch.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(isbn, code);
 	}
 
 

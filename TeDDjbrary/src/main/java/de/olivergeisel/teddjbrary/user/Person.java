@@ -8,6 +8,7 @@ public interface Person {
 	// Todo Refactoring hier ist public überflüssig
 
 
+//region setter/getter
 	/**
 	 * @return Vorname einer Person.
 	 */
@@ -29,5 +30,6 @@ public interface Person {
 	 * @return Alter der Person.
 	 */
 	public int getAlter();
+//endregion
 
 }

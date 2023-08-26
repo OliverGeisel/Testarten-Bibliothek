@@ -23,14 +23,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BuchInitializer implements DataInitializer {
 
-    private final BuchRepository buchRepository;
+	private final BuchRepository buchRepository;
 
-    public BuchInitializer(BuchRepository buchRepository) {
-        this.buchRepository = buchRepository;
-    }
+	public BuchInitializer(BuchRepository buchRepository) {
+		this.buchRepository = buchRepository;
+	}
 
-    @Override
-    public void initialize() {
+	@Override
+	public void initialize() {
 
-    }
+	}
 }

@@ -28,28 +28,28 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableSalespoint
 public class TeDDjbraryApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(TeDDjbraryApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(TeDDjbraryApplication.class, args);
+	}
 
-    @Configuration
-    @EnableWebSecurity
-    public static class WebSecurityConfig {
+	@Configuration
+	@EnableWebSecurity
+	public static class WebSecurityConfig {
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http
-                    .authorizeHttpRequests(requests -> requests
-                            .requestMatchers("/**").permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    .formLogin(form -> form
-                            .loginPage("/login").permitAll().defaultSuccessUrl("/", false)
-                    )
-                    .logout(it -> it.permitAll().invalidateHttpSession(true).logoutSuccessUrl("/"));
-            http.csrf(AbstractHttpConfigurer::disable);
-            http.cors(AbstractHttpConfigurer::disable);
-            return http.build();
-        }
-    }
+		@Bean
+		public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+			http
+					.authorizeHttpRequests(requests -> requests
+							.requestMatchers("/**").permitAll()
+							.anyRequest().authenticated()
+					)
+					.formLogin(form -> form
+							.loginPage("/login").permitAll().defaultSuccessUrl("/", false)
+					)
+					.logout(it -> it.permitAll().invalidateHttpSession(true).logoutSuccessUrl("/"));
+			http.csrf(AbstractHttpConfigurer::disable);
+			http.cors(AbstractHttpConfigurer::disable);
+			return http.build();
+		}
+	}
 }
