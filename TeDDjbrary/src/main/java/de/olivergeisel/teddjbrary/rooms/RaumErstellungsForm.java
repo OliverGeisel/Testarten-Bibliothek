@@ -16,9 +16,23 @@
 
 package de.olivergeisel.teddjbrary.rooms;
 
-import org.springframework.data.repository.CrudRepository;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
-import java.util.UUID;
+public class RaumErstellungsForm {
+	@NotBlank
+	private String name;
+	@Positive
+	private int    nummer;
 
-public interface RaumReposititory extends CrudRepository<Raum, UUID> {
+//region setter/getter
+	public String getName() {
+		return name;
+	}
+
+	public int getNummer() {
+		return nummer;
+	}
+//endregion
+
 }
