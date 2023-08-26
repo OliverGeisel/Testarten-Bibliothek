@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+    <title>Register - TeDDjbrary</title>
+    <meta content="website" property="og:type">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
+          rel="stylesheet">
+    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<main class="page registration-page">
+    <section class="clean-block clean-form dark">
+        <div class="container">
+            <div class="block-heading">
+                <h2 class="text-info">Registration</h2>
+                <p>Bitte fülle die Felder aus!</p>
+            </div>
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label" for="name" th:text="#{register.name}">Name</label>
+                    <input class="form-control item" id="name" name="username" type="text">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password" th:text="#{register.password}">Passwort</label>
+                    <input class="form-control item" id="password" name="passwort" type="password">
+                    <div class="mb-3">
+                        <label class="form-label" for="password-1" th:text="#{register.passwordrepeat}">Wiederholung
+                            Passwort</label>
+                        <input class="form-control item" id="password-1" name="passwortWiederholung" type="password">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="email" th:text="#{register.email}">Email</label>
+                    <input class="form-control item" id="email" name="email" type="email">
+                </div>
+                <hr>
+                <div class="mb-3">
+                    <label class="form-label" for="type" th:text="#{register.type}">Typ</label>
+                    <select class="form-control item" id="type" name="role">
+                        <option th:each=" type : ${types}" th:selected="${type == 'STUDIERENDER'}" th:text="${type}"
+                                th:value="${type}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="forname" th:text="#{register.forname}">Vorname</label>
+                    <input class="form-control item" id="forname" name="vorname">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="surename" th:text="#{register.surename}">Nachname</label>
+                    <input class="form-control item" id="surename" name="nachname">
+                </div>
+                <button class="btn btn-primary" th:text="#{register.signin}" type="submit">Sign Up</button>
+                <div>
+                    <span th:text="#{register.reg1}">Du hast schon ein Konto? Dann melde dich</span> <a
+                        href="login.html" th:href="@{/login}">hier </a>&nbsp;an.
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+<footer class="page-footer dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h5>Get started</h5>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="registration.html">Sign up</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5>About us</h5>
+                <ul>
+                    <li><a href="#">Company Information</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="#">Help desk</a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5>Legal</h5>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2023 Copyright Oliver Geisel</p>
+    </div>
+</footer>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/bs-init.js"></script>
+<script src="assets/js/baguetteBox.min.js"></script>
+<script src="assets/js/vanilla-zoom.js"></script>
+<script src="assets/js/theme.js"></script>
+</body>
+
+</html>

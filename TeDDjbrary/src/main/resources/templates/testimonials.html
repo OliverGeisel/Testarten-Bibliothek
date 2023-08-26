@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+    <title>Testimonials - TeDDjbrary</title>
+    <meta content="website" property="og:type">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
+          rel="stylesheet">
+    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav th:replace="~{fragments::nav}"></nav>
+<main class="page testimonials">
+    <section class="clean-block clean-testimonials dark">
+        <div class="container">
+            <div class="block-heading">
+                <h2 class="text-info" th:text="#{testimonials}">Testimonials</h2>
+                <p>Hier haben sich unsere Gäste eingetragen. Auch Sie können sich eintragen</p>
+            </div>
+            <section>
+                <form method="post" th:action="@{/testimonials}">
+                    <textarea class="form-control" name="content" style="height: 90px;"></textarea>
+                    <label
+                            class="form-label">Von:<input class="form-control" name="from" type="text">
+                    </label>
+                    <label class="form-label">Rolle:<input
+                            class="form-control" name="role" type="text">
+                    </label>
+                    <input class="btn btn-primary" type="submit">
+                </form>
+            </section>
+            <div class="row">
+                <div class="col-lg-4" th:each="post: ${posts}">
+                    <div class="card clean-testimonial-item border-0 rounded-0">
+                        <div class="card-body">
+                            <p class="card-text" th:utext="${post.content}">Text</p>
+                            <h3 th:text="${post.from}">John Smith</h3>
+                            <h4 class="card-title" th:text="${post.role}">Founder of Something</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card clean-testimonial-item border-0 rounded-0">
+                        <div class="card-body">
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                                augue nunc, pretium at augue at, convallis pellentesque ipsum. Lorem ipsum dolor sit
+                                amet, consectetur adipiscing elit.</p>
+                            <h3>John Smith</h3>
+                            <h4 class="card-title">Founder of Something</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card clean-testimonial-item border-0 rounded-0">
+                        <div class="card-body">
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                                augue nunc, pretium at augue at, convallis pellentesque ipsum. Lorem ipsum dolor sit
+                                amet, consectetur adipiscing elit.</p>
+                            <h3>John Smith</h3>
+                            <h4 class="card-title">Founder of Something</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card clean-testimonial-item border-0 rounded-0">
+                        <div class="card-body">
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                                augue nunc, pretium at augue at, convallis pellentesque ipsum. Lorem ipsum dolor sit
+                                amet, consectetur adipiscing elit.</p>
+                            <h3>John Smith</h3>
+                            <h4 class="card-title">Founder of Something</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{fragments::footer}"></footer>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/bs-init.js"></script>
+<script src="assets/js/baguetteBox.min.js"></script>
+<script src="assets/js/vanilla-zoom.js"></script>
+<script src="assets/js/theme.js"></script>
+</body>
+
+</html>

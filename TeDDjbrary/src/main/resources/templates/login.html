@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+    <title>Login - TeDDjbrary</title>
+    <meta content="website" property="og:type">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
+          rel="stylesheet">
+    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div th:replace="~{fragments :: nav}"></div>
+<main class="page login-page">
+    <section class="clean-block clean-form dark">
+        <div class="container">
+            <div class="block-heading">
+                <h2 class="text-info">Einloggen</h2>
+                <p>Logge Dich mit Deinen Daten ein.<br>Wenn du noch keins besitzt, dann kannst<br>Du dich&nbsp;<a
+                        href="registration.html" th:href="@{/register}">hier registrieren</a>.&nbsp;</p>
+            </div>
+            <form method="post" th:action="@{/login}">
+                <div class="mb-3">
+                    <label class="form-label" for="username">Name</label>
+                    <input autofocus class="form-control item" id="username" name="username" type="text"></div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" id="password" name="password" type="password"></div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" id="checkbox" type="checkbox">
+                        <label
+                                class="form-check-label" for="checkbox">Remember me</label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="submit" type="submit">Log In</button>
+            </form>
+        </div>
+    </section>
+</main>
+<div th:replace="~{fragments :: footer}"></div>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/bs-init.js"></script>
+<script src="assets/js/baguetteBox.min.js"></script>
+<script src="assets/js/vanilla-zoom.js"></script>
+<script src="assets/js/theme.js"></script>
+</body>
+
+</html>
