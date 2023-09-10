@@ -1,6 +1,5 @@
 package de.olivergeisel.uitests;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.junit5.SoftAssertsExtension;
 import com.codeborne.selenide.logevents.SelenideLogger;
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 @ExtendWith({SoftAssertsExtension.class})
@@ -46,7 +46,7 @@ class ExampleUITest {
 	@Test
 	void landingTest() {
 		open("rooms");
-		var inputField = $(".input");
-		inputField.shouldBe(Condition.visible);
+		var inputField = $(".");
+		inputField.shouldBe(visible);
 	}
 }
