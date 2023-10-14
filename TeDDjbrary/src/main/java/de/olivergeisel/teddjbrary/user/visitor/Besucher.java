@@ -2,23 +2,19 @@ package de.olivergeisel.teddjbrary.user.visitor;
 
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.structure.Terminal;
-import de.olivergeisel.teddjbrary.user.Person;
-import jakarta.persistence.*;
+import de.olivergeisel.teddjbrary.user.Benutzer;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import org.salespointframework.useraccount.UserAccount;
 
-import java.util.UUID;
-
 @Entity
-public abstract class Besucher implements Person {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", nullable = false)
-	private UUID id;
+public abstract class Besucher extends Benutzer {
 
 	private String vorname;
 	private String nachname;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	private UserAccount userAccount;
 
 	protected Besucher() {
@@ -60,9 +56,6 @@ public abstract class Besucher implements Person {
 		return 0;
 	}
 
-	public UUID getId() {
-		return id;
-	}
 
 	@Override
 	public String getNachname() {
@@ -74,22 +67,7 @@ public abstract class Besucher implements Person {
 		return vorname;
 	}
 
-	public UserAccount getUserAccount() {
-		return userAccount;
-	}
 //endregion
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Besucher besucher)) return false;
-
-		return id.equals(besucher.id);
-	}
-
-	@Override
-	public int hashCode() {
-		return id.hashCode();
-	}
 
 }

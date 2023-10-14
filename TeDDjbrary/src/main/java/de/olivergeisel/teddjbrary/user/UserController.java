@@ -26,12 +26,15 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Controller
 public class UserController {
 
-	private final UserManager userManager;
+	private final UserVerwaltung verwaltung;
 
-	public UserController(UserManager userManager) {this.userManager = userManager;}
+	public UserController(UserVerwaltung verwaltung) {this.verwaltung = verwaltung;}
 
 
 	@GetMapping("/login")
@@ -42,7 +45,7 @@ public class UserController {
 
 	@GetMapping("/register")
 	public String register(Model model) {
-		model.addAttribute("types", UserManager.ALLE_BESUCHER_ROLES.stream().map(Role::getName).toList());
+		model.addAttribute("types", UserVerwaltung.ALLE_BESUCHER_ROLES.stream().map(Role::getName).toList());
 		return "registration";
 	}
 
@@ -51,13 +54,20 @@ public class UserController {
 		if (result.hasErrors()) {
 			return "registration";
 		}
-		var user = userManager.registerUser(form);
+		var user = verwaltung.registerUser(form);
 		return "redirect:/login";
 	}
 
 	@GetMapping("/profile")
-	public String profile(Model model, @LoggedIn UserAccount userAccount) {
-		model.addAttribute("user", userManager.findByAccount(userAccount));
+	public String profile(Model model, @LoggedIn Optional<UserAccount> userAccount) {
+		if (userAccount.isEmpty()) {
+			return "redirect:/login";
+		}
+		try {
+			model.addAttribute("user", verwaltung.findByAccount(userAccount.orElseThrow()));
+		} catch (NoSuchElementException e) {
+			return "redirect:/login";
+		}
 		return "profile";
 	}
 
@@ -67,7 +77,7 @@ public class UserController {
 		if (result.hasErrors()) {
 			return "profile";
 		}
-		userManager.updatePersonalData(form, userAccount);
+		verwaltung.updatePersonalData(form, userAccount);
 		return "redirect:/profile";
 	}
 }
