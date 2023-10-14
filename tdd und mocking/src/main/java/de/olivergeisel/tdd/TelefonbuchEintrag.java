@@ -14,16 +14,7 @@
  *    limitations under the License.
  */
 
-package de.olivergeisel.teddjbrary.auxillary;
+package de.olivergeisel.tdd;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-
-@Controller
-public class BasicController {
-
-	@GetMapping("/geheim")
-	public String geheim() {
-		return "geheim";
-	}
+public class TelefonbuchEintrag {
 }
