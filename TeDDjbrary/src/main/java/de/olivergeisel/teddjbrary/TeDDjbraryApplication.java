@@ -38,6 +38,8 @@ public class TeDDjbraryApplication {
 
 		@Bean
 		public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+			http.requiresChannel(request -> request.requestMatchers("/login").requiresSecure());
+
 			http
 					.authorizeHttpRequests(requests -> requests
 							.requestMatchers("/**").permitAll()
