@@ -1,0 +1,63 @@
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Unsere Jobangebote</title>
+</head>
+<body>
+
+<section>
+    <form action="bewerbung.html" th:action="@{/jobs/bewerbung}">
+        <label>
+            <input name="name" placeholder="name">
+        </label>
+        <label>
+            <input name="e-mail" placeholder="E-mail" type="email">
+        </label>
+        <label>
+            <input name="message" placeholder="Deine Nachricht an uns">
+        </label>
+        <label>
+            <select name="job">
+                <option value="Bibliothekar">Bibliothekar</option>
+                <option value="Reinigungskraft">Reinigungskraft</option>
+                <option value="Projektleiter">Projektleiter</option>
+            </select>
+        </label>
+        <button type="submit">Bewerben</button>
+    </form>
+</section>
+</body>
+</html>

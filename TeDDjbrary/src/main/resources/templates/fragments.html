@@ -21,6 +21,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
+<th:block th:fragment="head">
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
+          rel="stylesheet">
+    <link href="/assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="/assets/fonts/simple-line-icons.min.css" rel="stylesheet">
+    <link href="/assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="/assets/css/vanilla-zoom.min.css" rel="stylesheet">
+</th:block>
 <body>
 <nav class="navbar navbar-dark navbar-expand-lg fixed-top text-info bg-gradient text-nowrap fs-1 visible clean-navbar"
      style="background-color: #0b13e1" th:fragment="nav">
@@ -30,7 +41,8 @@
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="index.html" th:href="@{/}">Start</a></li>
-                <li class="nav-item"><a class="nav-link" href="catalog-page.html">Katalog</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalog-page.html" th:href="@{/inventory}">Katalog
+                </a></li>
                 <li class="nav-item" sec:authorize="hasRole('BESONDERS')"><a class="nav-link" th:href="@{/geheim}">
                     <svg class="bi bi-gift" fill="currentColor" height="1em" viewBox="0 0 16 16"
                          width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -73,9 +85,9 @@
             <div class="col-sm-3">
                 <h5>Get started</h5>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="registration.html">Sign up</a></li>
-                    <li><a href="login.html">Login</a></li>
+                    <li><a href="/index.html" th:href="@{/index}">Home</a></li>
+                    <li><a href="/registration.html" th:href="@{/register}">Sign up</a></li>
+                    <li><a href="/login.html" th:href="@{/login}">Login</a></li>
                 </ul>
             </div>
             <div class="col-sm-3">
@@ -89,7 +101,7 @@
             <div class="col-sm-3">
                 <h5>Support</h5>
                 <ul>
-                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="/faq.html">FAQ</a></li>
                     <li><a href="#">Help desk</a></li>
                     <li><a href="#">Forums</a></li>
                 </ul>

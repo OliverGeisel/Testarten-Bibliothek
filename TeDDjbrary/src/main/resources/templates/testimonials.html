@@ -37,7 +37,7 @@
                     <input class="btn btn-primary" type="submit">
                 </form>
             </section>
-            <div class="row">
+            <div class="row" th:remove="all-but-first">
                 <div class="col-lg-4" th:each="post: ${posts}">
                     <div class="card clean-testimonial-item border-0 rounded-0">
                         <div class="card-body">

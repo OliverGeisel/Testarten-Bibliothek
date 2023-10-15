@@ -56,7 +56,8 @@
     <section class="clean-block clean-hero"
              style="background-image: url(&quot;assets/img/tech/image4.jpg&quot;);color: rgba(9, 162, 255, 0.85);">
         <div class="text">
-            <h2><span sec:authentication="name"></span> Willkommen in unserer Bibliothek</h2>
+            <h2><span sec:authentication="name" sec:authorize="isAuthenticated" th:remove="tag"></span>
+                Willkommen in unserer Bibliothek</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis
                 vitae leo.</p>
             <button class="btn btn-outline-light btn-lg" type="button">Learn More</button>

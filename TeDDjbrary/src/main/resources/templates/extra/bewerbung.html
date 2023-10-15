@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <title>Neue Bewerbung</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<header>
+    <h1>Hallo <span th:remove="tag" th:text="${name}"></span></h1>
+</header>
+<main class="page">
+    <section>
+        Wir freuen uns, dass du dich für die Stelle <span th:remove="tag" th:text="${job}"></span> beworben hast.
+        <br>
+        Wir werden uns in Kürze bei dir melden.
+        Hier nochmal deine Daten:
+        <br>
+        <ul>
+            <li>Name: <span th:remove="tag" th:text="${name}"></span></li>
+            <li>E-Mail: <span th:remove="tag" th:text="${email}"></span></li>
+            <li>Nachricht: <span th:remove="tag" th:text="${message}"></span></li>
+            <li>Job: <span th:remove="tag" th:text="${job}"></span></li>
+        </ul>
+        <br>
+        <article>
+            <h2>Infos zu deinem Job</h2>
+            <div th:text="${description}"></div>
+        </article>
+
+    </section>
+</main>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
