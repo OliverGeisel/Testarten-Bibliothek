@@ -1,0 +1,12 @@
+
+### Get catalog
+GET {{host}}/inventory/
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
+
+### Get inventory by ID
+GET {{host}}/inventory/{{id}}

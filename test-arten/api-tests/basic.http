@@ -1,0 +1,21 @@
+### Test landing page
+GET /
+Host: localhost:80
+
+
+### Post Login with the default user
+# 2. Create a new user
+POST /login
+Host: localhost:80
+Content-Type: application/x-www-form-urlencoded
+
+uname: "John Doe"
+password": ""
+
+### POST Login with the new user
+POST /login
+Host: localhost:80
+Content-Type: application/x-www-form-urlencode
+
+uname: "John Doe"
+password": ""
