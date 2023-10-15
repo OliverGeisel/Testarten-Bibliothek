@@ -1,8 +1,91 @@
 # Sicherheitstests
 
-Hinweis! Sicherheitstests dürfen nur auf Systemen angewendet werden, zu denen es eine Genehmigung gibt.
+**Hinweis! Sicherheitstests dürfen nur auf Systemen angewendet werden, zu denen es eine Genehmigung gibt.
 Diese Beispiele dienen nur zu Test- und Lehrzwecken. Sie dürfen nicht für unethische oder illegale Zwecke verwendet
+werden.**
+
+## Verschlüsselung - HTTPS und SSL
+Ein Schutzziel ist die Vertraulichkeit. Das bedeutet nur der Nutzer und der Server dürfen die Daten lesen. Kein anderer 
+darf die Daten lesen.
+Diese kann durch Verschlüsselung erreicht werden.
+Im Internet wird dazu HTTPS verwendet. Dieses Protokoll verwendet SSL (Secure Sockets Layer) oder TLS (Transport Layer 
+Security) um die Daten zu verschlüsseln.
+
+### HTTPS
+HTTPS ist eine verschlüsselte Verbindung zwischen einem Client und einem Server. 
+Es basiert auf dem HTTP-Protokoll. 
+Es wird aber eine zusätzliche Verschlüsselungsschicht verwendet, um die Daten zu verschlüsseln.
+Diese Verschlüsselungsschicht ist SSL oder TLS.
+Diese Schicht wird zwischen dem HTTP-Protokoll und dem TCP-Protokoll eingefügt.
+Für die Verbindung ist ein Zertifikat erforderlich.
+Dieses wird vom Server bereitgestellt und vom Client überprüft.
+
+#### Funktionsweise
+Das sind die Schritte, die bei einer HTTPS-Verbindung durchgeführt werden:
+1. Der Client sendet eine Anfrage an den Server.
+2. Der Server sendet ein Zertifikat an den Client.
+3. Der Client prüft das Zertifikat und entscheidet, ob er dem Server vertraut.
+4. Wenn der Client dem Server vertraut, wird die Verbindung verschlüsselt.
+5. Der Client sendet die Anfrage erneut an den Server. Diesmal verschlüsselt.
+6. Der Server entschlüsselt die Anfrage und sendet eine Antwort.
+7. Der Client entschlüsselt die Antwort.
+8. Der Client und der Server kommunizieren verschlüsselt.
+9. Die Verbindung wird geschlossen.
+
+
+#### Zertifikat erstellen
+Das Zertifikat kann mit dem folgenden Befehl erstellt werden:
+```bash
+keytool -genkeypair -alias library -keyalg RSA -keysize 2048 -keystore library.p12 -validity 1825
+```
+Dies erstellt ein selbst signiertes Zertifikat mit dem Alias `library`, das 1825 Tage gültig ist.
+Das Zertifikat wird in der Datei `library.p12` gespeichert.
+Bei der Erstellung wird nach einem Passwort gefragt. Dieses Passwort muss in der Datei `application.properties`.
+Das Passwort für das Zertifikat ist `library`.
+##### Aufgabe
+Aktiviere HTTPS in der TeDDjbrary.
+Öffne die Seite im Browser.
+Was ist das Problem?
+Was steht im Zertifikat? Welche Organisation und welche Person sind die Besitzer des Zertifikates?
+Wer ist der Aussteller?
+
+#### Https in Spring
+In Spring kann HTTPS über die Datei `application.properties` aktiviert werden.
+Dazu muss die Zeile `server.ssl.enabled=true` hinzugefügt werden.
+Außerdem muss ein Zertifikat erstellt werden. Dieses Zertifikat muss in der Datei `application.properties` angegeben 
 werden.
+Dazu muss die Eigenschaft `server.ssl.key-store` den Pfad des Zertifikates enthalten.
+In der TeDDjbrary ist HTTPS deaktiviert. Es sind aber alle Voraussetzungen für HTTPS vorhanden. 
+Zuerst müssen die auskommentierten Zeilen in der Datei `application.properties` aktiviert werden.
+Das Zertifikat ist der Einfachheit halber relativ zum Classpath angegeben.
+Das Zertifikat ist in der Datei `src/main/resources/keystore/library.p12` zu finden.
+
+##### Test in Spring
+In Spring kann getestet werden, ob HTTPS funktioniert.
+Das ist ein Beispiel für einen Test:
+```java
+@Test
+void testHttps() throws Exception {
+    SSLContext sslContext = SSLContextBuilder.create()
+            .loadTrustMaterial(new ClassPathResource("keystore/library.p12").getFile(), "library".toCharArray())
+            .build();
+
+    CloseableHttpClient httpClient = HttpClients.custom()
+            .setSSLContext(sslContext)
+            .build();
+
+    HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+    requestFactory.setHttpClient(httpClient);
+
+    ResponseEntity<String> response = new RestTemplate(requestFactory).getForEntity("https://localhost:8080", String.class);
+    assertEquals(HttpStatus.OK, response.getStatusCode());
+}
+```
+
+
+#### Übung 
+
+
 
 ## Brute-force - Hydra
 
@@ -55,7 +138,7 @@ Jedoch muss dazu noch etwas mehr angegeben werden.
 Das Protokoll benötigt drei zusätzliche Parameter, die mit einem Doppelpunkt (:) getrennt werden.
 
 1. Die URL des Formulars
-2. Der Name des Nutzername-Feldes
+2. Der Name des Nutzername-Feldes sowie der Name des Passwort-Feldes
 3. Die Fehlermeldung, die angezeigt wird, wenn die Anmeldung fehlschlägt.
 
 So sind die `"/login:username=^USER^&password=^PASS^:Da hat etwas nicht geklappt!"`-Optionen:
@@ -73,7 +156,7 @@ Das Beispiel unten ist für die Teddjbary. Es gibt Zugang zu den Nutzer *admin*.
 Wichtig. Der Port muss auf 80 gesetzt werden, da es Probleme mit Port 8080 gibt.
 
 ```bash
-hydra -l admin -P pass.txt -w 2 192.168.178.32 http-post-form "/login:username=^USER^&password=^PASS^:Einloggen"
+hydra -l admin -P pass.txt -w 2 <IP_DES_COMPUTERS> http-post-form "/login:username=^USER^&password=^PASS^:Einloggen"
 ```
 
 ### Übung
@@ -91,6 +174,11 @@ Es gibt einen weiteren Nutzer, der ein schlechtes Passwort hat. Finde ihn heraus
 
 Bei einer SQL-Injection wird versucht, eine SQL-Abfrage zu manipulieren, um Daten aus der Datenbank zu erhalten, die
 nicht für den Nutzer bestimmt sind.
+In Spring wird die Datenbank über JPA angesprochen. JPA verwendet Hibernate, um die Datenbank zu verwalten. 
+Hibernate ist ein ORM (Object-Relational-Mapping). Das bedeutet, dass die Datenbank als Objekte dargestellt wird. 
+Diese Objekte werden dann in der Datenbank gespeichert.
+Spring ist somit nicht direkt von einer SQL-Injection betroffen. Jedoch kann Hibernate so konfiguriert werden, dass es 
+SQL-Abfragen ausführt. Diese Abfragen können dann manipuliert werden. 
 
 ## Cross-Site-Scripting (XSS)
 
@@ -153,10 +241,10 @@ zugreifen.
 Dafür gibt es die Seite `/insecure` auf der TeDDjbrary. Diese setzt den Cookie mit dem Attribut `httpOnly` auf `false`.
 Keine Sorge es gibt auch eine Seite, die den Cookie wieder richtig setzt. `/secure` setzt den Cookie wieder richtig.
 
-Es kann einen Geheimer Nutzer aktiviert werden.
+Es kann ein Geheimer Nutzer aktiviert werden.
 In `resources/application.properties` muss die Zeile `app.geheimeruser` auf `true` gesetzt werden. Alternativ kann
 auch `/start` aufgerufen werden.
-Damit läuft im Hintergrund ein Scheduled-Task, der ein Selenoide ausführt und einen Nutzer simuliert.  
+Damit läuft im Hintergrund ein Scheduled-Task, der ein Selenide ausführt und einen Nutzer simuliert.  
 Dieser ruft alle 2 Minuten die Seite `/testimonials` auf. Die SESSIONID ist nicht httpOnly und kann somit ausgelesen
 werden.
 Wenn das Script richtig ist, steht die SessionId im Gästebuch.
@@ -176,3 +264,11 @@ Dazu wird ein Link oder ein Bild verwendet, das auf eine Seite verweist, die ein
 Ein Beispiel ist, wenn ein Nutzer auf einer Webseite eingeloggt ist und ein Bild von einer anderen Webseite lädt.
 Wenn der Nutzer auf der anderen Webseite eingeloggt ist, kann die andere Webseite eine Aktion auf der ersten Webseite
 ausführen.
+
+
+CSRF ist in Spring standardmäßig aktiviert. Es gibt aber Möglichkeiten, um CSRF zu deaktivieren.
+In Spring wird CSRF über ein Token geschützt. Dieses Token wird in einem Cookie gespeichert und muss bei jedem Request 
+mitgeschickt werden. Wenn das Token nicht mitgeschickt wird, wird der Request abgelehnt. Für Tests kann das Token 
+deaktiviert werden.
+
+In der TeDDjbrary ist CSRF deaktiviert. Somit kann ein CSRF-Angriff durchgeführt werden.
