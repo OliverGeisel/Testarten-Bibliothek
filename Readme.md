@@ -86,8 +86,8 @@ Vereinfacht gesagt ist Validierung die Prüfung, ob die Software die ist, die ma
 
 Dieses Kapitel beschäftigt sich mit Unittests. Es wird erklärt, was Unittests sind und wie sie geschrieben werden.
 Zusätzlich wird auch das Thema Mocking behandelt. Das Teilprojekt zu Unittests ist unter `testarten/unittests` zu finden.
-**Achtung!
-** Zwischendurch wird auch das Teilprojekt zu TDD und Mocking benötigt. Dieses ist unter `tdd und mocking` zu finden.
+**Achtung!**
+Zwischendurch wird auch das Teilprojekt zu TDD und Mocking benötigt. Dieses ist unter `tdd und mocking` zu finden.
 
 <hr>
 
