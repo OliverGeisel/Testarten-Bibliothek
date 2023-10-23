@@ -36,16 +36,24 @@ public class Leseraum extends Raum implements Verschmutzbar {
 	private       double         verschmutzung;
 	private       int            imRaum;
 
-	public Leseraum() {
+	protected Leseraum () {
 	}
 
 	public Leseraum(int leserSitze) {
-		this();
 		if (leserSitze < 1) {
 			throw new IllegalArgumentException("Es muss mindestens eine Person in den Raum passen");
 		}
 		maxPersonen = leserSitze;
 	}
+
+	public Leseraum (String name, int nummer, int leserSitze) {
+		super(name, nummer);
+		if (leserSitze < 1) {
+			throw new IllegalArgumentException("Es muss mindestens eine Person in den Raum passen");
+		}
+		maxPersonen = leserSitze;
+	}
+
 
 	public Besucher[] betreten(Besucher... besucher) {
 		int i = 0;

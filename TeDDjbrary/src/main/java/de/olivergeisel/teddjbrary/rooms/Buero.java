@@ -14,16 +14,19 @@
  *    limitations under the License.
  */
 
-package de.olivergeisel.teddjbrary.auxillary;
+package de.olivergeisel.teddjbrary.rooms;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import de.olivergeisel.teddjbrary.user.staff.Verwaltung;
+import jakarta.persistence.Entity;
 
-@Controller
-public class BasicController {
+@Entity
+public class Buero extends Arbeitsraum<Verwaltung> {
+	public Buero (String name, int nummer, Arbeitsplatz... plaetze) {
+		super(name, nummer, plaetze);
+	}
 
-	@GetMapping("/geheim")
-	public String geheim() {
-		return "geheim";
+	@SuppressWarnings("unused")
+	protected Buero () {
+
 	}
 }

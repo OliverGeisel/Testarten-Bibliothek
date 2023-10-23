@@ -51,7 +51,7 @@ public class RaumController {
 
 	@GetMapping("/{id}")
 	String detail(@PathVariable UUID id, Model model) {
-		model.addAttribute("room", repo.findById(id).orElseThrow());
+		model.addAttribute("raum", repo.findById(id).orElseThrow());
 		return TEMPLATE_DIR + "room";
 	}
 

@@ -17,17 +17,27 @@
 package de.olivergeisel.teddjbrary.rooms;
 
 import de.olivergeisel.teddjbrary.core.Verschmutzbar;
-import de.olivergeisel.teddjbrary.user.Person;
+import de.olivergeisel.teddjbrary.user.Benutzer;
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 /**
  * Eine abstrakte Klasse, die eine Grundlage der verschiedenen Arbeitsplätze einer Bibliothek implementiert.
  *
  * @param <T> Art der Personen, die diesen Arbeitsplatz nutzen können.
  */
-public abstract class Arbeitsplatz<T extends Person> implements Verschmutzbar {
-
+@Entity
+public abstract class Arbeitsplatz<T extends Benutzer> implements Verschmutzbar {
+	@OneToOne(cascade = CascadeType.ALL, targetEntity = Benutzer.class)
 	protected T      nutzer;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "id", nullable = false)
+	private UUID id;
 	protected double verschmutzung;
+
+	public UUID getId () {return id;}
 
 	/**
 	 * Setzt eine Person an den Platz.
