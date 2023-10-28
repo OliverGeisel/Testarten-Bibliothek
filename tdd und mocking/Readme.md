@@ -179,7 +179,7 @@ Value-Objekte charakterisieren sich dadurch, dass sie nur Daten enthalten, keine
 durch die enthaltenen Daten geprüft werden und ihre Daten unveränderlich sind.
 Es gibt auch Definitionen, die Value-Objekte anders definieren. Diese werden aber hier nicht weiter betrachtet.
 
-Mockito empfilt auf ihrer [Webseite](https://site.mockito.org/) keine Typen zu mocken, die einem nicht gehören.
+Mockito empfiehlt auf ihrer [Webseite](https://site.mockito.org/) keine Typen zu mocken, die einem nicht gehören.
 Dazu gehören z.B. Typen aus dem JDK oder aus Bibliotheken.
 Es wird empfohlen, dass nur eigene Typen gemockt werden.
 Spring hat z.B. eigene Klassen, die Mocks für bestimmte Typen erstellen können.
@@ -201,7 +201,7 @@ sich mit den Aufgaben weiter unten beschäftigt, sich diese anzuschauen. Dennoch
 
 ##### Mocks erstellen
 
-Um Mocks zu Erstellen gibt es eine bestimmte Methode der Klasse `Mockito`. Diese heißt `mock()`.
+Um Mocks zu erstellen gibt es eine bestimmte Methode der Klasse `Mockito`. Diese heißt `mock()`.
 Diese Methode erwartet als Parameter den Typ (Das Class-Objekt) des Mocks. \
 Tipp: die Methode `mock()` sollte statisch importiert werden.
 
@@ -299,14 +299,73 @@ class ExampleVerify {
 ### Mocking mit Spring
 
 Spring bietet von Haus aus eigene Klassen, die Mocks für bestimmte Klassen erstellen können.
-Das sind z.B Mocks zum Testen von Controllern oder Repositories.
+Das sind z.B. Mocks zum Testen von Controllern oder Repositories.
+
+
+<hr>
 
 ## Test-Driven Development (TDD)
 
+Es gibt ein Problem mit Softwareentwicklern, besonders wenn sie jung sind. Sie wollen immer sofort loslegen und Code schreiben. Sie testen ihren Code nur wenig bis gar nicht. Erst wenn der Code fertig ist, wird er getestet. Dann wird die Software gestartet und geprüft, ob sie funktioniert. Oft funktioniert es nicht und der Entwickler startet den Debugger und versucht den Fehler zu finden. Nach einiger Zeit ist der Fehler auch gefunden und behoben. Dann wird die Software wieder gestartet und geprüft, ob sie funktioniert. Oft funktioniert es immer noch nicht. Dann wird wieder der Debugger gestartet und der nächste Fehler wird gesucht. Dieser Zyklus wiederholt sich so lange, bis die Software funktioniert. Dieses Vorgehen ist sehr ineffizient. Es wird viel Zeit damit verschwendet, Fehler zu suchen. Ein effizienterer Weg ist es, die Software zu testen, während sie entwickelt wird. Dieses Vorgehen wird Test-Driven Development (TDD) genannt.
+
 ### Was ist TDD?
+
+Test-Driven Development (TDD) ist eine Methode, bei der noch bevor der Code geschrieben wird, bereits Tests vorhanden sind, die den Code testen. Es wird also erst die Kontrolle geschieben, bevor der Produktivcode überhaupt exsistiert.
+Es müssen jedoch nicht alle Tests geschrieben werden, bevor der Code geschrieben wird. Es werden nur die Tests geschrieben, die die Funktionalität beschreiben, die als nächstes implementiert werden soll. Es wird also immer nur ein kleiner Teil der Software getestet. Dieser Teil wird dann implementiert. Danach wird der nächste Teil getestet und implementiert. Dieser Zyklus wird so lange wiederholt, bis die Software fertig ist.
+Dieser Zyklus ist auch in der folgenden Abbildung zu sehen. ![TDD-Zyklus](./images/tdd-cycle.png)
 
 ### TDD für Entwickler
 
+Für Softwarentwickler ist TDD eine sehr gute Methode, um Software zu entwickeln. Es gibt aber auch einige Probleme, die bei der Anwendung von TDD auftreten können. Diese Probleme werden im Folgenden beschrieben.
+
+#### TDD ist nicht einfach
+
 ### Die drei Schritte von TDD
 
+TDD kann in drei Schritte unterteilt werden. Erstellen des Tests, Implementieren des Codes und Refactoring. Robert C. Martin beschreibt diese Schritte in seinem Buch "Clean Craftmanship" wie folgt:
 
+1. Schreibe einen Test, der fehlschlägt.
+2. Schreibe den Code, der den Test erfolgreich macht.
+3.
+3. Refactore den Code, um ihn sauber zu machen.
+
+<hr>
+
+## Übung 1: TDD komplett übertrieben
+
+Die erste Übung soll TDD in einer sehr extremen Form zeigen. Es gibt eine Testklasse `TDD_01_Schritt_fuer_Schritt.java`.
+In dieser sind alle Tests bereits vorhanden aber auskommentiert. Die Aufgabe ist es, die Klasse `TDD_01_Schritt_fuer_Schritt.java` so zu implementieren, dass alle Tests erfolgreich sind. Dabei soll immer nur ein Test auskommentiert werden
+
+**Hinweis!
+** Wie in der Überschrift zu lesen ist, ist dieses Beispiel sehr übertrieben. Es soll nur zeigen, wie TDD funktioniert und dem Entwickler hilft bzw. in diesem Fall sogar eine Schritt-für-Schritt-Anleitung ist, wie eine Klasse implementiert werden kann.
+Einige, der vorhandenen Test, sind auch nicht sinnvoll und sollten in der Realität nicht unbedingt so genutzt werden.
+Sie sind entsprechend mit einer `@Tag(...)` Annotation markiert. Sie sind nur vorhanden, um die Klasse zu implementieren.
+
+### Szenario
+
+Es soll eine Entity
+*TelefonbuchEintrag* erstellt werden und in eine Spring Boot Anwendung integriert werden. Alle weiteren Dinge wie Controller, Service und Repository sind bereits vorhanden. Es soll nur die Entity implementiert werden.
+
+Die Entity soll folgende Attribute haben:
+*Nachname*, *Vorname*, *Telefonnummer* und *Adresse*.
+
+### Zusammenfassung
+
+In dieser Übung wurde TDD genutzt
+
+## Übung 2: TDD realistisch - TODO
+
+## Texte für später
+
+Es soll ein Service für das Verwalten von Benutzern in eine Spring Boot Anwendung integriert werden. Controller Entitäten und Repositories sind bereits vorhanden. Es soll nur der Service implementiert werden. Es sind nur Unittests vorhanden.
+<!-- Todo Integration Tests hinzufügen-->
+
+Der Service soll folgende Funktionalitäten bieten:
+
+- Erstellen eines neuen Benutzers
+- Löschen eines Benutzers
+- Ändern eines Benutzers
+- Suchen eines Benutzers anhand der ID
+- Suchen eines Benutzers anhand des Nachnamens
+- Alle Benutzer erhalten
+- Suchen aller Benutzer, die einen bestimmten Nachnamen haben
