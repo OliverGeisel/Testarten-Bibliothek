@@ -35,57 +35,61 @@ public class RaumController {
 
 	private static final String TEMPLATE_DIR = "rooms/";
 
-	private final RaumReposititory   repo;
+	private final LeseraumRepository          leseraeume;
+	private final RaumRepository<Arbeitsraum> arbeitsraeume;
 	private final BesucherRepository besucherRepo;
 
-	public RaumController(RaumReposititory repo, BesucherRepository besucherRepo) {
-		this.repo = repo;
+	public RaumController (LeseraumRepository leseraeume, RaumRepository<Arbeitsraum> arbeitsraeume,
+			BesucherRepository besucherRepo) {
+		this.leseraeume = leseraeume;
+		this.arbeitsraeume = arbeitsraeume;
 		this.besucherRepo = besucherRepo;
 	}
 
 	@GetMapping({"", "/"})
 	String overview(Model model) {
-		model.addAttribute("raeume", repo.findAll());
+		model.addAttribute("raeume", leseraeume.findAllSicher());
 		return TEMPLATE_DIR + "overview";
 	}
 
 	@GetMapping("/{id}")
 	String detail(@PathVariable UUID id, Model model) {
-		model.addAttribute("raum", repo.findById(id).orElseThrow());
+		model.addAttribute("raum", leseraeume.findById(id).orElseThrow());
 		return TEMPLATE_DIR + "room";
 	}
 
 	@PostMapping("{id}/edit")
 	@PreAuthorize(value = "hasRole('ADMIN')")
 	String edit(@PathVariable UUID id, RaumErstellungsForm form) {
-		var raum = repo.findById(id).orElseThrow();
+		var raum = leseraeume.findById(id).orElseThrow();
 		raum.setName(form.getName());
 		raum.setNummer(form.getNummer());
-		repo.save(raum);
+		leseraeume.save(raum);
 		return "redirect:/rooms";
 	}
 
 	@PostMapping("{id}/betreten")
 	String betreten(@PathVariable UUID id, @LoggedIn UserAccount user) {
-		var raum = (Leseraum) repo.findById(id).orElseThrow();
+		var raum = leseraeume.findById(id).orElseThrow();
 		var besucher = besucherRepo.findByUserAccount(user).orElseThrow();
 		raum.betreten(besucher);
-		repo.save(raum);
+		leseraeume.save(raum);
 		return "redirect:/rooms";
 	}
 
 	@PostMapping("/{id}/delete")
 	@PreAuthorize(value = "hasRole('ADMIN')")
 	String delete(@PathVariable UUID id) {
-		repo.deleteById(id);
+		leseraeume.deleteById(id);
 		return "redirect:/rooms";
 	}
 
 	@PostMapping("/new")
 	@PreAuthorize(value = "hasRole('ADMIN')")
 	String newLeseraum(RaumErstellungsForm form) {
-		var raum = new Raum(form.getName(), form.getNummer());
-		repo.save(raum);
+		var raum = new Leseraum(form.getNummer());
+		// todo correct
+		leseraeume.save(raum);
 		return "redirect:/rooms";
 	}
 

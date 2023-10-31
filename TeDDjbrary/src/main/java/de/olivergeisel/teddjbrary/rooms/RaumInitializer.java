@@ -24,9 +24,9 @@ import java.util.List;
 @Component
 public class RaumInitializer implements DataInitializer {
 
-	private final RaumReposititory repo;
+	private final RaumRepository<Raum> repo;
 
-	public RaumInitializer (RaumReposititory repo) {this.repo = repo;}
+	public RaumInitializer (RaumRepository<Raum> repo) {this.repo = repo;}
 
 	@Override
 	public void initialize () {
@@ -69,7 +69,7 @@ public class RaumInitializer implements DataInitializer {
 		raum9.setBeschreibung("Von Innen viel größer als von Außen.\n\n allons-y");
 
 		var werkstatt = new Werkstatt(null);
-		var restauration = new Restaurationsraum("", 1, werkstatt);
+		var restauration = new Restaurationsraum("Aetherium Schmiede", 1, werkstatt);
 
 		var alle = List.of(raum1, raum2, raum3, raum4, raum5, raum6, raum7, raum8, raum9, restauration);
 		repo.saveAll(alle);

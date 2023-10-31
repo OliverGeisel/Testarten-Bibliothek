@@ -104,5 +104,9 @@ public class Leseraum extends Raum implements Verschmutzbar {
 	public int getImRaum() {
 		return imRaum;
 	}
+
+	public int getMaxPersonen () {
+		return maxPersonen;
+	}
 //endregion
 }
