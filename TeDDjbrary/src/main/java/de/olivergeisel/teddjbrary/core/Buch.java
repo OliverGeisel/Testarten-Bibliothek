@@ -18,6 +18,7 @@ package de.olivergeisel.teddjbrary.core;
 
 import jakarta.persistence.*;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Random;
@@ -43,6 +44,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	private       String  autor;
 	private       boolean ausgeliehen;
 	private       double  beschaedigung;
+	private       URI     bild;
 
 	private LocalDate ausleihdatum;
 
@@ -53,14 +55,15 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	}
 
 	public Buch (String titel, ISBN isbn) {
-		this(titel, "", isbn);
+		this(titel, "", isbn, URI.create("http://localhost:8080/images/placeholder.png"));
 	}
 
-	public Buch (String titel, String autor, ISBN isbn) {
+	public Buch (String titel, String autor, ISBN isbn, URI bild) {
 		this.titel = titel;
 		code = new Random().nextInt();
 		this.autor = autor;
 		this.isbn = isbn;
+		this.bild = bild;
 	}
 
 	/**
@@ -249,4 +252,11 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	}
 
 
+	public URI getBild () {
+		return bild;
+	}
+
+	public void setBild (URI bild) {
+		this.bild = bild;
+	}
 }

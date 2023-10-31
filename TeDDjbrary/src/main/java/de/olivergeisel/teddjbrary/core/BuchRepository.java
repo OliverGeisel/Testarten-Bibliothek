@@ -16,7 +16,8 @@
 
 package de.olivergeisel.teddjbrary.core;
 
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
 import org.springframework.lang.Nullable;
@@ -24,18 +25,16 @@ import org.springframework.lang.Nullable;
 import java.util.UUID;
 
 public interface BuchRepository extends CrudRepository<Buch, UUID> {
+
 	@Override
 	Streamable<Buch> findAll();
 
-	boolean existsByIsbn(ISBN isbn);
+	Page<Buch> findAll (Pageable pageable);
 
 	long countDistinctByIsbnNot(@Nullable ISBN isbn);
 
 	default long countDistinctBooks() {
 		return countDistinctByIsbnNot(null);
 	}
-
-	@Query("SELECT COUNT(DISTINCT b.isbn) FROM Buch b")
-	long countDistinctIsbn();
 
 }
