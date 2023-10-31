@@ -33,28 +33,32 @@
     <link href="assets/fonts/simple-line-icons.min.css" rel="stylesheet">
     <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
     <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments::head}"></th:block>
 </head>
 
-<body style="background: linear-gradient(black, white 92%), #000000;">
+<body style="background: linear-gradient(blue, white 92%), #c0c0c0;">
 <div th:replace="~{fragments::nav}"></div>
 <main class="page landing-page">
     <section>
-        <div>
+        <div class="container-fluid">
             <div class="text-primary" data-reflow-show-button="true" data-reflow-type="product-search"
                  style="margin-top: 12px;margin-left: 3px;margin-bottom: 3px;">
-                <div class="reflow-product-search">
-                    <div class="ref-input-wrapper">
-                        <input class="ref-search" inputmode="search" placeholder="Search Products"
-                               type="text"/><span class="ref-cancel-search"
-                                                                    style="display: none;"></span>
+                <form action="/search" class="ref-input-wrapper">
+                    <div class="container-fluid">
+                        <div class="reflow-product-search row">
+                            <div class="ref-input-wrapper col col-12">
+                                <input class="form-control col-12" inputmode="search"
+                                       placeholder="Suche nach Büchern..."
+                                       type="search"/>
+                            </div>
+                        </div>
                     </div>
-                    <div class="ref-button" style="display: block;" type="submit">Search</div>
-                </div>
+                </form>
             </div>
         </div>
     </section>
     <section class="clean-block clean-hero"
-             style="background-image: url(&quot;assets/img/tech/image4.jpg&quot;);color: rgba(9, 162, 255, 0.85);">
+             style="background-image: url(&quot;/assets/img/tech/image4.jpg&quot;);color: rgba(9, 162, 255, 0.85);">
         <div class="text">
             <h2><span sec:authentication="name" sec:authorize="isAuthenticated" th:remove="tag"></span>
                 Willkommen in unserer Bibliothek</h2>
@@ -67,18 +71,17 @@
         <div class="container">
             <div class="block-heading">
                 <h2 class="text-info">Info</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                    mattis vitae leo.</p>
+                <p>Wir sind eine neue und moderne Bibliothek. Such doch in unserem Katalog oder geh in einen Raum
+                    mit Freunden zum Lernen.</p>
             </div>
             <div class="row align-items-center">
-                <div class="col-md-6"><img class="img-thumbnail" src="assets/img/scenery/image5.jpg"></div>
+                <div class="col-md-6"><img alt="Öffnungszeiten" class="img-thumbnail" src="/images/open.png"></div>
                 <div class="col-md-6">
-                    <h3>Lorem impsum dolor sit amet</h3>
+                    <h3>Öffnungszeiten</h3>
                     <div class="getting-started-info">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet,
-                            consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>Hier siehst Du unsere Öffnungszeiten! Wenn Du außerhalb dieser Zeiten in unsere
+                            Bibliothek möchtest, dann reserviere doch hier einen Slot.</p>
                     </div>
-                    <button class="btn btn-outline-primary btn-lg" type="button">Join Now</button>
                 </div>
             </div>
         </div>
@@ -86,12 +89,13 @@
     <section class="clean-block features">
         <div class="container">
             <div class="block-heading">
-                <h2 class="text-info">Features</h2>
+                <h2 class="text-info">Funktionen</h2>
                 <p>Unser Bibliothek hat tolle Angebote und Funktionen!&nbsp;</p>
             </div>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center block-content">
                 <div class="col-md-5 feature-box">
-                    <svg class="icon icon-tabler icon-tabler-shield-check icon" fill="none" height="1em" stroke="currentColor"
+                    <svg class="icon icon-tabler icon-tabler-shield-check icon" fill="none" height="1em"
+                         stroke="currentColor"
                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
                          width="1em" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 0h24v24H0z" fill="none" stroke="none"></path>
@@ -99,7 +103,7 @@
                         <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"></path>
                     </svg>
                     <h4>Sicherheit</h4>
-                    <p>Du denkst wir nehmen Sicherheit nicht ernst? Dann sieh doch&nbsp;<a href="#">hier</a>!</p>
+                    <p>Du denkst, wir nehmen Sicherheit nicht ernst? Dann sieh doch&nbsp;<a href="#">hier</a>!</p>
                 </div>
                 <div class="col-md-5 feature-box"><i class="icon-pencil icon"></i>
                     <h4>Customizable</h4>

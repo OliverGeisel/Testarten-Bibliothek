@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 @Component
 public class GaestebuchInitializer implements DataInitializer {
@@ -59,8 +60,9 @@ public class GaestebuchInitializer implements DataInitializer {
 			var zitate = reader.readAll().stream().filter(it -> it.length == 3)
 							   .collect(java.util.stream.Collectors.toList());
 			var head = zitate.remove(0);
-			for (int i = 0; i < 5; i++) {
-				var index = (int) (Math.random() * zitate.size());
+			var random = new Random();
+			for (int i = 0; i < 15; i++) {
+				var index = random.nextInt(zitate.size());
 				var zitat = zitate.remove(index);
 				list.add(new Post(zitat[0], zitat[1], zitat[2]));
 			}

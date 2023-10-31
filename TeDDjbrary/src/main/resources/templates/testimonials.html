@@ -37,11 +37,13 @@
 <main class="page testimonials">
     <section class="clean-block clean-testimonials dark">
         <div class="container">
-            <div class="block-heading">
-                <h2 class="text-info" th:text="#{testimonials}">Testimonials</h2>
-                <p>Hier haben sich unsere Gäste eingetragen. Auch Sie können sich eintragen</p>
-            </div>
-            <section>
+            <header>
+                <div class="block-heading">
+                    <h2 class="text-info" th:text="#{testimonials}">Testimonials</h2>
+                    <p>Hier haben sich unsere Gäste eingetragen. Auch Sie können sich eintragen</p>
+                </div>
+            </header>
+            <section class="p-1">
                 <form method="post" th:action="@{/testimonials}">
                     <textarea class="form-control" name="content" style="height: 90px;"></textarea>
                     <label
