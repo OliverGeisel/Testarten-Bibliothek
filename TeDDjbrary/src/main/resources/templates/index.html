@@ -33,7 +33,7 @@
     <link href="assets/fonts/simple-line-icons.min.css" rel="stylesheet">
     <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
     <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
-    <th:block th:replace="~{fragments::head}"></th:block>
+    <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
 
 <body style="background: linear-gradient(blue, white 92%), #c0c0c0;">
@@ -60,8 +60,8 @@
     <section class="clean-block clean-hero"
              style="background-image: url(&quot;/assets/img/tech/image4.jpg&quot;);color: rgba(9, 162, 255, 0.85);">
         <div class="text">
-            <h2><span sec:authentication="name" sec:authorize="isAuthenticated" th:remove="tag"></span>
-                Willkommen in unserer Bibliothek</h2>
+            <h2><span sec:authentication="name" sec:authorize="isAuthenticated" th:remove="tag"/>Willkommen in unserer
+                Bibliothek</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis
                 vitae leo.</p>
             <button class="btn btn-outline-light btn-lg" type="button">Learn More</button>
@@ -199,54 +199,8 @@
         </div>
     </section>
 </main>
-<footer class="page-footer dark">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <h5>Get started</h5>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="registration.html">Sign up</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>About us</h5>
-                <ul>
-                    <li><a href="#">Company Information</a></li>
-                    <li><a href="#">Contact us</a></li>
-                    <li><a href="#">Reviews</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>Support</h5>
-                <ul>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="#">Help desk</a></li>
-                    <li><a href="#">Forums</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>Legal</h5>
-                <ul>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        <p>© 2023 Copyright Oliver Geisel</p>
-    </div>
-</footer>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>
-<script src="assets/js/bs-init.js"></script>
-<script src="assets/js/baguetteBox.min.js"></script>
-<script src="assets/js/vanilla-zoom.js"></script>
-<script src="assets/js/theme.js"></script>
+<th:block th:replace="~{fragments::footer}"/>
+<th:block th:replace="~{fragments::bootstrap-footer-scripts}"/>
 </body>
 
 </html>

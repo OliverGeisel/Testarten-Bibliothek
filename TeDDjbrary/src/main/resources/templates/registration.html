@@ -22,14 +22,7 @@
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
     <title>Register - TeDDjbrary</title>
     <meta content="website" property="og:type">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
-          rel="stylesheet">
-    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
-    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
-    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments :: head-links}"/>
 </head>
 
 <body>
@@ -41,41 +34,64 @@
                 <h2 class="text-info">Registration</h2>
                 <p>Bitte fülle die Felder aus!</p>
             </div>
-            <form method="post">
+            <form method="post" th:object="${form}">
                 <div class="mb-3">
-                    <label class="form-label" for="name" th:text="#{register.name}">Name</label>
-                    <input class="form-control item" id="name" name="username" type="text">
+                    <label class="form-label" for="username" th:text="#{register.name}">Name</label>
+                    <input class="form-control item" required th:errorclass="border-danger" th:field="*{username}"
+                           type="text">
+                    <div class="text-primary" th:errors="*{username}"></div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="password" th:text="#{register.password}">Passwort</label>
-                    <input class="form-control item" id="password" name="passwort" type="password">
+                    <input class="form-control item" id="password" required th:errorclass="border-danger" th:field="*{passwort}"
+                           type="password">
+                    <div class="text-primary" th:errors="*{passwort}"></div>
+
                     <div class="mb-3">
                         <label class="form-label" for="password-1" th:text="#{register.passwordrepeat}">Wiederholung
                             Passwort</label>
-                        <input class="form-control item" id="password-1" name="passwortWiederholung" type="password">
+                        <input class="form-control item" id="password-1" required
+                               th:errorclass="border-danger" th:field="*{passwortWiederholung}" type="password">
+                        <div class="text-primary" th:errors="*{passwortWiederholung}"></div>
                     </div>
+
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="email" th:text="#{register.email}">Email</label>
-                    <input class="form-control item" id="email" name="email" type="email">
+                    <input class="form-control item" id="email" required th:errorclass="border-danger" th:field="*{email}"
+                           type="email">
+                    <div class="text-primary" th:errors="*{email}"></div>
+
                 </div>
                 <hr>
                 <div class="mb-3">
                     <label class="form-label" for="type" th:text="#{register.type}">Typ</label>
-                    <select class="form-control item" id="type" name="role">
+                    <select class="form-control item" id="type" required th:field="*{rolle}">
                         <option th:each=" type : ${types}" th:selected="${type == 'STUDIERENDER'}" th:text="${type}"
-                                th:value="${type}"></option>
+                                th:errorclass="border-danger" th:value="${type}"></option>
                     </select>
+                    <div class="text-primary" th:errors="*{rolle}"></div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="forname" th:text="#{register.forname}">Vorname</label>
-                    <input class="form-control item" id="forname" name="vorname">
+                    <input class="form-control item" id="forname" required th:errorclass="border-danger"
+                           th:field="*{vorname}">
+                    <div class="text-primary" th:errors="*{vorname}"></div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="surename" th:text="#{register.surename}">Nachname</label>
-                    <input class="form-control item" id="surename" name="nachname">
+                    <input class="form-control item" id="surename" required th:errorclass="border-danger"
+                           th:field="*{nachname}">
+                    <div class="text-primary" th:errors="*{nachname}"></div>
+
                 </div>
-                <button class="btn btn-primary" th:text="#{register.signin}" type="submit">Sign Up</button>
+                <div class="mb-3">
+                    <label class="form-label" for="age" th:text="#{register.alter}">Nachname</label>
+                    <input class="form-control item" id="age" min="0" required th:errorclass="border-danger" th:field="*{alter}"
+                           type="number">
+                    <div class="text-primary" th:errors="*{alter}"></div>
+                </div>
+                <button class="btn btn-primary" th:text="#{register.register}" type="submit">Sign Up</button>
                 <div>
                     <span th:text="#{register.reg1}">Du hast schon ein Konto? Dann melde dich</span> <a
                         href="login.html" th:href="@{/login}">hier </a>&nbsp;an.
@@ -125,12 +141,6 @@
         <p>© 2023 Copyright Oliver Geisel</p>
     </div>
 </footer>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/bs-init.js"></script>
-<script src="assets/js/baguetteBox.min.js"></script>
-<script src="assets/js/vanilla-zoom.js"></script>
-<script src="assets/js/theme.js"></script>
+<div th:replace="~{fragments :: bootstrap-footer-scripts}"></div>
 </body>
-
 </html>

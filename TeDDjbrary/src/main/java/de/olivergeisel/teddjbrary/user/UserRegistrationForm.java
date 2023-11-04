@@ -16,9 +16,8 @@
 
 package de.olivergeisel.teddjbrary.user;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 
 public class UserRegistrationForm {
 
@@ -27,17 +26,22 @@ public class UserRegistrationForm {
 	@NotBlank(message = "Vorname darf nicht leer sein")
 	private String vorname;
 	@NotBlank(message = "Rolle darf nicht leer sein")
-	private String role;
+	private String rolle;
+	@NotBlank(message = "Passwort darf nicht leer sein")
+	@Pattern(regexp = "^(?=.*[A-Z]).*$", message = "Passwort muss mindestens einen Großbuchstaben enthalten")
+	@Pattern(regexp = "^(?=.*[a-z]).*$", message = "Passwort muss mindestens einen Kleinbuchstaben enthalten")
+	@Pattern(regexp = "^(?=.*\\d).*$", message = "Passwort muss mindestens eine Zahl enthalten")
+	@Pattern(regexp = "^(?=.*[!@#$%^&*]).*$", message = "Passwort muss mindestens ein Sonderzeichen enthalten")
+	@Size(min = 5, message = "Passwort muss mindestens 5 Zeichen lang sein")
+	private String passwort;
 	@NotBlank(message = "Nachname darf nicht leer sein")
 	private String nachname;
-	@NotBlank(message = "Passwort darf nicht leer sein")
-	private String passwort;
 	@NotBlank(message = "Passwort wiederholen darf nicht leer sein")
 	private String passwortWiederholung;
 	@Email(message = "Email muss gültig sein")
 	private String email;
 	@Min(value = 13, message = "Du musst mindestens 13 Jahre alt sein")
-	private int    age;
+	private int    alter;
 
 	//region setter/getter
 	public String getVorname() {
@@ -48,12 +52,12 @@ public class UserRegistrationForm {
 		this.vorname = vorname;
 	}
 
-	public String getRole() {
-		return role;
+	public String getRolle () {
+		return rolle;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRolle (String rolle) {
+		this.rolle = rolle;
 	}
 
 	public String getNachname() {
@@ -96,12 +100,12 @@ public class UserRegistrationForm {
 		this.email = email;
 	}
 
-	public int getAge() {
-		return age;
+	public int getAlter () {
+		return alter;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setAlter (int alter) {
+		this.alter = alter;
 	}
 //endregion
 

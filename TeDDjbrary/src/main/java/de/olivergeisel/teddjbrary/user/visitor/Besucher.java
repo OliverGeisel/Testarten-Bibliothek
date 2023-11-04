@@ -19,9 +19,7 @@ package de.olivergeisel.teddjbrary.user.visitor;
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.structure.Terminal;
 import de.olivergeisel.teddjbrary.user.Benutzer;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import org.salespointframework.useraccount.UserAccount;
 
 @Entity
@@ -30,17 +28,15 @@ public abstract class Besucher extends Benutzer {
 	private String vorname;
 	private String nachname;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	private UserAccount userAccount;
 
 	protected Besucher() {
 
 	}
 
 	protected Besucher(String vorname, String nachname, UserAccount userAccount) {
+		super(userAccount);
 		this.nachname = nachname;
 		this.vorname = vorname;
-		this.userAccount = userAccount;
 	}
 
 	/**

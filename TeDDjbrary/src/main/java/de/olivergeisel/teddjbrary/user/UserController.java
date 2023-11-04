@@ -20,10 +20,13 @@ import jakarta.validation.Valid;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.NoSuchElementException;
@@ -34,32 +37,40 @@ public class UserController {
 
 	private final UserVerwaltung verwaltung;
 
-	public UserController(UserVerwaltung verwaltung) {this.verwaltung = verwaltung;}
+	public UserController (UserVerwaltung verwaltung) {this.verwaltung = verwaltung;}
 
 
 	@GetMapping("/login")
-	public String login() {
+	public String login () {
 		return "login";
 	}
 
 
 	@GetMapping("/register")
-	public String register(Model model) {
+	public String register (Model model, @ModelAttribute("form") UserRegistrationForm form) {
 		model.addAttribute("types", UserVerwaltung.ALLE_BESUCHER_ROLES.stream().map(Role::getName).toList());
 		return "registration";
 	}
 
 	@PostMapping("/register")
-	public String register(@Valid UserRegistrationForm form, Model model, Errors result) {
+	public String register (@Valid @ModelAttribute("form") UserRegistrationForm form, Errors result, Model model) {
 		if (result.hasErrors()) {
+			model.addAttribute("types", UserVerwaltung.ALLE_BESUCHER_ROLES.stream().map(Role::getName).toList());
 			return "registration";
 		}
-		var user = verwaltung.registerUser(form);
+		try {
+			verwaltung.registerUser(form);
+		} catch (IllegalArgumentException e) {
+			model.addAttribute("types", UserVerwaltung.ALLE_BESUCHER_ROLES.stream().map(Role::getName).toList());
+			model.addAttribute("error", e.getMessage());
+			return "registration";
+		}
 		return "redirect:/login";
 	}
 
 	@GetMapping("/profile")
-	public String profile(Model model, @LoggedIn Optional<UserAccount> userAccount) {
+	@PreAuthorize("isAuthenticated()")
+	public String profile (Model model, @LoggedIn Optional<UserAccount> userAccount) {
 		if (userAccount.isEmpty()) {
 			return "redirect:/login";
 		}
@@ -72,12 +83,21 @@ public class UserController {
 	}
 
 	@PostMapping("/profile/personalDataUpdate")
-	public String updatePersonalData(@Valid PersonalDataUpdateForm form, Errors result,
+	@PreAuthorize("isAuthenticated()")
+	public String updatePersonalData (@Valid PersonalDataUpdateForm form, Errors result,
 			@LoggedIn UserAccount userAccount) {
 		if (result.hasErrors()) {
 			return "profile";
 		}
 		verwaltung.updatePersonalData(form, userAccount);
 		return "redirect:/profile";
+	}
+
+	@DeleteMapping("/profile/delete")
+	@PreAuthorize("isAuthenticated()")
+	public String deleteAccount (@LoggedIn UserAccount userAccount) {
+		var nutzer = verwaltung.findByAccount(userAccount);
+		verwaltung.loeschen(nutzer);
+		return "redirect:/";
 	}
 }

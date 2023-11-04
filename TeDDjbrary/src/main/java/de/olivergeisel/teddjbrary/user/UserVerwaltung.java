@@ -61,16 +61,19 @@ public class UserVerwaltung {
 		this.angestellte = angestellte;
 	}
 
-	public Besucher registerUser(UserRegistrationForm form) {
+	public Besucher registerUser (UserRegistrationForm form) throws IllegalArgumentException {
+		if (userAccountManagement.findByUsername(form.getUsername()).isPresent()) {
+			throw new IllegalArgumentException("Username already taken");
+		}
 		var account = userAccountManagement.create(form.getUsername(),
 				Password.UnencryptedPassword.of(form.getPasswort()), ROLE_USER);
 		account.setFirstname(form.getVorname());
 		account.setLastname(form.getNachname());
-		account.add(Role.of(form.getRole().toUpperCase()));
-		var nutzer = switch (form.getRole()) {
+		account.add(Role.of(form.getRolle().toUpperCase()));
+		var nutzer = switch (form.getRolle()) {
 			case "DOZENT" -> new Dozent(account);
 			case "STUDIERENDER" -> new Studierender(account);
-			default -> throw new IllegalStateException("Unexpected value: " + form.getRole());
+			default -> throw new IllegalStateException("Unexpected value: " + form.getRolle());
 		};
 		userAccountManagement.save(account);
 		return besucherRepository.save(nutzer);
@@ -101,5 +104,17 @@ public class UserVerwaltung {
 		userAccount.setLastname(form.getNachname());
 		userAccount.setEmail(form.getEmail());
 		userAccountManagement.save(userAccount);
+	}
+
+	public void deleteAccount (UserAccount userAccount) {
+		userAccountManagement.delete(userAccount);
+	}
+
+	public void loeschen (Benutzer nutzer) {
+		if (nutzer instanceof Angestellter angestellter) {
+			angestellte.removeAngestellten(angestellter);
+		} else if (nutzer instanceof Besucher besucher) {
+			besucherRepository.delete(besucher);
+		}
 	}
 }
