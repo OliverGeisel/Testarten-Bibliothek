@@ -57,7 +57,7 @@ public class BestandsVerwaltung {
 	 * @throws NoSuchElementException wenn das Buch in keinem Regal ist.
 	 */
 	public RegalCode getRegalCode (Buch buch) throws NoSuchElementException {
-		return regale.findFirstByInhalt_Buecher(buch).orElseThrow().getCode();
+		return regale.findByBuchId(buch.getId()).getCode();
 	}
 
 	/**

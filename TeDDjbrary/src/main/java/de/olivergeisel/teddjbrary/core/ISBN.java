@@ -104,7 +104,7 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	 *
 	 * @return Die ISBN mit führenden Nullen und Trennstrichen.
 	 */
-	String mitTrennstrich () {
+	public String mitTrennstrich () {
 		return String.format("%d-%d-%05d-%03d-%d", praefix, gruppe, verlagnr, titelnr, pruefziffer);
 	}
 
@@ -113,7 +113,7 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	 *
 	 * @return Die ISBN mit führenden Nullen und Leerzeichen.
 	 */
-	String ohneTrennstrich () {
+	public String ohneTrennstrich () {
 		return String.format("%d %d %05d %03d %d", praefix, gruppe, verlagnr, titelnr, pruefziffer);
 	}
 

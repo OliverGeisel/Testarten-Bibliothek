@@ -26,6 +26,7 @@ import org.salespointframework.core.DataInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,7 @@ import java.net.URI;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
+@Order(1)
 public class BuchInitializer implements DataInitializer {
 
 	private final BuchRepository buchRepo;
@@ -88,8 +90,38 @@ public class BuchInitializer implements DataInitializer {
 		} catch (Exception e) {
 			logger.error("Unerwarteter Fehler beim Initialisieren der Bücher", e);
 		}
-		logger.info("""
-				Bücher initialisiert: %d wurden gefunden.
-				""".formatted(buchRepo.count()));
+		logger.info("Bücher initialisiert: %d wurden gefunden.".formatted(buchRepo.count()));
+	}
+}
+
+@Component
+@Order(2)
+class RegalInitializer implements DataInitializer {
+
+	private final RegalRepository regalRepo;
+	private final BuchRepository  buchRepo;
+	private final Logger          logger = LoggerFactory.getLogger(RegalInitializer.class);
+
+
+	public RegalInitializer (RegalRepository regalRepo, BuchRepository buchRepo) {
+		this.regalRepo = regalRepo;
+		this.buchRepo = buchRepo;
+	}
+
+	@Override
+	public void initialize () {
+
+		int regalCount = 1;
+		Regal regal = new Regal();
+		for (var buch : buchRepo.findAll()) {
+			if (regal.isVoll()) {
+				regalRepo.save(regal);
+				regal = new Regal();
+				regalCount++;
+			}
+			regal.hineinStellen(buch);
+		}
+		regalRepo.save(regal);
+		logger.info("Regale initialisiert: %d wurden erstellt.".formatted(regalCount));
 	}
 }

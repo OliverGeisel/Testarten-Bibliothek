@@ -16,10 +16,10 @@
 
 package de.olivergeisel.teddjbrary.inventory;
 
-import de.olivergeisel.teddjbrary.core.Buch;
+import de.olivergeisel.teddjbrary.core.ISBN;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
-import org.springframework.lang.NonNull;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,8 +28,14 @@ public interface RegalRepository extends CrudRepository<Regal, UUID> {
 	@Override
 	Streamable<Regal> findAll();
 
-	@NonNull
-	Optional<Regal> findFirstByInhalt_Buecher(Buch buch);
 
+	Optional<Regal> findByInhalt_Buecher_Isbn (ISBN isbn);
+
+	@Query("select r from Regal r where ( (SELECT SUM(size(b)) FROM RegalBrett rb JOIN rb.buecher b WHERE rb "
+		   + " = r.inhalt) != r.kapazitaet )")
+	Streamable<Regal> getNichtVolleRegale ();
+
+	@Query("select r from Regal r inner join r.inhalt.buecher buecher where buecher.id = ?1")
+	Regal findByBuchId (UUID id);
 
 }

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,7 +54,14 @@ public class BestandController {
 
 	@GetMapping("{id}")
 	public String detail (@PathVariable("id") UUID id, Model model) {
-		model.addAttribute("item", verwaltung.findById(id));
+		try {
+			var buch = verwaltung.findById(id).orElseThrow();
+			var regale = verwaltung.getRegalCode(buch);
+			model.addAttribute("buch", buch);
+			model.addAttribute("regale", regale);
+		} catch (NoSuchElementException e) {
+			return "redirect:/inventory";
+		}
 		return "inventory-detail";
 	}
 
