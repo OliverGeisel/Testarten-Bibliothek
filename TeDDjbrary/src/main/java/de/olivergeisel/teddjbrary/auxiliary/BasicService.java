@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.olivergeisel.teddjbrary.auxillary;
+package de.olivergeisel.teddjbrary.auxiliary;
 
 import jakarta.persistence.*;
 import org.springframework.data.repository.CrudRepository;

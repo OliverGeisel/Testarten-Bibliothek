@@ -1,3 +1,19 @@
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 
@@ -21,11 +37,13 @@
 <main class="page testimonials">
     <section class="clean-block clean-testimonials dark">
         <div class="container">
-            <div class="block-heading">
-                <h2 class="text-info" th:text="#{testimonials}">Testimonials</h2>
-                <p>Hier haben sich unsere Gäste eingetragen. Auch Sie können sich eintragen</p>
-            </div>
-            <section>
+            <header>
+                <div class="block-heading">
+                    <h2 class="text-info" th:text="#{testimonials}">Testimonials</h2>
+                    <p>Hier haben sich unsere Gäste eingetragen. Auch Sie können sich eintragen</p>
+                </div>
+            </header>
+            <section class="p-1">
                 <form method="post" th:action="@{/testimonials}">
                     <textarea class="form-control" name="content" style="height: 90px;"></textarea>
                     <label
@@ -37,7 +55,7 @@
                     <input class="btn btn-primary" type="submit">
                 </form>
             </section>
-            <div class="row">
+            <div class="row" th:remove="all-but-first">
                 <div class="col-lg-4" th:each="post: ${posts}">
                     <div class="card clean-testimonial-item border-0 rounded-0">
                         <div class="card-body">

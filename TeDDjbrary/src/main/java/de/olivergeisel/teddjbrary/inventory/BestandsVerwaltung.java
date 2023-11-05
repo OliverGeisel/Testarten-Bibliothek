@@ -24,6 +24,8 @@ import de.olivergeisel.teddjbrary.structure.NoMatchingBookException;
 import de.olivergeisel.teddjbrary.user.staff.VerwaltungsException;
 import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 import de.olivergeisel.teddjbrary.user.visitor.Kundenregister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,7 @@ public class BestandsVerwaltung {
 	private final Kundenregister  kundenregister;
 	private final Werkstatt       werkstatt;
 
-	public BestandsVerwaltung(Kundenregister kundenregister, RegalRepository regale, BuchRepository buchRepository) {
+	public BestandsVerwaltung (Kundenregister kundenregister, RegalRepository regale, BuchRepository buchRepository) {
 		this.kundenregister = kundenregister;
 		this.regale = regale;
 		this.buchRepository = buchRepository;
@@ -54,8 +56,8 @@ public class BestandsVerwaltung {
 	 * @return Regal in dem das Buch ist.
 	 * @throws NoSuchElementException wenn das Buch in keinem Regal ist.
 	 */
-	public RegalCode getRegalCode(Buch buch) throws NoSuchElementException {
-		return regale.findFirstByInhalt_Buecher(buch).orElseThrow().getCode();
+	public RegalCode getRegalCode (Buch buch) throws NoSuchElementException {
+		return regale.findByBuchId(buch.getId()).getCode();
 	}
 
 	/**
@@ -66,7 +68,7 @@ public class BestandsVerwaltung {
 	 * @return Regal in dem das Buch ist. Null wenn das Buch nicht gefunden wurde.
 	 * @throws NoSuchElementException wenn das Buch in keinem Regal ist.
 	 */
-	public Buch sucheNachISBN(ISBN isbn) throws NoMatchingBookException {
+	public Buch sucheNachISBN (ISBN isbn) throws NoMatchingBookException {
 		var alleBuecher = buchRepository.findAll().toList();
 		int index = Collections.binarySearch(alleBuecher, new Buch("Testbuch", isbn));
 		if (index < 0) {
@@ -75,7 +77,7 @@ public class BestandsVerwaltung {
 		return alleBuecher.get(index);
 	}
 
-	public Collection<Buch> sucheNachAuthor(String author) {
+	public Collection<Buch> sucheNachAuthor (String author) {
 		Set<Buch> back = new HashSet<>();
 		for (Buch buch : buchRepository.findAll()) {
 			if (author.equals(buch.getAutor())) {
@@ -85,15 +87,14 @@ public class BestandsVerwaltung {
 		return back;
 	}
 
-	public Buch sucheNachTitel(String titel) {
+	public Buch sucheNachTitel (String titel) {
 		for (Buch buch : buchRepository.findAll()) {
-			if (buch.getTitel().equals(titel))
-				return buch;
+			if (buch.getTitel().equals(titel)) return buch;
 		}
 		return null;
 	}
 
-	public Buch sucheNachTreffer(String text) {
+	public Buch sucheNachTreffer (String text) {
 		// todo implement freiwillig
 		return null;
 	}
@@ -108,7 +109,7 @@ public class BestandsVerwaltung {
 	 * @throws VerwaltungsException  wenn das Buch bereits in der Bibliothek ist.
 	 * @throws IllegalStateException wenn das Regal bereits voll ist.
 	 */
-	public void neuesBuchHinzufuegen(Buch buch, Regal regal) throws VerwaltungsException, IllegalStateException {
+	public void neuesBuchHinzufuegen (Buch buch, Regal regal) throws VerwaltungsException, IllegalStateException {
 		// TODO check wie handhaben
 		if (buchRepository.existsById(buch.getId())) {
 			throw new VerwaltungsException("Das Buch ist bereits in der Bibliothek");
@@ -118,7 +119,7 @@ public class BestandsVerwaltung {
 		regale.save(regal);
 	}
 
-	public void neuesBuchHinzufuegen(Buch buch) {
+	public void neuesBuchHinzufuegen (Buch buch) {
 		Regal regal = getNichtVollesRegal();
 		neuesBuchHinzufuegen(buch, regal);
 	}
@@ -131,11 +132,10 @@ public class BestandsVerwaltung {
 	 * @param buch Buch, das in ein Regal gestellt werden soll.
 	 * @return Regal, das noch Platz hat.
 	 */
-	public boolean zurueckgeben(Buch buch) {
+	public boolean zurueckgeben (Buch buch) {
 		boolean back = kundenregister.gibBuchZurueck(buch);
 		buch.verfuegbarMachen();
-		if (buch.getBeschaedigung() >= 0.8)
-			werkstatt.zurReparaturHinzufuegen(buch);
+		if (buch.getBeschaedigung() >= 0.8) werkstatt.zurReparaturHinzufuegen(buch);
 		inEinRegalStellen(buch);
 		return back;
 	}
@@ -150,7 +150,7 @@ public class BestandsVerwaltung {
 	 * @throws VerwaltungsException,  wenn kein Regal mehr Platz hat.
 	 * @throws IllegalStateException, wenn das Buch noch nicht registriert ist.
 	 */
-	public Regal inEinRegalStellen(Buch buch) throws VerwaltungsException, IllegalStateException {
+	public Regal inEinRegalStellen (Buch buch) throws VerwaltungsException, IllegalStateException {
 		Regal verweis = getNichtVollesRegal();
 		if (verweis == null) {
 			throw new VerwaltungsException("Wir haben leider keinen Platz mehr!");
@@ -167,7 +167,7 @@ public class BestandsVerwaltung {
 	 * @param besucher Benutzer, der das Buch ausleihen möchte.
 	 * @return true, wenn das Buch ausgeliehen wurde; sonst false.
 	 */
-	public boolean ausleihen(Buch buch, Besucher besucher) {
+	public boolean ausleihen (Buch buch, Besucher besucher) {
 		if (buch.isVerfuegbar()) {
 			buch.ausleihen();
 			kundenregister.leiheBuchAus(buch, besucher);
@@ -184,7 +184,7 @@ public class BestandsVerwaltung {
 	 * @return true, wenn das Buch herausgenommen wurde; sonst false.
 	 * @throws NoMatchingBookException, wenn das Buch nicht im Regal ist.
 	 */
-	boolean ausRegalNehmen(Buch buch, Regal regal) throws NoMatchingBookException {
+	boolean ausRegalNehmen (Buch buch, Regal regal) throws NoMatchingBookException {
 		regal.herausnehmen(buch);
 		regale.save(regal);
 		return true;
@@ -196,7 +196,7 @@ public class BestandsVerwaltung {
 	 * @param buch
 	 * @return Regal, das das Buch hatte.
 	 */
-	public Regal ausRegalNehmen(Buch buch) throws NoSuchElementException {
+	public Regal ausRegalNehmen (Buch buch) throws NoSuchElementException {
 		Regal back = null;
 		for (Regal regal : regale.findAll()) {
 			try {
@@ -212,37 +212,44 @@ public class BestandsVerwaltung {
 		return back;
 	}
 
-	public Streamable<Buch> findAll() {
+	public Streamable<Buch> findAll () {
 		return buchRepository.findAll();
 	}
 
-	public Optional<Buch> findById(UUID id) {
+	public Optional<Buch> findById (UUID id) {
 		return buchRepository.findById(id);
 	}
 
-	//region setter/getter
-	//
-	public long getAnzahlBuecher() {
+	public Page<Buch> findAll (PageRequest page) {
+		return buchRepository.findAll(page);
+	}
+
+	public long zaehlen () {
 		return buchRepository.count();
 	}
 
-	public long getAnzahlBuecherVerschieden() {
+	//region setter/getter
+	public long getAnzahlBuecher () {
+		return buchRepository.count();
+	}
+
+	public long getAnzahlBuecherVerschieden () {
 		return buchRepository.countDistinctBooks();
 	}
 
-	public int getAnzahlVerschiedenerBuecher() {
+	public int getAnzahlVerschiedenerBuecher () {
 		return buchRepository.findAll().stream().collect(Collectors.groupingBy(Buch::getIsbn)).size();
 	}
 
-	public Set<Regal> getRegale() {
+	public Set<Regal> getRegale () {
 		return regale.findAll().toSet();
 	}
 
-	public Werkstatt getWerkstatt() {
+	public Werkstatt getWerkstatt () {
 		return werkstatt;
 	}
 
-	private Regal getNichtVollesRegal() {
+	private Regal getNichtVollesRegal () {
 		for (Regal regal : regale.findAll()) {
 			if (!regal.isVoll()) {
 				return regal;
@@ -250,8 +257,8 @@ public class BestandsVerwaltung {
 		}
 		return null;
 	}
-//endregion
-//
+	//endregion
+
 
 }
 

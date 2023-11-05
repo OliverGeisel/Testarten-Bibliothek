@@ -36,21 +36,32 @@ public class Leseraum extends Raum implements Verschmutzbar {
 	private       double         verschmutzung;
 	private       int            imRaum;
 
-	public Leseraum() {
+	protected Leseraum () {
 	}
 
 	public Leseraum(int leserSitze) {
-		this();
 		if (leserSitze < 1) {
 			throw new IllegalArgumentException("Es muss mindestens eine Person in den Raum passen");
 		}
 		maxPersonen = leserSitze;
 	}
 
+	public Leseraum (String name, int nummer, int leserSitze) {
+		super(name, nummer);
+		if (leserSitze < 1) {
+			throw new IllegalArgumentException("Es muss mindestens eine Person in den Raum passen");
+		}
+		maxPersonen = leserSitze;
+	}
+
+
 	public Besucher[] betreten(Besucher... besucher) {
 		int i = 0;
 		List<Besucher> back = new LinkedList<>();
 		for (Besucher b : besucher) {
+			if (leser.contains(b)) {
+				continue;
+			}
 			leser.add(b);
 			back.add(b);
 			i++;
@@ -88,6 +99,10 @@ public class Leseraum extends Raum implements Verschmutzbar {
 		return besetzt;
 	}
 
+	public boolean isVoll () {
+		return leser.size() >= maxPersonen;
+	}
+
 	@Override
 	public boolean isDreckig() {
 		return verschmutzung >= 0.75;
@@ -95,6 +110,10 @@ public class Leseraum extends Raum implements Verschmutzbar {
 
 	public int getImRaum() {
 		return imRaum;
+	}
+
+	public int getMaxPersonen () {
+		return maxPersonen;
 	}
 //endregion
 }

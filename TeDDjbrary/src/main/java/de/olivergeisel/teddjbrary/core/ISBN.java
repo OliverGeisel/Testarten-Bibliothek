@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Oliver Geisel
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package de.olivergeisel.teddjbrary.core;
 
 
@@ -50,7 +66,7 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 		}
 	}
 
-	public ISBN() {
+	public ISBN () {
 		this(978, 0, 0, 0, 0);
 	}
 
@@ -61,7 +77,7 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	 * @return ISBN die zu dem angegeben String passt
 	 * @throws IllegalArgumentException, wenn der String keine gültige ISBN-13 ist.
 	 */
-	public static ISBN fromString(String isbn) throws IllegalArgumentException {
+	public static ISBN fromString (String isbn) throws IllegalArgumentException {
 		var numbers = isbn.split("-");
 		var intNumbers = Arrays.stream(numbers).mapToInt(Integer::parseInt).toArray();
 		if (intNumbers.length < 5) {
@@ -70,12 +86,25 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 		return new ISBN(intNumbers[0], intNumbers[1], intNumbers[2], intNumbers[3], intNumbers[4]);
 	}
 
+	public static ISBN fromStringOhneTrennung (String isbn) {
+		var pre = 978;
+		var grp = Integer.parseInt(isbn.substring(0, 1));
+		var verlag = Integer.parseInt(isbn.substring(1, 6));
+		var titel = Integer.parseInt(isbn.substring(6, 9));
+		int pruef = 0;
+		try {
+			pruef = Integer.parseInt(isbn.substring(9, 10));
+		} catch (Exception ignored) {
+		}
+		return new ISBN(pre, grp, verlag, titel, pruef);
+	}
+
 	/**
 	 * Gibt die ISBN mit Trennstrichen zurück.
 	 *
 	 * @return Die ISBN mit führenden Nullen und Trennstrichen.
 	 */
-	String mitTrennstrich() {
+	public String mitTrennstrich () {
 		return String.format("%d-%d-%05d-%03d-%d", praefix, gruppe, verlagnr, titelnr, pruefziffer);
 	}
 
@@ -84,12 +113,12 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	 *
 	 * @return Die ISBN mit führenden Nullen und Leerzeichen.
 	 */
-	String ohneTrennstrich() {
+	public String ohneTrennstrich () {
 		return String.format("%d %d %05d %03d %d", praefix, gruppe, verlagnr, titelnr, pruefziffer);
 	}
 
 	@Override
-	public int compareTo(ISBN isbn) {
+	public int compareTo (ISBN isbn) {
 		return mitTrennstrich().compareTo(isbn.mitTrennstrich());
 	}
 }

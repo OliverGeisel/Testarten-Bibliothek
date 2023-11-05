@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments::head-links}"></th:block>
+    <meta charset="UTF-8">
+    <title>403 - Unberechtigt</title>
+</head>
+<body style="display: flex; flex-direction: column;min-height: 100vh;">
+<div th:replace="~{fragments::nav}"></div>
+<main class="page flex-grow-1">
+    <div class="container p-2">
+        <header>
+            <h1>Unberechtigt</h1>
+        </header>
+        <section>
+            Du bist nicht berechtigt, diese Seite zu sehen.
+            Du solltest lieber schnell zurückgehen. Wir wissen wer du bist und wo du wohnst.
+            Deine Eltern wurden informiert.
+            <a href="/">Zurück zur Startseite</a>
+        </section>
+    </div>
+</main>
+<div th:replace="~{fragments::footer}"></div>
+</body>
+</html>

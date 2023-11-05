@@ -15,152 +15,80 @@
   -->
 
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
-    <title>Blog Post - TeDDjbrary</title>
+    <title>Raum: [[${raum.name}]]</title>
     <meta content="website" property="og:type">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
           rel="stylesheet">
-    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
-    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
-    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <link href="/assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="/assets/fonts/simple-line-icons.min.css" rel="stylesheet">
+    <link href="/assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="/assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
 
 <body>
-<nav class="navbar navbar-dark navbar-expand-lg fixed-top text-info bg-dark bg-gradient text-nowrap fs-1 text-bg-success visible clean-navbar">
-    <div class="container-fluid"><a class="navbar-brand logo" href="#">TeDDjbrary</a>
-        <button class="navbar-toggler" data-bs-target="#navcol-1" data-bs-toggle="collapse"><span
-                class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navcol-1">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="index.html">Start</a></li>
-                <li class="nav-item"><a class="nav-link" href="catalog-page.html">Katalog</a></li>
-                <li class="nav-item"><a class="nav-link" href="service-page.html">Räume</a></li>
-                <li class="nav-item"><a class="nav-link" href="features.html">Features</a></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                <li class="nav-item"><a class="nav-link" href="slider.html">Slider</a></li>
-                <li class="nav-item"><a class="nav-link" href="blog-post-list.html">Blog</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.html" style="margin-top: -7px;"><i
-                        class="icon ion-log-in" style="height: 39px;font-size: 22px;"></i></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:replace="~{fragments::nav}"></div>
 <main class="page blog-post">
     <section class="clean-block clean-post dark">
         <div class="container">
             <div class="block-content">
-                <div class="post-image" style="background-image: url(&quot;assets/img/scenery/image3.jpg&quot;);"></div>
+                <div class="post-image"
+                     style="background-image: url(&quot;assets/img/scenery/image3.jpg&quot;);"></div>
                 <div class="post-body">
-                    <h3>Lorem Ipsum dolor</h3>
-                    <div class="post-info"><span>By John Smith</span><span>Jan 27, 2018</span></div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                        mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna,
-                        dignissim nec auctor in, mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo. Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit.</p>
-                    <figure class="figure"><img alt="A generic square placeholder image with rounded corners in a figure." class="rounded img-fluid figure-img"
-                                                src="assets/img/scenery/image6.jpg">
-                        <figcaption class="figure-caption">Lorem ipsum dolor</figcaption>
-                    </figure>
-                    <h4>Lorem Ipsum</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                        mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna,
-                        dignissim nec auctor in, mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo. Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit.</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <figure class="figure"><img alt="A generic square placeholder image with rounded corners in a figure."
-                                                        class="rounded img-fluid figure-img"
-                                                        src="assets/img/scenery/image4.jpg">
-                                <figcaption class="figure-caption">Lorem Ipsum dolor</figcaption>
-                            </figure>
+                    <header>
+                        <h3 th:text="${raum.name}">Raum-A119</h3>
+                    </header>
+                    <section>
+                        <div class="post-info">
+                            <span th:remove="tag" th:text="#{capacity}">Anzahl</span>:<span
+                                th:text="${raum.maxPersonen}"></span>
                         </div>
-                        <div class="col">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec
-                                auctor in, mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Nunc quam urna, dignissim nec auctor in, mattis vitae leo. Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit.&nbsp;</p>
+                        <div>
+                            <p th:text="${raum.beschreibung}">Lorem ipsum dolor sit amet</p>
                         </div>
-                    </div>
-                    <h4>Lorem Ipsum dolor</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                        mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna,
-                        dignissim nec auctor in, mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit.</p>
-                    <div class="row">
-                        <div class="col">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec
-                                auctor in, mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Nunc quam urna, dignissim nec auctor in, mattis vitae leo. Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit.</p>
+                    </section>
+                    <section>
+                        <div class="post-body">
+                            <div>
+                                <h4 th:text="#{rooms.currently_in_room}">Aktuell im Raum</h4>
+                                <h4 th:text="${#lists.size(raum.personenImRaum)}">
+                            </div>
+                            <div class="btn-group">
+                                <form method="post" th:action="@{/rooms/__${raum.id}__/betreten}">
+                                    <button class="btn btn-success" th:disabled="${raum.voll} or ${imRaum}"
+                                            th:text="#{rooms.enter}"
+                                    > Betreten
+                                    </button>
+                                </form>
+                                <form th:action="@{/rooms/__${raum.id}__/verlassen}">
+                                    <button class="btn btn-danger" th:disabled="not ${imRaum}" th:text="#{rooms.leave}">
+                                        Verlassen
+                                    </button>
+                                </form>
+                            </div>
+
                         </div>
-                        <div class="col-md-6">
-                            <figure class="figure"><img alt="A generic square placeholder image with rounded corners in a figure."
-                                                        class="rounded img-fluid figure-img"
-                                                        src="assets/img/scenery/image5.jpg">
-                                <figcaption class="figure-caption">Lorem Ipsum dolor</figcaption>
-                            </figure>
-                        </div>
-                    </div>
+                    </section>
+
                 </div>
             </div>
         </div>
     </section>
 </main>
-<footer class="page-footer dark">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <h5>Get started</h5>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="registration.html">Sign up</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>About us</h5>
-                <ul>
-                    <li><a href="#">Company Information</a></li>
-                    <li><a href="#">Contact us</a></li>
-                    <li><a href="#">Reviews</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>Support</h5>
-                <ul>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="#">Help desk</a></li>
-                    <li><a href="#">Forums</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>Legal</h5>
-                <ul>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        <p>© 2023 Copyright Oliver Geisel</p>
-    </div>
-</footer>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/bs-init.js"></script>
-<script src="assets/js/baguetteBox.min.js"></script>
-<script src="assets/js/vanilla-zoom.js"></script>
-<script src="assets/js/theme.js"></script>
+<div th:replace="~{fragments::footer}"></div>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/bs-init.js"></script>
+<script src="/assets/js/baguetteBox.min.js"></script>
+<script src="/assets/js/vanilla-zoom.js"></script>
+<script src="/assets/js/theme.js"></script>
 </body>
 
 </html>

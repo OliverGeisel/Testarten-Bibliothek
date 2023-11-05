@@ -29,52 +29,67 @@ import org.salespointframework.useraccount.UserAccountManagement;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
-public class UserManager {
+public class UserVerwaltung {
 
 	private static final Role       ROLE_USER           = Role.of("USER");
 	private static final Role       ROLE_DOZENT         = Role.of("DOZENT");
 	private static final Role       ROLE_STUDIERENDER   = Role.of("STUDIERENDER");
 	static final         List<Role> ALLE_BESUCHER_ROLES = List.of(ROLE_DOZENT, ROLE_STUDIERENDER);
 
-	private static final Role       ROLE_ANGESTELLTER    = Role.of("ANGESTELLTER");
-	private static final Role       ROLE_BIBLIOTHEKAR    = Role.of("BIBLIOTHEKAR");
-	private static final Role       ROLE_RESTAURATOR     = Role.of("RESTAURATOR");
-	private static final Role       ROLE_REINIGUNGSKRAFT = Role.of("REINIGUNGSKRAFT");
-	static final         List<Role> ALLE_ROLES           = List.of(ROLE_USER, ROLE_DOZENT, ROLE_STUDIERENDER,
+	private static final Role       ROLE_ANGESTELLTER      = Role.of("ANGESTELLTER");
+	private static final Role       ROLE_BIBLIOTHEKAR      = Role.of("BIBLIOTHEKAR");
+	private static final Role       ROLE_RESTAURATOR       = Role.of("RESTAURATOR");
+	private static final Role       ROLE_REINIGUNGSKRAFT   = Role.of("REINIGUNGSKRAFT");
+	static final List<Role> ALLE_ROLES = List.of(ROLE_USER, ROLE_DOZENT, ROLE_STUDIERENDER,
 			ROLE_ANGESTELLTER, ROLE_BIBLIOTHEKAR, ROLE_RESTAURATOR, ROLE_REINIGUNGSKRAFT);
+	private static final Role       ROLE_ADMIN             = Role.of("ADMIN");
+	static final         List<Role> ALLE_ANGESTELLTE_ROLES =
+			List.of(ROLE_ANGESTELLTER, ROLE_BIBLIOTHEKAR, ROLE_RESTAURATOR, ROLE_REINIGUNGSKRAFT, ROLE_ADMIN);
 
 
 	private final UserAccountManagement  userAccountManagement;
 	private final BesucherRepository     besucherRepository;
 	private final AngestelltenVerwaltung angestellte;
 
-	public UserManager(UserAccountManagement userAccountManagement, BesucherRepository besucherRepository,
+	public UserVerwaltung(UserAccountManagement userAccountManagement, BesucherRepository besucherRepository,
 			AngestelltenVerwaltung angestellte) {
 		this.userAccountManagement = userAccountManagement;
 		this.besucherRepository = besucherRepository;
 		this.angestellte = angestellte;
 	}
 
-	public Besucher registerUser(UserRegistrationForm form) {
+	public Besucher registerUser (UserRegistrationForm form) throws IllegalArgumentException {
+		if (userAccountManagement.findByUsername(form.getUsername()).isPresent()) {
+			throw new IllegalArgumentException("Username already taken");
+		}
 		var account = userAccountManagement.create(form.getUsername(),
 				Password.UnencryptedPassword.of(form.getPasswort()), ROLE_USER);
 		account.setFirstname(form.getVorname());
 		account.setLastname(form.getNachname());
-		account.add(Role.of(form.getRole().toUpperCase()));
-		var nutzer = switch (form.getRole()) {
+		account.add(Role.of(form.getRolle().toUpperCase()));
+		var nutzer = switch (form.getRolle()) {
 			case "DOZENT" -> new Dozent(account);
 			case "STUDIERENDER" -> new Studierender(account);
-			default -> throw new IllegalStateException("Unexpected value: " + form.getRole());
+			default -> throw new IllegalStateException("Unexpected value: " + form.getRolle());
 		};
 		userAccountManagement.save(account);
 		return besucherRepository.save(nutzer);
 	}
 
-	public Besucher findByAccount(UserAccount userAccount) {
-		return besucherRepository.findByUserAccount(userAccount).orElseThrow();
+	public Benutzer findByAccount(UserAccount userAccount) throws NoSuchElementException {
+		if (userAccount.getRoles().stream().anyMatch(ALLE_BESUCHER_ROLES::contains)) {
+			return besucherRepository.findByUserAccount(userAccount).orElseThrow();
+		} else if (userAccount.getRoles().stream().anyMatch(ALLE_ANGESTELLTE_ROLES::contains)) {
+			return angestellte.findByUserAccount(userAccount).orElseThrow();
+		} else {
+			throw new NoSuchElementException("UserAccount not found");
+		}
 	}
+
+
 
 	public <T extends Angestellter> T saveAngestellten(T angestellter) {
 		return angestellte.save(angestellter);
@@ -89,5 +104,17 @@ public class UserManager {
 		userAccount.setLastname(form.getNachname());
 		userAccount.setEmail(form.getEmail());
 		userAccountManagement.save(userAccount);
+	}
+
+	public void deleteAccount (UserAccount userAccount) {
+		userAccountManagement.delete(userAccount);
+	}
+
+	public void loeschen (Benutzer nutzer) {
+		if (nutzer instanceof Angestellter angestellter) {
+			angestellte.removeAngestellten(angestellter);
+		} else if (nutzer instanceof Besucher besucher) {
+			besucherRepository.delete(besucher);
+		}
 	}
 }

@@ -16,9 +16,30 @@
 
 package de.olivergeisel.teddjbrary.rooms;
 
-import org.springframework.data.repository.CrudRepository;
+import de.olivergeisel.teddjbrary.user.Benutzer;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
-public interface RaumReposititory extends CrudRepository<Raum, UUID> {
+@Entity
+public abstract class Arbeitsraum<P extends Benutzer> extends Raum {
+
+	@OneToMany(targetEntity = Arbeitsplatz.class, cascade = CascadeType.ALL)
+	private Set<Arbeitsplatz<P>> plaetze;
+
+	@SafeVarargs
+	protected Arbeitsraum (String name, int nummer, final Arbeitsplatz<P>... plaetze) {
+		super(name, nummer);
+		this.plaetze = new HashSet<>();
+		for (var platz : plaetze) {
+			this.plaetze.add(platz);
+		}
+	}
+
+	protected Arbeitsraum () {
+
+	}
 }

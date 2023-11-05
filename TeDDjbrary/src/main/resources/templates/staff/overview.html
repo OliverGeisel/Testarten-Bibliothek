@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright 2023 Oliver Geisel
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Übersicht der Angestellten</title>
+    <th:block th:replace="~{fragments::head-links}"></th:block>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:replace="~{fragments::nav}"></div>
+<div class="container page flex-grow-1">
+    <h1 class="mt-5 mb-4">Übersicht der Angestellten</h1>
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Abteilung</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="angestellter : ${angestellte}">
+            <td th:text="${angestellter.id}">1</td>
+            <td th:text="${angestellter.vollerName}">John Doe</td>
+            <td th:text="${angestellter.bereich}">IT</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{fragments::footer}"></div>
+</body>
+</html>

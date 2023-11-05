@@ -15,19 +15,22 @@
   -->
 
 <!DOCTYPE html>
-<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<html lang="de" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org"
+>
 
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
-    <title>Blog - TeDDjbrary</title>
+    <title>Räume - TeDDjbrary</title>
     <meta content="website" property="og:type">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
           rel="stylesheet">
-    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
-    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
-    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <link href="/assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="/assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="/assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
 
 <body>
@@ -36,9 +39,8 @@
     <section class="clean-block clean-blog-list dark">
         <div class="container">
             <div class="block-heading">
-                <h2 class="text-info">Blog Post List</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                    mattis vitae leo.</p>
+                <h2 class="text-info">Unsere Leseräume</h2>
+                <p>Hier finden Sie eine Übersicht über unsere Leseräume. Kommen Sie! Treten Sie ein!</p>
             </div>
             <div class="block-content" th:remove="all-but-first">
                 <div class="clean-blog-post" th:each="raum:${raeume}">
@@ -48,8 +50,9 @@
                             <h3 th:text="${raum.name}">Raum X</h3>
                             <div class="info">
                                 <span class="text-muted">Kapazität:&nbsp;
-                                    <span th:text="${raum.class == T(de.olivergeisel.teddjbrary.rooms.Leseraum) ? raum.imRaum :''}">John
-                                        Smith</span>
+                                    <span th:remove="tag"
+                                          th:text="${raum.maxPersonen}"
+                                    >23</span>
                             </span>
                             </div>
                             <p th:text="${raum.beschreibung}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -59,12 +62,23 @@
                             <a th:href="@{'rooms/'+${raum.id}}">
                                 <button class="btn btn-outline-primary btn-sm" type="button">Read More</button>
                             </a>
+                            <div class="pt-2" sec:authorize="isAuthenticated() and hasRole('ADMIN')">
+                        <span>
+                        <a th:href="@{'rooms/'+${raum.id}+'/edit'}">
+                            <button class="btn btn-outline-primary btn-sm" type="button">Edit</button>
+                        </a>
+                        </span>
+                                <form method="post" th:action="@{'rooms/'+${raum.id}+'/delete'}">
+                                    <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="clean-blog-post">
                     <div class="row">
-                        <div class="col-lg-5"><img class="rounded img-fluid" src="assets/img/tech/image4.jpg"></div>
+                        <div class="col-lg-5"><img class="rounded img-fluid" src="/assets/img/tech/image4.jpg"></div>
                         <div class="col-lg-7">
                             <h3>Lorem Ipsum dolor sit amet</h3>
                             <div class="info"><span class="text-muted">Jan 16, 2018 by&nbsp;<a
@@ -78,7 +92,7 @@
                 </div>
                 <div class="clean-blog-post">
                     <div class="row">
-                        <div class="col-lg-5"><img class="rounded img-fluid" src="assets/img/tech/image4.jpg"></div>
+                        <div class="col-lg-5"><img class="rounded img-fluid" src="/assets/img/tech/image4.jpg"></div>
                         <div class="col-lg-7">
                             <h3>Lorem Ipsum dolor sit amet</h3>
                             <div class="info"><span class="text-muted">Jan 16, 2018 by&nbsp;<a
@@ -92,7 +106,7 @@
                 </div>
                 <div class="clean-blog-post">
                     <div class="row">
-                        <div class="col-lg-5"><img class="rounded img-fluid" src="assets/img/tech/image4.jpg"></div>
+                        <div class="col-lg-5"><img class="rounded img-fluid" src="/assets/img/tech/image4.jpg"></div>
                         <div class="col-lg-7">
                             <h3>Lorem Ipsum dolor sit amet</h3>
                             <div class="info"><span class="text-muted">Jan 16, 2018 by&nbsp;<a
@@ -109,12 +123,12 @@
     </section>
 </main>
 <div th:replace="~{fragments::footer}"></div>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/bs-init.js"></script>
-<script src="assets/js/baguetteBox.min.js"></script>
-<script src="assets/js/vanilla-zoom.js"></script>
-<script src="assets/js/theme.js"></script>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/js/bs-init.js"></script>
+<script src="/assets/js/baguetteBox.min.js"></script>
+<script src="/assets/js/vanilla-zoom.js"></script>
+<script src="/assets/js/theme.js"></script>
 </body>
 
 </html>

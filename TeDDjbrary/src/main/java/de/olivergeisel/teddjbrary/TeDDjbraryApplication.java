@@ -17,6 +17,7 @@
 package de.olivergeisel.teddjbrary;
 
 import org.salespointframework.EnableSalespoint;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,13 +37,18 @@ public class TeDDjbraryApplication {
 	@EnableWebSecurity
 	public static class WebSecurityConfig {
 
+		@Value("${server.ssl.enabled:false}")
+		private boolean sslEnabled;
+
 		@Bean
 		public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-			http.requiresChannel(request -> request.requestMatchers("/login").requiresSecure());
+			if (sslEnabled) {
+				http.requiresChannel(request -> request.requestMatchers("/login").requiresSecure());
+			}
 
 			http
 					.authorizeHttpRequests(requests -> requests
-							.requestMatchers("/**").permitAll()
+							.requestMatchers("/js/**", "/css/**", "/images/**", "/webjars/**", "/**").permitAll()
 							.anyRequest().authenticated()
 					)
 					.formLogin(form -> form
