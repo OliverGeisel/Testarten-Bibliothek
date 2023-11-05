@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -37,7 +38,7 @@ public class RaumController {
 
 	private final LeseraumRepository          leseraeume;
 	private final RaumRepository<Arbeitsraum> arbeitsraeume;
-	private final BesucherRepository besucherRepo;
+	private final BesucherRepository          besucherRepo;
 
 	public RaumController (LeseraumRepository leseraeume, RaumRepository<Arbeitsraum> arbeitsraeume,
 			BesucherRepository besucherRepo) {
@@ -47,20 +48,25 @@ public class RaumController {
 	}
 
 	@GetMapping({"", "/"})
-	String overview(Model model) {
+	String overview (Model model) {
 		model.addAttribute("raeume", leseraeume.findAllSicher());
 		return TEMPLATE_DIR + "overview";
 	}
 
 	@GetMapping("/{id}")
-	String detail(@PathVariable UUID id, Model model) {
-		model.addAttribute("raum", leseraeume.findById(id).orElseThrow());
+	String detail (@PathVariable UUID id, Model model, @LoggedIn Optional<UserAccount> user) {
+
+		var raum = leseraeume.findById(id).orElseThrow();
+		var imRaum = user.filter(account -> raum.getPersonenImRaum().stream()
+												.anyMatch(it -> it.getUserAccount().equals(account))).isPresent();
+		model.addAttribute("raum", raum);
+		model.addAttribute("imRaum", imRaum);
 		return TEMPLATE_DIR + "room";
 	}
 
 	@PostMapping("{id}/edit")
 	@PreAuthorize(value = "hasRole('ADMIN')")
-	String edit(@PathVariable UUID id, RaumErstellungsForm form) {
+	String edit (@PathVariable UUID id, RaumErstellungsForm form) {
 		var raum = leseraeume.findById(id).orElseThrow();
 		raum.setName(form.getName());
 		raum.setNummer(form.getNummer());
@@ -69,7 +75,8 @@ public class RaumController {
 	}
 
 	@PostMapping("{id}/betreten")
-	String betreten(@PathVariable UUID id, @LoggedIn UserAccount user) {
+	@PreAuthorize(value = "isAuthenticated()")
+	String betreten (@PathVariable UUID id, @LoggedIn UserAccount user) {
 		var raum = leseraeume.findById(id).orElseThrow();
 		var besucher = besucherRepo.findByUserAccount(user).orElseThrow();
 		raum.betreten(besucher);
@@ -79,14 +86,14 @@ public class RaumController {
 
 	@PostMapping("/{id}/delete")
 	@PreAuthorize(value = "hasRole('ADMIN')")
-	String delete(@PathVariable UUID id) {
+	String delete (@PathVariable UUID id) {
 		leseraeume.deleteById(id);
 		return "redirect:/rooms";
 	}
 
 	@PostMapping("/new")
 	@PreAuthorize(value = "hasRole('ADMIN')")
-	String newLeseraum(RaumErstellungsForm form) {
+	String newLeseraum (RaumErstellungsForm form) {
 		var raum = new Leseraum(form.getNummer());
 		// todo correct
 		leseraeume.save(raum);

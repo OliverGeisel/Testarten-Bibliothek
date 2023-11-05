@@ -59,6 +59,9 @@ public class Leseraum extends Raum implements Verschmutzbar {
 		int i = 0;
 		List<Besucher> back = new LinkedList<>();
 		for (Besucher b : besucher) {
+			if (leser.contains(b)) {
+				continue;
+			}
 			leser.add(b);
 			back.add(b);
 			i++;
@@ -94,6 +97,10 @@ public class Leseraum extends Raum implements Verschmutzbar {
 
 	public boolean isBesetzt() {
 		return besetzt;
+	}
+
+	public boolean isVoll () {
+		return leser.size() >= maxPersonen;
 	}
 
 	@Override

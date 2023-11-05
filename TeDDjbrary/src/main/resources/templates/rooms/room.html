@@ -30,6 +30,7 @@
     <link href="/assets/fonts/simple-line-icons.min.css" rel="stylesheet">
     <link href="/assets/css/baguetteBox.min.css" rel="stylesheet">
     <link href="/assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
 
 <body>
@@ -41,8 +42,40 @@
                 <div class="post-image"
                      style="background-image: url(&quot;assets/img/scenery/image3.jpg&quot;);"></div>
                 <div class="post-body">
-                    <h3>Lorem Ipsum dolor</h3>
-                    <div class="post-info"><span>By John Smith</span><span>Jan 27, 2018</span></div>
+                    <header>
+                        <h3 th:text="${raum.name}">Raum-A119</h3>
+                    </header>
+                    <section>
+                        <div class="post-info">
+                            <span th:remove="tag" th:text="#{capacity}">Anzahl</span>:<span
+                                th:text="${raum.maxPersonen}"></span>
+                        </div>
+                        <div>
+                            <p th:text="${raum.beschreibung}">Lorem ipsum dolor sit amet</p>
+                        </div>
+                    </section>
+                    <section>
+                        <div class="post-body">
+                            <div>
+                                <h4 th:text="#{rooms.currently_in_room}">Aktuell im Raum</h4>
+                                <h4 th:text="${#lists.size(raum.personenImRaum)}">
+                            </div>
+                            <div class="btn-group">
+                                <form method="post" th:action="@{/rooms/__${raum.id}__/betreten}">
+                                    <button class="btn btn-success" th:disabled="${raum.voll} or ${imRaum}"
+                                            th:text="#{rooms.enter}"
+                                    > Betreten
+                                    </button>
+                                </form>
+                                <form th:action="@{/rooms/__${raum.id}__/verlassen}">
+                                    <button class="btn btn-danger" th:disabled="not ${imRaum}" th:text="#{rooms.leave}">
+                                        Verlassen
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </section>
 
                 </div>
             </div>
