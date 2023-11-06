@@ -1,13 +1,27 @@
 # Unittests
 
-Dieses Projekt
+Dieses Projekt behandelt die Unittests.
+Es wird erklärt, was Unittests sind und wie sie geschrieben werden.
+Zusätzlich wird erklärt, wie Unittests mit Spring Boot geschrieben werden.
+Auch das Mocking wird behandelt.
 
 ## Was sind Unittests?
 
+Ein Unittest ist ein Test, der eine Komponente des Programms testet. Dabei wird die Komponente isoliert von anderen Komponenten getestet. Das bedeutet, dass die Komponente keine Abhängigkeiten zu anderen Komponenten hat. Sollte die Komponente Abhängigkeiten haben, dann werden diese gemockt. Das bedeutet, dass die Abhängigkeiten simuliert werden.
+> Für das Thema Mocking gibt es ein eigenes Projekt.
+> Siehe dazu [tdd und mocking](../../tdd und mocking/Readme.md). Es wird empfohlen den Theorieteil dieses Projektes vorher zu lesen. Es wird auch noch eine Stelle wo es ohne die Grundlagen nicht weiter gehen kann. Diese ist entsprechend markiert.
+
+Komponenten sind dabei verschiedene Dinge.
+Komponenten können von Funktionen/Methoden über Klassen, Paketen bis hin zu ganzen Teilsystemen sein.
+Es sollten auch alle Komponenten getestet werden.
+Nur weil alle Klassen eines Paketes einzeln getestet wurden, heißt das nicht, dass das Paket als Komponente getestet wurde.
+Wir werden uns hier auf die Klassen bzw. Methoden als Komponenten konzentrieren.
+
+<hr>
+
 ## Unittests mit JUnit
 
-Damit das automatisierte Ausführen von Tests nicht immer von 0 beginnt, gibt es ein Framework, welches das Erstellen
-von Tests vereinfacht. Dieses Framework heißt JUnit und ist in der Lage, die Tests automatisiert auszuführen und die Ergebnisse zu präsentieren.
+Damit das automatisierte Ausführen von Tests nicht immer von 0 beginnt, gibt es ein Framework, welches das Erstellen von Tests vereinfacht. Dieses Framework heißt JUnit und ist in der Lage, die Tests automatisiert auszuführen und die Ergebnisse zu präsentieren.
 
 Die offizielle [Website](https://junit.org) enthält die vollständige Dokumentation dieses Frameworks.
 Dennoch seinen hier die wichtigsten Punkte aufgeführt.
@@ -130,7 +144,7 @@ Jedoch ist diese Umsetzung etwas komplizierter als die Vorherige.
 
 Eine Übersicht über alle assert-Methoden kann bei [JUnit-Javadoc](https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/Assertions.html) nachgelesen werden.
 
-#### JUnit-Annotationen
+### JUnit-Annotationen
 
 In JUnit 5.X gibt es viele Annotationen, die das Testen erleichtern.
 Viele sind schon in JUnit 4 vorhanden, jedoch gibt es auch neue.
@@ -178,6 +192,7 @@ Wenn alle Tests des Projektes ausgeführt wurden, dann ist im Normalfall ein gro
 Oft interessiert einen aber nur die fehlgeschlagenen Tests. Dafür gibt es Filter.
 Diese blenden alle erfolgreichen Tests aus.
 
+<hr>
 
 ## Unittests mit Spring Boot
 
@@ -185,7 +200,8 @@ Unittests mit Spring Boot müssen etwas besonders behandelt werden.
 Viele Funktionalitäten von Spring Boot sind in Unittests nicht vorhanden.
 So sollte der Webserver nicht gestartet werden, da dieser nicht benötigt wird.
 Auch die Datenbank sollte nicht gestartet werden, da diese auch nicht benötigt wird. \
-Hier ist Mocking sehr wichtig. Es sollte alles gemockt werden, was nicht getestet werden soll. Für eine genaue Behandlung von Mocking siehe den `tdd und mocking` Teil dieses Projektes.
+Hier ist Mocking sehr wichtig. Es sollte alles gemockt werden, was nicht getestet werden soll. Für eine genaue Behandlung von Mocking siehe den `tdd und mocking` Teil dieses Projektes. \
+> Hinweis! <span style="color: #ff4040;">Ab hier ist Mocking unbedingt notwendig! Bitte das erwähnte Projekt lesen!</span>
 
 ### Repository-Tests
 
@@ -203,18 +219,53 @@ Nicht nur die mit Methodennamen, sondern auch die mit Query-Annotationen.
 
 #### Annotationen für Repository-Tests
 
-Damit die Repositories getestet werden können, müssen sie als Testklassen gekennzeichnet werden. Damit kann Spring die Methoden implementieren und die Repositories können getestet werden. Die Annotation dafür ist `@DataJpaTest`.
-Zusätzlich wird noch '@AutoConfigureTestDatabase' benötigt.
+Damit die Repositories getestet werden können, müssen sie als Testklassen gekennzeichnet werden.
+Damit kann Spring die Methoden implementieren und die Repositories können getestet werden.
+Die Annotation dafür ist `@DataJpaTest`.
+Zusätzlich wird noch `@AutoConfigureTestDatabase` benötigt.
+> Hinweis! \
+> Wenn Spring Security genutzt wird, dann muss ein UserDetailsService vorhanden sein. Wir können das hier "umgehen" indem wir `@AutoConfigureMockMvc` nutzen. Das ist aber nur eine Notlösung.
+
+#### Beispiele für Repository-Tests
+
+In der TeDDjbrary gibt es das `Buch`- und `RegalRepository`.
+Dazu gibt es die Testklassen `BuchRepositoryTest` und `RegalRepositoryTest` im `core` bzw. `inventory`-Package.
+Es gibt komplexe Methoden in den Repositories.
+Diese sollen verdeutlichen, dass bereits eine Logik in den Repositories vorhanden ist.
+Diese Logik muss getestet werden. Deshalb gibt es die Tests. \
+Die Tests sind sehr einfach gehalten.
+Es wird ein Repository-Objekt erstellt und mit der Annotation `@Autowired` wird das Repository-Objekt injiziert. Dann wird die Methode aufgerufen und das Ergebnis überprüft. \
+
+#### Aufgabe zum Üben
+
+TODO: Aufgabe zu Repository-Tests ergänzen
 
 ### Entity-Tests
 
-Die Entitäten sind die einfachsten Tests. Sie sind reine Java-Klassen und haben keine Abhängigkeiten von Spring. Sie können also direkt getestet werden. Es sollten nur Mocks von Klassen geben, die selbst Entity-Klassen sind. Value-Objekte werden nicht gemockt.
+Die Entitäten haben die einfachsten Unittests.
+Sie sind reine Java-Klassen und haben keine Abhängigkeiten von Spring.
+Sie können also direkt getestet werden.
+Es sollten nur Mocks von Klassen geben, die selbst Entity-Klassen sind.
+Value-Objekte werden nicht gemockt.
 
-Einige Dinge können jedoch nicht getestet werden. Sollte es z.B. so sein, dass die Attribute der Entity mit Validation-constraints versehen sind, dann kann das nicht getestet werden. Das liegt daran, dass die Validation-constraints erst zur Laufzeit überprüft werden. Deshalb sind das eher Integrationstests.
+Einige Dinge können in Unittest nicht getestet werden. Sollte es z.B. so sein, dass die Attribute der Entity mit Validation-constraints versehen sind, dann kann das nicht getestet werden. Das liegt daran, dass die Validation-constraints erst zur Laufzeit überprüft werden. Deshalb sind das eher (Komponenten-)Integrationstests.
+
+#### Besonderheiten bei Entity-Tests
+
+#### Beispiele für Entity-Tests
+
+#### Aufgabe zum Üben
+
+TODO: Aufgabe zu Entity-Tests ergänzen
 
 ### Service-Tests
 
-Nun sind wir in der Logik-Ebene. Hier werden die Daten verarbeitet. Hier gibt es die meisten Abhängigkeiten.
+Nun sind wir in der Logik-Ebene. In dieser werden die Daten verarbeitet.
+Hier gibt es die meisten Abhängigkeiten.
+Im Allgemeinen werden die Komponenten, die die Logik maßgeblich verwalten und an die nächste Ebene weiter geben,
+*Service* genannt.
+Beim Sping-Framework sind das Klassen mit der `@Service` Annotation.
+Ein Service sollte nur einen großen Aufgabenbereich haben.
 In einem Service sollten folgende Abhängigkeiten vorhanden sein:
 
 * Repositories
@@ -229,7 +280,35 @@ In einem Service sollten keine Controller oder andere Web-Komponenten vorhanden 
 Durch diese Abhängigkeiten ist es nicht möglich, den Service direkt zu testen. Es müssen also Mocks erstellt werden. Es sollten (fast) alle Abhängigkeiten gemockt werden. \
 Das Schema ist dabei immer das gleiche. Es wird ein Mock-Objekt erstellt und in den Service injiziert. Dann wird die Methode aufgerufen und das Ergebnis überprüft. Dabei werden die Mock-Objekte genutzt, um die Ergebnisse zu prüfen.
 
+#### Annotationen für Service-Tests
+
+#### Beispiele für Service-Tests
+
+#### Aufgabe zum Üben
+
+TODO: Aufgabe zu Service-Tests ergänzen
+
+
 ### Controller-Tests
+
+Die letzte Ebene sind die Controller [^1].
+Diese sind für die Kommunikation mit dem Client zuständig. Sie nehmen die Eingaben des Clients entgegen und geben die Ergebnisse an jenen zurück.
+
+[^1]: Je nach Modell gibt noch eine Ebene. In einer Spring Boot-Anwendung ist es aber im Normalfall die letzte auf seitens des Servers.
+Auf der Seite des Clients gibt es noch die UI-Ebene. Diese wird hier nicht behandelt.
+
+#### Besonderes zu Controller-Tests
+
+Der Controller ist die Schnittstelle zum Client. Schnittstellen werden aber eher als Integrationstests getestet.
+Deshalb ist das Testen der Controller bei Unittest schnell erledigt. Bei den Integrationstests wird es aber interessant. Siehe dazu das Projekt [integrations-tests](../integrations-tests/Readme.md).
+
+#### Beispiele für Controller-Tests
+
+Das Beispiel für Controller-Unittests sind die Tests zum `BestandsController` der TeDDjbrary.
+
+#### Aufgabe zum Üben
+
+TODO: Aufgabe zu Controller-Tests ergänzen
 
 ## Texte für später
 
