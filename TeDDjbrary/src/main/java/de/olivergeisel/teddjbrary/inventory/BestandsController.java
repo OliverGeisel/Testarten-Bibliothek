@@ -31,12 +31,12 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("inventory")
-public class BestandController {
+public class BestandsController {
 	private final BestandsVerwaltung verwaltung;
 	private final BesucherRepository besucherRepository;
 
 
-	public BestandController (BestandsVerwaltung verwaltung, BesucherRepository besucherRepository) {
+	public BestandsController (BestandsVerwaltung verwaltung, BesucherRepository besucherRepository) {
 		this.verwaltung = verwaltung;
 		this.besucherRepository = besucherRepository;
 	}

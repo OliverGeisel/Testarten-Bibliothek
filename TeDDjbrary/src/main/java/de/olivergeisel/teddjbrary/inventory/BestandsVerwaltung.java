@@ -234,7 +234,7 @@ public class BestandsVerwaltung {
 	}
 
 	public long getAnzahlBuecherVerschieden () {
-		return buchRepository.countDistinctBooks();
+		return buchRepository.countDistinctBucherByIsbn();
 	}
 
 	public int getAnzahlVerschiedenerBuecher () {
@@ -260,5 +260,8 @@ public class BestandsVerwaltung {
 	//endregion
 
 
+	public Streamable<Regal> getNichtVolleRegale () {
+		return regale.getNichtVolleRegale();
+	}
 }
 
