@@ -58,7 +58,7 @@
                         <div class="post-body">
                             <div>
                                 <h4 th:text="#{rooms.currently_in_room}">Aktuell im Raum</h4>
-                                <h4 th:text="${#lists.size(raum.personenImRaum)}">
+                                <h4 id="im-raum-anzahl" th:text="${#lists.size(raum.personenImRaum)}"/>
                             </div>
                             <div class="btn-group">
                                 <form method="post" th:action="@{/rooms/__${raum.id}__/betreten}">
