@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.olivergeisel.teddjbrary.auxillary;
+package de.olivergeisel.teddjbrary.auxiliary;
 
 
 import com.codeborne.selenide.Configuration;
@@ -50,13 +50,11 @@ class RestTemplateConfig {
 @EnableScheduling
 public class PageRequest {
 
-	private final RestTemplate restTemplate;
-	Logger logger = LoggerFactory.getLogger(PageRequest.class);
+	private Logger logger = LoggerFactory.getLogger(PageRequest.class);
 	private HttpHeaders headers;
 	private Cookie      cookie;
 
-	public PageRequest(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public PageRequest() {
 		this.headers = new HttpHeaders();
 		headers.set("Content-Type", "application/x-www-form-urlencoded");
 	}
@@ -66,14 +64,14 @@ public class PageRequest {
 		if (!AppConfig.getInstance().getGeheimerUser()) {
 			return;
 		}
-		String loginUrl = "http://localhost/login";
+		final String loginUrl = "http://localhost/login";
 		// Anmeldung durchführen
 		WebDriver driver;
 		Configuration.headless = true; // Hintergrundmodus aktivieren
 		Configuration.browser = "chrome"; // Verwenden Sie den Chrome-Browser
 		if (this.cookie == null) {
-			String password = "Wasserfallschutzsystemüberwachungsbeamter";
-			String username = "geheim";
+			final String password = "Wasserfallschutzsystemüberwachungsbeamter";
+			final String username = "geheim";
 			Selenide.open(loginUrl);
 			$("#username").setValue(username);
 			$("#password").setValue(password);
@@ -90,7 +88,7 @@ public class PageRequest {
 			}
 		}
 		// Seite aufrufen
-		String pageUrl = "http://localhost/testimonials";
+		final String pageUrl = "http://localhost/testimonials";
 		Selenide.open(pageUrl);
 		logger.info("Seite aufgerufen");
 	}

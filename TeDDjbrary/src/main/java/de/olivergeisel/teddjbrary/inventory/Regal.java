@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Oliver Geisel
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package de.olivergeisel.teddjbrary.inventory;
 
 
@@ -17,7 +33,7 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 	public static final int              REGALBRETTER_DEFAULT     = 5;
 	public static final int              BUECHER_JE_BRETT_DEFAULT = 20;
 	public final        int              kapazitaet;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private final       List<RegalBrett> inhalt;
 	@Embedded
 	private final       RegalCode        code;
@@ -27,7 +43,7 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 	private             UUID             id;
 	private             double           verschmutzung;
 
-	protected Regal() {
+	protected Regal () {
 		Random newCode = new Random();
 		StringBuilder sb = new StringBuilder();
 
@@ -43,7 +59,7 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 		kapazitaet = REGALBRETTER_DEFAULT * BUECHER_JE_BRETT_DEFAULT;
 	}
 
-	public Regal(int regalBretter, int buecherJeBrett, RegalCode code) {
+	public Regal (int regalBretter, int buecherJeBrett, RegalCode code) {
 		this.code = code;
 		this.inhalt = new ArrayList<>(REGALBRETTER_DEFAULT);
 		for (int i = 0; i < REGALBRETTER_DEFAULT; ++i) {
@@ -52,11 +68,11 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 		kapazitaet = regalBretter * buecherJeBrett;
 	}
 
-	public long anzahlBuecherImRegal() {
+	public long anzahlBuecherImRegal () {
 		return inhalt.stream().mapToLong(it -> it.getBuecher().stream().filter(Objects::nonNull).count()).sum();
 	}
 
-	public List<Buch> alleBuecher() {
+	public List<Buch> alleBuecher () {
 		List<Buch> back = new LinkedList<>();
 		for (RegalBrett regal : inhalt) {
 			back.addAll(regal.getBuecher().stream().filter(Objects::nonNull).toList());
@@ -64,17 +80,17 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 		return back;
 	}
 
-	public Buch hineinStellen(Buch buch) throws IllegalStateException {
+	public Buch hineinStellen (Buch buch) throws IllegalStateException {
 		if (isVoll()) {
 			throw new IllegalStateException("Volle Regale können nicht befüllt werden");
 		}
 		RegalSchleife:
 		for (RegalBrett brett : inhalt) {
 			ReihenSchleife:
-			for (Buch b : brett) {
-				if (b == null) {
-					b = buch;
-					break;
+			for (int i = 0; i < brett.size(); ++i) {
+				if (brett.get(i) == null) {
+					brett.hineinStellen(buch);
+					break RegalSchleife;
 				}
 			}
 		}
@@ -83,16 +99,15 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 		return buch;
 	}
 
-	public boolean enthaelt(Buch buch) {
+	public boolean enthaelt (Buch buch) {
 		return alleBuecher().contains(buch);
 	}
 
-	public Buch herausnehmen(Buch buch) throws NoMatchingBookException {
+	public Buch herausnehmen (Buch buch) throws NoMatchingBookException {
 		if (!enthaelt(buch)) {
 			throw new NoMatchingBookException();
 		}
-		for (int reihe = 0; reihe < inhalt.size(); reihe++) {
-			RegalBrett momentaneReihe = inhalt.get(reihe);
+		for (RegalBrett momentaneReihe : inhalt) {
 			for (int buchIndex = 0; buchIndex < momentaneReihe.size(); buchIndex++) {
 				Buch momentanesBuch = momentaneReihe.get(buchIndex);
 				if (buch.equals(momentanesBuch)) {
@@ -104,7 +119,7 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 		return buch;
 	}
 
-	public List<Buch> leeren() {
+	public List<Buch> leeren () {
 		List<Buch> back = alleBuecher();
 		for (RegalBrett brett : inhalt) {
 			brett.leeren();
@@ -113,39 +128,38 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 	}
 
 	@Override
-	public void saeubern() {
+	public void saeubern () {
 		verschmutzung = 0.0;
 	}
 
 	@Override
-	public void verschmutzen() {
+	public void verschmutzen () {
 		verschmutzung += 0.03;
 	}
 
 	@Override
-	public Iterator<Buch> iterator() {
+	public Iterator<Buch> iterator () {
 		return alleBuecher().iterator();
 	}
 
 	//region setter/getter
-	//
-//
-	public RegalCode getCode() {
+
+	public RegalCode getCode () {
 		return code;
 	}
 
-	public UUID getId() {
+	public UUID getId () {
 		return id;
 	}
 
 	@Override
-	public boolean isDreckig() {
+	public boolean isDreckig () {
 		return verschmutzung > 0.5;
 	}
 
-	public boolean isVoll() {
+	public boolean isVoll () {
 		for (RegalBrett brett : inhalt) {
-			if (brett.size() < BUECHER_JE_BRETT_DEFAULT) {
+			if (!brett.isVoll()) {
 				return false;
 			}
 		}
@@ -154,7 +168,7 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 //endregion
 
 	@Override
-	public String toString() {
+	public String toString () {
 		return "Das ist Regal: " + code;
 	}
 
@@ -162,22 +176,86 @@ public class Regal implements Verschmutzbar, Iterable<Buch> {
 
 @Entity
 class RegalBrett implements Iterable<Buch> {
+	private final int        kapazitaet;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false)
-	private UUID       id;
+	private       UUID       id;
 	@OneToMany
-	private List<Buch> buecher;
+	private       List<Buch> buecher;
 
-	public void leeren() {
+	public RegalBrett () {
+		this(Regal.BUECHER_JE_BRETT_DEFAULT);
+	}
+
+	public RegalBrett (int buecher) {
+		this.buecher = new ArrayList<>(buecher);
+		for (int i = 0; i < buecher; ++i) {
+			this.buecher.add(null);
+		}
+		kapazitaet = buecher;
+	}
+
+	public void leeren () {
 		buecher.clear();
+	}
+
+	/**
+	 * Stellt ein Buch an die nächste freie Stelle in das Regalbrett. Wenn das Regalbrett voll ist, wird eine
+	 * {@link IllegalStateException} geworfen.
+	 *
+	 * @param buch Buch, das in das Regalbrett gestellt werden soll.
+	 * @throws IllegalStateException wenn das Regalbrett voll ist.
+	 */
+	public void hineinStellen (Buch buch) throws IllegalStateException {
+		if (isVoll()) {
+			throw new IllegalStateException("Volle Regalbretter können nicht befüllt werden");
+		}
+		for (int i = 0; i < buecher.size(); ++i) {
+			if (buecher.get(i) == null) {
+				buecher.set(i, buch);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Stellt ein Buch an die angegebene Stelle in das Regalbrett. Wenn das Regalbrett voll ist oder an der gewählten
+	 * Stelle bereits ein Buch ist, wird eine {@link IllegalStateException} geworfen.
+	 *
+	 * @param buch      Buch, das in das Regalbrett gestellt werden soll.
+	 * @param buchIndex Index, an dem das Buch in das Regalbrett gestellt werden soll.
+	 * @throws IllegalStateException wenn das Regalbrett voll ist oder an der gewählten Stelle bereits ein Buch ist.
+	 */
+	public void hineinStellen (Buch buch, int buchIndex) throws IllegalStateException {
+		if (isVoll()) {
+			throw new IllegalStateException("Volle Regalbretter können nicht befüllt werden");
+		}
+		if (buecher.get(buchIndex) != null) {
+			throw new IllegalStateException("BuchIndex ist bereits belegt");
+		}
+		buecher.set(buchIndex, buch);
+	}
+
+
+	public Buch herausnehmen (int buchIndex) throws IllegalStateException {
+		Buch back = buecher.get(buchIndex);
+		if (back == null) {
+			throw new IllegalStateException("BuchIndex ist nicht belegt");
+		}
+		buecher.set(buchIndex, null);
+		return back;
+	}
+
+	public boolean isVoll () {
+		return buecher.stream().noneMatch(Objects::isNull);
 	}
 
 	/**
 	 * @return
 	 */
 	@Override
-	public Iterator<Buch> iterator() {
+	public Iterator<Buch> iterator () {
 		return buecher.iterator();
 	}
 
@@ -185,7 +263,7 @@ class RegalBrett implements Iterable<Buch> {
 	 * @param action The action to be performed for each element
 	 */
 	@Override
-	public void forEach(Consumer<? super Buch> action) {
+	public void forEach (Consumer<? super Buch> action) {
 		buecher.forEach(action);
 	}
 
@@ -193,32 +271,31 @@ class RegalBrett implements Iterable<Buch> {
 	 * @return
 	 */
 	@Override
-	public Spliterator<Buch> spliterator() {
+	public Spliterator<Buch> spliterator () {
 		return buecher.spliterator();
 	}
 
-	public int size() {
+	public int size () {
 		return buecher.size();
 	}
 
-	public Buch get(int buchIndex) {
+	public Buch get (int buchIndex) {
 		return buecher.get(buchIndex);
 	}
 
-	public void entfernen(int buchIndex) {
+	public void entfernen (int buchIndex) {
 		buecher.remove(buchIndex);
 	}
 
 	//region setter/getter
-	//
-//
-	public List<Buch> getBuecher() {
+	public List<Buch> getBuecher () {
 		return buecher;
 	}
 
-	public UUID getId() {
+	public UUID getId () {
 		return id;
 	}
+
 //endregion
 }
 

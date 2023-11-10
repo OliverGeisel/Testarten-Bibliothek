@@ -20,41 +20,53 @@ import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.user.visitor.BesucherRepository;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("inventory")
-public class BestandController {
+public class BestandsController {
 	private final BestandsVerwaltung verwaltung;
 	private final BesucherRepository besucherRepository;
 
 
-	public BestandController(BestandsVerwaltung verwaltung, BesucherRepository besucherRepository) {
+	public BestandsController (BestandsVerwaltung verwaltung, BesucherRepository besucherRepository) {
 		this.verwaltung = verwaltung;
 		this.besucherRepository = besucherRepository;
 	}
 
 	@GetMapping({"", "/"})
-	public String overview(Model model) {
-		model.addAttribute("items", verwaltung.findAll());
+	public String overview (@RequestParam(required = false) Optional<Integer> pageNum, Model model) {
+		var correctPageNum = Math.max(0, pageNum.orElse(0));
+		var page = PageRequest.of(correctPageNum, 20);
+		model.addAttribute("buecher", verwaltung.findAll(page));
+		model.addAttribute("pageNum", correctPageNum);
+		model.addAttribute("hasNextPage", verwaltung.findAll(page.next()).hasContent());
+		model.addAttribute("totalPages", (int) Math.ceil(verwaltung.zaehlen() / 20.));
 		return "inventory";
 	}
 
 	@GetMapping("{id}")
-	public String detail(@PathVariable("id") UUID id, Model model) {
-		model.addAttribute("item", verwaltung.findById(id));
+	public String detail (@PathVariable("id") UUID id, Model model) {
+		try {
+			var buch = verwaltung.findById(id).orElseThrow();
+			var regale = verwaltung.getRegalCode(buch);
+			model.addAttribute("buch", buch);
+			model.addAttribute("regale", regale);
+		} catch (NoSuchElementException e) {
+			return "redirect:/inventory";
+		}
 		return "inventory-detail";
 	}
 
 	@PostMapping("ausleihen/{id}")
-	public String ausleihen(@PathVariable("id") Buch buch, @LoggedIn UserAccount account) {
+	public String ausleihen (@PathVariable("id") Buch buch, @LoggedIn UserAccount account) {
 		besucherRepository.findByUserAccount(account).ifPresent(besucher -> verwaltung.ausleihen(buch, besucher));
 		return "redirect:/inventory";
 	}
