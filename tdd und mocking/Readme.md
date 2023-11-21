@@ -27,16 +27,16 @@ genaues Verhalten haben um somit den Bereich der Fehler auf die zu testende Komp
 Mocks sind also nicht so komplex wie die echten Objekte. Sie haben nur die Methoden, die für den Test benötigt werden.
 
 ### Warum Mocks?
+
 Weshalb es sinnvoll ist, Mocks zu verwenden, soll an einem Beispiel gezeigt werden. Es gibt in diesem Projekt eine Klasse `StackWrapper` (in `src/main/java/de.olivergeisel.mocking`). Die Aufgabe des Wrappers ist es eine existierende Liste zu nehmen und zeitlich zu einem Stack zu machen. Bedeutet die Liste arbeitet jetzt nach dem LIFO-Prinzip.
 
-In dem Testordner sind zwei Testklassen vorhanden. Eine mit und eine Ohne Mocking der Liste. 
+In dem Testordner sind zwei Testklassen vorhanden. Eine mit und eine Ohne Mocking der Liste.
 Die Klasse `NoMockingTest` (in `src/test/java/de.olivergeisel.mocking`) testet die Klasse `StackWrapper` ohne Mocking, während die Klasse `WithMockingTest` (in `src/test/java/de.olivergeisel.mocking`) mit Mocking testet.
 Beide Klassen haben die gleichen Tests. Im folgenden Bild sind die Ergebnisse der Tests zu sehen.
 
 ![Ergebnisse der Tests](./images/mocking.png)
 
 Wir sehen, dass ohne Mocking die Tests fehlschlagen, während die Tests mit Mocking erfolgreich sind. Der Grund liegt nicht im Stack, sondern in der Liste. Hier wurde eine fehlerhafte Implementierung der Liste verwendet. Mit Mocking der Liste ist aber zu sehen, dass der Wrapper wie gewünscht funktioniert.
-
 
 ### Die Hierarchie der Doubles
 
@@ -66,7 +66,7 @@ public class DummyExample {
 	private Auskunft auskunft;
 
 	@Test
-	public void testKonstruktor() {
+	public void testKonstruktor () {
 		Telefonbuch telefonbuch = new TelefonbuchDummy();
 		auskunft = new Auskunft(telefonbuch);
 		// test war erfolgreich
@@ -89,7 +89,7 @@ Eine andere Methode `getEintrag(String name)` liefert immer den gleichen Eintrag
 public class TelefonbuchStub extends Telefonbuch {
 
 	@Override
-	public Eintrag getEintrag(String name) {
+	public Eintrag getEintrag (String name) {
 		if (name.equals("Max Mustermann")) {
 			return new Eintrag("Max Mustermann", "12345");
 		} else {
@@ -98,7 +98,7 @@ public class TelefonbuchStub extends Telefonbuch {
 	}
 
 	@Override
-	public int getAnzahlEintraege() {
+	public int getAnzahlEintraege () {
 		return 100;
 	}
 }
@@ -112,7 +112,7 @@ public class StubExample {
 	private Auskunft auskunft;
 
 	@Test
-	public void testKonstruktor() {
+	public void testKonstruktor () {
 		Telefonbuch telefonbuch = new TelefonbuchStub();
 		auskunft = new Auskunft(telefonbuch);
 		assertEquals(100, auskunft.getAnzahlEintraege());
@@ -136,7 +136,7 @@ public class TelefonbuchSpy extends Telefonbuch {
 	private int anzahlAufrufe = 0;
 
 	@Override
-	public Eintrag getEintrag(String name) {
+	public Eintrag getEintrag (String name) {
 		anzahlAufrufe++;
 		if (name.equals("Max Mustermann")) {
 			return new Eintrag("Max Mustermann", "12345");
@@ -145,7 +145,7 @@ public class TelefonbuchSpy extends Telefonbuch {
 		}
 	}
 
-	public int getAnzahlAufrufe() {
+	public int getAnzahlAufrufe () {
 		return anzahlAufrufe;
 	}
 }
@@ -159,7 +159,7 @@ public class SpyExample {
 	private Auskunft auskunft;
 
 	@Test
-	public void testKonstruktor() {
+	public void testKonstruktor () {
 		Telefonbuch telefonbuch = new TelefonbuchSpy();
 		auskunft = new Auskunft(telefonbuch);
 		assertEquals(100, auskunft.getAnzahlEintraege());
@@ -174,9 +174,31 @@ public class SpyExample {
 
 #### Mock
 
-Der **Mock** ist ein Spy, der seine Aufrufe überprüft. In Test wird also direkt das Mock-Objekt zur Überprüfung der
-Tests genutzt. Wenn man z.B. in Java JUnit verwendet, dann werden nicht mehr die `assertX`-Methoden verwendet,
-sondern die Methoden des Mock-Objektes, das das protokollierte
+Der **Mock
+** ist ein Spy, der seine Aufrufe überprüft. Im Test wird also direkt das Mock-Objekt zur Überprüfung der Tests genutzt.
+Wenn man z.B. in Java JUnit verwendet, dann werden nicht mehr die `assertX`-Methoden verwendet, sondern das Mock-Objekt ruft selbst eine Methode auf, die das protokollierte Verhalten auswertet.
+Ein Beispiel ist folgendes Szenario:
+
+```java
+public class MockExample {
+
+	private Auskunft auskunft;
+
+	@Test
+	public void testKonstruktor () {
+		Telefonbuch telefonbuch = new TelefonbuchMock();
+		auskunft = new Auskunft(telefonbuch);
+		assertEquals(100, auskunft.getAnzahlEintraege());
+		assertEquals("12345", auskunft.getTelefonnummer("Max Mustermann"));
+		assertEquals(1, telefonbuch.getAnzahlAufrufe());
+		var eintrag2 = auskunft.getTelefonnummer("Tina Mustermann");
+		assertNull(eintrag2);
+		telefonbuch.assure(2, telefonbuch.getTelefonnummer());
+	}
+}
+```
+
+Die Methode `assure()` des telfonbuches überprüft, ob die Methode zwei mal aufgerufen wurde.
 
 #### Fake
 
@@ -230,7 +252,6 @@ angewendet werden. Mockito erstellt dann automatisch ein Mock-Objekt. Es muss ab
 Testklasse angewendet werden.
 
 ```java
-
 @ExtendWith(MockitoExtension.class) // entweder diese Annotation oder die initMocks-Methode
 public class MockAnnotationExample {
 
@@ -238,12 +259,12 @@ public class MockAnnotationExample {
 	private Telefonbuch telefonbuch;
 
 	@BeforeEach
-	public void initMocks() {
+	public void initMocks () {
 		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
-	public void testKonstruktor() {
+	public void testKonstruktor () {
 		Auskunft auskunft = new Auskunft(telefonbuch);
 		assertEquals(100, auskunft.getAnzahlEintraege());
 		assertEquals("12345", auskunft.getTelefonnummer("Max Mustermann"));
@@ -254,8 +275,7 @@ public class MockAnnotationExample {
 ##### Stubbing von Mocks
 
 Die erstellten haben zwar die gleichen Methoden wie die echten Objekte, aber sie liefern immer `null` zurück.
-Deswegen muss das Verhalten der Methoden noch "konfiguriert" werden. Dies geschieht mit der Methode `when()`
-und `thenReturn()`.
+Deswegen muss das Verhalten der Methoden noch "konfiguriert" werden. Dies geschieht mit der Methode `when()` und `thenReturn()`.
 Beide Methoden wirken etwas seltsam. Die Methode `when()` erwartet als Parameter einen Methodenaufruf (Nachricht).
 Das ist jedoch nicht der Aufruf der Methode, sondern nur der Name der Methode mit ihren Parametern.
 Es können bestimmte Parameter wie z.B. `"Hallo Welt"` oder allgemeine Parameter wie `anyString()` angegeben werden.
@@ -265,7 +285,7 @@ Die Methode `thenReturn()` erwartet den Rückgabewert der Methode. Dieser kann a
 class ExampleMockTest {
 	@Test
 	@DisplayName("Test mit bestimmten Parametern in gestubter Methode")
-	public void testWithSpecificParams() {
+	public void testWithSpecificParams () {
 		Telefonbuch telefonbuch = mock(Telefonbuch.class);
 		when(telefonbuch.getAnzahlEintraege()).thenReturn(100);
 		when(telefonbuch.getEintrag("Max Mustermann")).thenReturn(new Eintrag("Max Mustermann", "12345"));
@@ -276,7 +296,7 @@ class ExampleMockTest {
 
 	@Test
 	@DisplayName("Test mit allgemeinen Parametern in gestubter Methode")
-	public void testWithAnyParams() {
+	public void testWithAnyParams () {
 		Telefonbuch telefonbuch = mock(Telefonbuch.class);
 		when(telefonbuch.getAnzahlEintraege()).thenReturn(100);
 		when(telefonbuch.getEintrag(anyString())).thenReturn(new Eintrag("Max Mustermann", "12345"));
@@ -296,7 +316,7 @@ Es kann auch angegeben werden, wie oft die Methode aufgerufen werden soll.
 ```java
 class ExampleVerify {
 	@Test
-	public void testVerify() {
+	public void testVerify () {
 		Telefonbuch telefonbuch = mock(Telefonbuch.class);
 		when(telefonbuch.getAnzahlEintraege()).thenReturn(100);
 		when(telefonbuch.getEintrag("Max Mustermann")).thenReturn(new Eintrag("Max Mustermann", "12345"));
@@ -364,11 +384,13 @@ Es müssen jedoch nicht alle Tests geschrieben werden, bevor der Code geschriebe
 geschrieben, die die Funktionalität beschreiben, die als nächstes implementiert werden soll. Es wird also immer nur ein
 kleiner Teil der Software getestet. Dieser Teil wird dann implementiert. Danach wird der nächste Teil getestet und
 implementiert. Dieser Zyklus wird so lange wiederholt, bis die Software fertig ist.
-Dieser Zyklus ist auch in der folgenden Abbildung zu sehen. ![TDD-Zyklus](./images/tdd-cycle.png)
+Dieser Zyklus ist auch in der folgenden Abbildung zu sehen.
+
+![TDD-Zyklus](./images/tdd.png)
 
 ### TDD für Entwickler
 
-Für Softwarentwickler ist TDD eine sehr gute Methode, um Software zu entwickeln. Es gibt aber auch einige Probleme, die
+Für Softwareentwickler ist TDD eine sehr gute Methode, um Software zu entwickeln. Es gibt aber auch einige Probleme, die
 bei der Anwendung von TDD auftreten können. Diese Probleme werden im Folgenden beschrieben.
 
 #### TDD ist nicht einfach
@@ -380,7 +402,7 @@ Martin beschreibt diese Schritte in seinem Buch "Clean Craftmanship" wie folgt:
 
 1. Schreibe einen Test, der fehlschlägt.
 2. Schreibe den Code, der den Test erfolgreich macht.
-3. Refactor den Code, um ihn sauber zu machen.
+3. Refactor den Code, um ihn sauberzumachen.
 
 <hr>
 
@@ -398,8 +420,7 @@ ein Test auskommentiert werden
 und dem Entwickler hilft bzw. in diesem Fall sogar eine Schritt-für-Schritt-Anleitung ist, wie eine Klasse implementiert
 werden kann.
 Einige, der vorhandenen Test, sind auch nicht sinnvoll und sollten in der Realität nicht unbedingt so genutzt werden.
-Sie sind entsprechend mit einer `@Tag(...)` Annotation markiert. Sie sind nur vorhanden, um die Klasse zu
-implementieren.
+Sie sind entsprechend mit einer `@Tag(...)` Annotation markiert. Sie sind nur vorhanden, um die Klasse zu implementieren.
 
 ### Szenario
 

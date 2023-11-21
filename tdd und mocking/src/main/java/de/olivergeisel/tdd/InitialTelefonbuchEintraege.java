@@ -54,6 +54,7 @@ public class InitialTelefonbuchEintraege implements CommandLineRunner {
 								 .build())) {
 			csvParser.forEach(line -> {
 				var eintrag = new TelefonbuchEintrag();
+/* Todo Auskommentieren wenn TelefonbuchEintrag fertig ist
 
 				eintrag.setVorname(line.get("Vorname").strip());
 				eintrag.setNachname(line.get("Nachname").strip());
@@ -63,7 +64,7 @@ public class InitialTelefonbuchEintraege implements CommandLineRunner {
 				eintrag.setPostleitzahl(line.get("PLZ").strip());
 				eintrag.setOrt(line.get("Ort").strip());
 				eintrag.setLand(line.get("Land").strip());
-
+*/
 				telefonbuch.speichern(eintrag);
 			});
 		} catch (Exception e) {

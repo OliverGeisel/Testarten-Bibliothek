@@ -1,9 +1,6 @@
 package de.olivergeisel.mocking;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -13,6 +10,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Tag("mocking")
+@Tag("grundlagen")
 class WithMockingTest {
 
 	@Mock
@@ -21,7 +20,7 @@ class WithMockingTest {
 
 	@BeforeEach
 	void setUp() {
-		MockitoAnnotations.openMocks(this);
+		MockitoAnnotations.openMocks(this); // Alternative zu Annotation @ExtendWith(MockitoExtension.class) an Klasse
 		when(list.size()).thenReturn(5);
 		when(list.add(anyString())).thenReturn(true);
 		when(list.get(0)).thenReturn("Hallo"); // list.add("Hallo");
