@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NoMockingTest {
 
-	LinkedList<String> list = new LinkedList<>();
+	private LinkedList<String>   list = new LinkedList<>();
 	private StackWrapper<String> stack;
 
 	@BeforeEach
@@ -77,6 +77,23 @@ class NoMockingTest {
 		var elem = newStack.pop();
 		assertNull(elem);
 		assertEquals(0, stack.size());
+	}
+
+	@Test
+	@DisplayName("Pop one element from stack and then get null")
+	void pop_one_element_from_stack() {
+
+		var list = new LinkedList<String>();
+		list.add("Hallo");
+		StackWrapper<String> newStack = new StackWrapper<>(list);
+
+		var elem1 = newStack.pop();
+		assertNotNull(elem1);
+		assertEquals(0, newStack.size());
+		var elem2 = newStack.pop();
+		assertNull(elem2);
+		assertEquals(0, newStack.size());
+
 	}
 
 	@Test
