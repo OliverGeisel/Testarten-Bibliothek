@@ -34,6 +34,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Abteilung</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -41,6 +42,10 @@
             <td th:text="${angestellter.id}">1</td>
             <td th:text="${angestellter.vollerName}">John Doe</td>
             <td th:text="${angestellter.bereich}">IT</td>
+            <td><a th:href="@{/angestellte/{id}(id=${angestellter.id})}">
+                <button class="btn btn-primary" type="submit">Öffnen</button>
+            </a>
+            </td>
         </tr>
         </tbody>
     </table>

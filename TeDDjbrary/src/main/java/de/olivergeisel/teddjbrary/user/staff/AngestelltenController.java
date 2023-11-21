@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -30,29 +31,47 @@ import java.util.UUID;
 @RequestMapping("angestellte")
 public class AngestelltenController {
 
-	private final static String PATH = "staff/";
+	private static final String PATH = "staff/";
 
 	private final AngestelltenVerwaltung verwaltung;
 
 	public AngestelltenController(AngestelltenVerwaltung verwaltung) {this.verwaltung = verwaltung;}
 
-	@GetMapping("")
+	@GetMapping({"", "/"})
 	public String angestellte(Model model) {
 		model.addAttribute("angestellte", verwaltung.findAll());
 		return PATH + "overview";
 	}
 
-	@PostMapping("anstellten")
-	public String addAngestellten(NeuerAngestelltenForm form) {
-		verwaltung.angestelltenHinzufuegen(new Bibliothekar(), Bereich.KUNDENBETREUUNG);
+	@PostMapping("anstellen")
+	public String anstellen (NeuerAngestelltenForm form) {
+		verwaltung.anstellen(form);
 		return "redirect:";
 	}
 
 
 	@PostMapping("entlassen")
-	public String removeAngestellten(UUID id) {
-		verwaltung.removeAngestellten(new Bibliothekar());
+	public String entlassen (UUID id) {
+		verwaltung.entlassen(id);
 		return "redirect:";
+	}
+
+	@PostMapping("deaktivieren")
+	public String deaktivieren (UUID id) {
+		verwaltung.deaktivieren(id);
+		return "redirect:";
+	}
+
+	@PostMapping("aktivieren")
+	public String aktivieren (UUID id) {
+		verwaltung.aktivieren(id);
+		return "redirect:";
+	}
+
+	@GetMapping("{id}")
+	public String zeigeAngestellten (Model model, @RequestParam("id") Angestellter angestellter) {
+		model.addAttribute("angestellter", angestellter);
+		return PATH + "detail";
 	}
 
 

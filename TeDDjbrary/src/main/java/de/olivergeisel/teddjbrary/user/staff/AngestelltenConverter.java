@@ -16,18 +16,23 @@
 
 package de.olivergeisel.teddjbrary.user.staff;
 
-import de.olivergeisel.teddjbrary.user.Geschlecht;
-import jakarta.persistence.Entity;
-import org.salespointframework.useraccount.UserAccount;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
-@Entity
-public class Restaurator extends Angestellter {
+import java.util.UUID;
 
-	protected Restaurator() {
-		super();
+@Component
+public class AngestelltenConverter implements Converter<String, Angestellter> {
+
+	private final AngestellterRepository angestellterRepository;
+
+	public AngestelltenConverter (AngestellterRepository angestellterRepository) {
+		this.angestellterRepository = angestellterRepository;
 	}
 
-	public Restaurator(UserAccount userAccount, Geschlecht geschlecht, int alter) throws IllegalArgumentException {
-		super(userAccount, geschlecht, alter);
+
+	@Override
+	public Angestellter convert (String source) {
+		return angestellterRepository.findById(UUID.fromString(source)).orElseThrow();
 	}
 }

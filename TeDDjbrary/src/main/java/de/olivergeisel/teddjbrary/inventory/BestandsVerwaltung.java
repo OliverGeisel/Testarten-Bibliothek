@@ -19,8 +19,10 @@ package de.olivergeisel.teddjbrary.inventory;
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.core.BuchRepository;
 import de.olivergeisel.teddjbrary.core.ISBN;
+import de.olivergeisel.teddjbrary.rooms.ArbeitsplatzRepository;
 import de.olivergeisel.teddjbrary.rooms.Werkstatt;
 import de.olivergeisel.teddjbrary.structure.NoMatchingBookException;
+import de.olivergeisel.teddjbrary.user.staff.Angestellter;
 import de.olivergeisel.teddjbrary.user.staff.VerwaltungsException;
 import de.olivergeisel.teddjbrary.user.visitor.Besucher;
 import de.olivergeisel.teddjbrary.user.visitor.Kundenregister;
@@ -38,15 +40,26 @@ public class BestandsVerwaltung {
 	private final RegalRepository regale;
 	private final BuchRepository  buchRepository;
 	private final Kundenregister  kundenregister;
-	private final Werkstatt       werkstatt;
+	private final ArbeitsplatzRepository arbeitsplaetze;
 
-	public BestandsVerwaltung (Kundenregister kundenregister, RegalRepository regale, BuchRepository buchRepository) {
+	public BestandsVerwaltung (Kundenregister kundenregister, RegalRepository regale, BuchRepository buchRepository,
+			ArbeitsplatzRepository<Angestellter> arbeitsplaetze) {
 		this.kundenregister = kundenregister;
 		this.regale = regale;
 		this.buchRepository = buchRepository;
-		werkstatt = new Werkstatt(this);
+		this.arbeitsplaetze = arbeitsplaetze;
 	}
 
+
+	private Set<Werkstatt> getWerkstaetten () {
+		var back = new HashSet<Werkstatt>();
+		for (var platz : arbeitsplaetze.findAll()) {
+			if (platz instanceof Werkstatt werkstatt) {
+				back.add(werkstatt);
+			}
+		}
+		return back;
+	}
 
 	/**
 	 * Sucht nach dem Regal, das das gesuchte Buch enthält.
@@ -135,7 +148,9 @@ public class BestandsVerwaltung {
 	public boolean zurueckgeben (Buch buch) {
 		boolean back = kundenregister.gibBuchZurueck(buch);
 		buch.verfuegbarMachen();
-		if (buch.getBeschaedigung() >= 0.8) werkstatt.zurReparaturHinzufuegen(buch);
+		if (buch.getBeschaedigung() >= 0.8) {
+			getWerkstaetten().stream().findAny().orElseThrow().zurReparaturHinzufuegen(buch);
+		}
 		inEinRegalStellen(buch);
 		return back;
 	}
@@ -243,10 +258,6 @@ public class BestandsVerwaltung {
 
 	public Set<Regal> getRegale () {
 		return regale.findAll().toSet();
-	}
-
-	public Werkstatt getWerkstatt () {
-		return werkstatt;
 	}
 
 	private Regal getNichtVollesRegal () {

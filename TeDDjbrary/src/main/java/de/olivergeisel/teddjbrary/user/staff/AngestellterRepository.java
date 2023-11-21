@@ -18,10 +18,15 @@ package de.olivergeisel.teddjbrary.user.staff;
 
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public interface AngestellterRepository extends CrudRepository<Angestellter, UUID> {
 	Optional<Angestellter> findByUserAccount(UserAccount userAccount);
+
+	Streamable<Angestellter> findByBereich (Bereich bereich);
+
+	boolean existsByUserAccount_Username (String username);
 }

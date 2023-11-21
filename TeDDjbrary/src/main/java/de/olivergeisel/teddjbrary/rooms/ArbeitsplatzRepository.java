@@ -14,11 +14,17 @@
  *    limitations under the License.
  */
 
-package de.olivergeisel.teddjbrary.user.staff;
+package de.olivergeisel.teddjbrary.rooms;
 
-public enum Bereich {
-	REINIGUNG,
-	WERKSTATT,
-	KUNDENBETREUUNG,
-	VERWALTUNG
+import de.olivergeisel.teddjbrary.user.Benutzer;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
+
+import java.util.UUID;
+
+public interface ArbeitsplatzRepository<B extends Benutzer> extends CrudRepository<Arbeitsplatz<B>, UUID> {
+
+	@Override
+	Streamable<Arbeitsplatz<B>> findAll ();
+
 }

@@ -15,24 +15,24 @@
   -->
 
 <!DOCTYPE html>
-
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <th:block th:replace="~{fragments::head-links}"></th:block>
-    <title>405 - Falsche Methode</title>
+    <meta charset="UTF-8">
+    <title>400 - Parameter sind falsch!</title>
 </head>
-<body style="display: flex;
-            flex-direction: column;
-            min-height: 100vh;">
-<div th:replace="~{fragments :: nav}"></div>
-<main class="page" style="flex: 1">
-    <header>
-        <h1>Dem Befehl folgen wir hier nicht!</h1>
-    </header>
-    <section>
-        <p>Zwar gibt es diese Seite, aber wir unterstützen die Request-Methode nicht!</p>
-    </section>
+<body style="display: flex; flex-direction: column;min-height: 100vh;">
+<div th:replace="~{fragments::nav}"></div>
+<main class="page flex-grow-1">
+    <div class="container p-2">
+        <header>
+            <h1>Fehler in den Parametern</h1>
+        </header>
+        <section>
+            Du hast etwas falsch gemacht. Bitte überprüfe deine Eingaben. Wir können deine Parameter nicht verarbeiten.
+            <a href="/">Zurück zur Startseite</a>
+        </section>
+    </div>
 </main>
 <div th:replace="~{fragments::footer}"></div>
 <div th:replace="~{fragments::bootstrap-footer-scripts}"></div>

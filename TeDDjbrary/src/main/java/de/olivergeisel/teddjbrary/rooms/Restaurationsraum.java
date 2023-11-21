@@ -16,11 +16,11 @@
 
 package de.olivergeisel.teddjbrary.rooms;
 
-import de.olivergeisel.teddjbrary.user.staff.Restaurator;
+import de.olivergeisel.teddjbrary.user.staff.Restaurateur;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Restaurationsraum extends Arbeitsraum<Restaurator> {
+public class Restaurationsraum extends Arbeitsraum<Restaurateur> {
 
 	public Restaurationsraum (String name, int nummer, Werkstatt... werkstaette) {
 		super(name, nummer, werkstaette);

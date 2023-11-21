@@ -68,10 +68,21 @@ public class RaumInitializer implements DataInitializer {
 		raum9.setName("Tardis");
 		raum9.setBeschreibung("Von Innen viel größer als von Außen.\n\n allons-y");
 
-		var werkstatt = new Werkstatt(null);
-		var restauration = new Restaurationsraum("Aetherium Schmiede", 1, werkstatt);
+		var raum10 = new Leseraum(35);
+		raum10.setName("Kerker");
+		raum10.setBeschreibung("Hier ist ein sehr guter Ort um Slytherin-Schüler unterzubringen. Aber es reicht nicht"
+							   + ". Es sind zu wenig Ketten vorhanden. ⛓️");
 
-		var alle = List.of(raum1, raum2, raum3, raum4, raum5, raum6, raum7, raum8, raum9, restauration);
-		repo.saveAll(alle);
+		var alleLeseraeume = List.of(raum1, raum10, raum2, raum3, raum4, raum5, raum6, raum7, raum8, raum9);
+		repo.saveAll(alleLeseraeume);
+
+		var werkstatt = new Werkstatt();
+		var restauration = new Restaurationsraum("Aetheriumschmiede", 1, werkstatt);
+
+		var buero = new Buero("Eiserner Thron", 1, new Verwaltungsplatz());
+
+		var arbeitsplaetze = List.of(restauration, buero);
+		repo.saveAll(arbeitsplaetze);
+
 	}
 }

@@ -21,31 +21,30 @@ package de.olivergeisel.teddjbrary.user;
  * Außerdem können sie ihren vollständigen Namen angeben.
  */
 public interface Person {
-	// Todo Refactoring hier ist public überflüssig
 
 
 //region setter/getter
 	/**
 	 * @return Vorname einer Person.
 	 */
-	public String getVorname();
+	String getVorname ();
 
 	/**
 	 * @return Nachname einer Person.
 	 */
-	public String getNachname();
+	String getNachname ();
 
 	/**
 	 * @return Vorname plus Nachname.
 	 */
-	default public String getVollerName() {
+	default String getVollerName () {
 		return getVorname() + " " + getNachname();
 	}
 
 	/**
 	 * @return Alter der Person.
 	 */
-	public int getAlter();
+	int getAlter ();
 //endregion
 
 }

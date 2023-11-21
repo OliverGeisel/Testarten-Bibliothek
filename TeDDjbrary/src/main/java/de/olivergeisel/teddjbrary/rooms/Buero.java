@@ -30,3 +30,19 @@ public class Buero extends Arbeitsraum<Verwaltung> {
 
 	}
 }
+
+@Entity
+class Verwaltungsplatz extends Arbeitsplatz<Verwaltung> {
+	public Verwaltungsplatz () {
+		super();
+	}
+
+	/**
+	 * Eine Methode, die das Objekt zu einem gewissen Anteil verschmutzt. Nach einer gewissen Verschmutzung muss isDreckig()
+	 * true zurückgeben.
+	 */
+	@Override
+	public void verschmutzen () {
+		verschmutzung += 0.1;
+	}
+}

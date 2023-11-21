@@ -112,7 +112,7 @@ public class UserVerwaltung {
 
 	public void loeschen (Benutzer nutzer) {
 		if (nutzer instanceof Angestellter angestellter) {
-			angestellte.removeAngestellten(angestellter);
+			angestellte.entlassen(angestellter);
 		} else if (nutzer instanceof Besucher besucher) {
 			besucherRepository.delete(besucher);
 		}

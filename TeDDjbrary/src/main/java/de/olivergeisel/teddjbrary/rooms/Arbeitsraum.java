@@ -21,11 +21,16 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public abstract class Arbeitsraum<P extends Benutzer> extends Raum {
+
+	public Set<Arbeitsplatz<P>> getPlaetze () {
+		return Collections.unmodifiableSet(plaetze);
+	}
 
 	@OneToMany(targetEntity = Arbeitsplatz.class, cascade = CascadeType.ALL)
 	private Set<Arbeitsplatz<P>> plaetze;
@@ -42,4 +47,20 @@ public abstract class Arbeitsraum<P extends Benutzer> extends Raum {
 	protected Arbeitsraum () {
 
 	}
+
+	public boolean hatFreienPlatz () {
+		if (plaetze.isEmpty()) {
+			return false;
+		}
+		return plaetze.stream().anyMatch(platz -> !platz.isBesetzt());
+	}
+
+	public boolean neuerPlatz (Arbeitsplatz<P> platz) {
+		return plaetze.add(platz);
+	}
+
+	public boolean entfernePlatz (Arbeitsplatz<P> platz) {
+		return plaetze.remove(platz);
+	}
+
 }

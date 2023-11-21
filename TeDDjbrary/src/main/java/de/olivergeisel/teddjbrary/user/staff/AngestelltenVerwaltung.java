@@ -16,11 +16,18 @@
 
 package de.olivergeisel.teddjbrary.user.staff;
 
+import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
+import org.salespointframework.useraccount.UserAccountManagement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AngestelltenVerwaltung {
@@ -30,56 +37,163 @@ public class AngestelltenVerwaltung {
 	static final Role BIBLIOTHEKAR = Role.of("BIBLIOTHEKAR");
 	static final Role ADMIN        = Role.of("ADMIN");
 	static final Role MANAGER      = Role.of("MANAGER");
+	private final AngestellterRepository angestellterRepository;
+	private final UserAccountManagement userAccountManager;
+	private Logger logger          = LoggerFactory.getLogger(AngestelltenVerwaltung.class);
 
-	private final Map<Bereich, Set<Angestellter>> angestellte = new HashMap<>();
-	private final AngestellterRepository          angestellterRepository;
-
-	public AngestelltenVerwaltung(AngestellterRepository angestellterRepository) {
+	public AngestelltenVerwaltung (AngestellterRepository angestellterRepository,
+			UserAccountManagement userAccountManager) {
 		this.angestellterRepository = angestellterRepository;
+		this.userAccountManager = userAccountManager;
 	}
 
-	public boolean isAngestellt(Angestellter angestellter) {
-		for (Set<Angestellter> runSet : angestellte.values()) {
-			if (runSet.contains(angestellter)) {
-				return true;
-			}
+	public boolean isAngestellt (Angestellter angestellter) {
+		if (angestellter == null || angestellter.getId() == null) {
+			return false;
 		}
-		return false;
+		return angestellterRepository.findById(angestellter.getId()).isPresent();
 	}
 
-	public void angestelltenHinzufuegen(Angestellter angestellter, Bereich bereich) {
-		if (isAngestellt(angestellter)) {
-			throw new VerwaltungsException(
-					String.format("Der Angestellte %s ist bereits angestellt", angestellter.getVollerName()));
+	public boolean isAngestellt (UserAccount userAccount) {
+		if (userAccount == null) {
+			return false;
 		}
-		Set<Angestellter> bereichsMitarbeiter;
-		if (angestellte.get(bereich) == null) {
-			bereichsMitarbeiter = new HashSet<>();
-			angestellte.put(bereich, bereichsMitarbeiter);
-		} else {
-			bereichsMitarbeiter = angestellte.get(bereich);
+		return angestellterRepository.findByUserAccount(userAccount).isPresent();
+	}
+
+	public boolean entlassen (Angestellter angestellter) {
+		if (angestellter == null || angestellter.getId() == null) {
+			return false;
 		}
-		bereichsMitarbeiter.add(angestellter);
+		angestellterRepository.delete(angestellter);
+		logger.info("Angestellter {} wurde entlassen", angestellter.getId());
+		return true;
 	}
 
-	public boolean removeAngestellten(Angestellter angestellter) {
-		angestellte.values().forEach(it -> it.remove(angestellter));
-		return angestellte.values().stream().noneMatch(it -> it.contains(angestellter));
+	public boolean entlassen (UUID id) {
+		if (id == null) {
+			return false;
+		}
+		angestellterRepository.findById(id).ifPresent(angestellterRepository::delete);
+		return true;
 	}
 
-	public Collection<Angestellter> getAngestellte(Bereich bereich) {
-		return Collections.unmodifiableSet(angestellte.get(bereich));
+	public boolean deaktivieren (Angestellter angestellter) {
+		if (angestellter == null || angestellter.getId() == null) {
+			return false;
+		}
+		if (!angestellter.getUserAccount().isEnabled()) {
+			throw new IllegalStateException("Benutzerkonto ist bereits deaktiviert");
+		}
+		angestellter.getUserAccount().setEnabled(false);
+		angestellterRepository.save(angestellter);
+		return true;
 	}
 
-	public <T extends Angestellter> T save(T angestellter) {
+	public boolean deaktivieren (UUID id) {
+		if (id == null) {
+			return false;
+		}
+		return deaktivieren(angestellterRepository.findById(id).orElseThrow());
+	}
+
+	public boolean aktivieren (Angestellter angestellter) {
+		if (angestellter == null || angestellter.getId() == null) {
+			return false;
+		}
+		if (angestellter.getUserAccount().isEnabled()) {
+			throw new IllegalStateException("Benutzerkonto ist bereits aktiviert");
+		}
+		angestellter.getUserAccount().setEnabled(true);
+		angestellterRepository.save(angestellter);
+		return true;
+	}
+
+	public boolean aktivieren (UUID id) {
+		if (id == null) {
+			return false;
+		}
+		return aktivieren(angestellterRepository.findById(id).orElseThrow());
+	}
+
+	public boolean rolleAendern (Angestellter angestellter, String rolle) {
+		if (angestellter == null || angestellter.getId() == null) {
+			return false;
+		}
+		if (angestellter.getUserAccount().hasRole(getRolle(rolle))) {
+			throw new IllegalStateException("Benutzerkonto hat bereits die Rolle: " + rolle);
+		}
+		var account = angestellter.getUserAccount();
+		account.remove(REINIGUNG);
+		account.remove(RESTAURATEUR);
+		account.remove(BIBLIOTHEKAR);
+		account.remove(ADMIN);
+		account.remove(MANAGER);
+		account.add(getRolle(rolle));
+		userAccountManager.save(account);
+		return true;
+	}
+
+	public void anstellen (NeuerAngestelltenForm form) {
+		var rolle = getRolle(form.getRolle());
+		var account = userAccountManager.create(form.createUsername(),
+				Password.UnencryptedPassword.of(form.getPasswort()),
+				form.getEmail(), rolle);
+		var userName = account.getUsername();
+		if (angestellterRepository.existsByUserAccount_Username(userName)) {
+			logger.warn("Benutzername {} existiert bereits", userName);
+			userName = findeAnderenBenutzernamen(userName);
+			logger.info("Benutzername {} wird verwendet", userName);
+		}
+		account.setUsername(userName);
+		account.setFirstname(form.getVorname());
+		account.setLastname(form.getNachname());
+		userAccountManager.save(account);
+		var angestellter = switch (form.getRolle()) {
+			case "REINIGUNGSKRAFT" -> new Reinigungskraft(account, form.getGeschlecht(), form.getAlter());
+			case "RESTAURATEUR" -> new Restaurateur(account, form.getGeschlecht(), form.getAlter());
+			case "BIBLIOTHEKAR" -> new Bibliothekar(account, form.getGeschlecht(), form.getAlter());
+			case "MANAGER" -> new Verwaltung(account, form.getGeschlecht(), form.getAlter());
+			case "ADMIN" -> new Admin(account, form.getGeschlecht(), form.getAlter());
+			default -> throw new IllegalStateException("Unexpected value: " + form.getRolle());
+		};
+		angestellterRepository.save(angestellter);
+	}
+
+	private String findeAnderenBenutzernamen (String userName) {
+		String neuerName;
+		int i = 1;
+		do {
+			neuerName = userName + "_" + i;
+		}
+		while (angestellterRepository.existsByUserAccount_Username(neuerName));
+		return neuerName;
+	}
+
+	private Role getRolle (String role) {
+		return switch (role) {
+			case "REINIGUNGSKRAFT" -> REINIGUNG;
+			case "RESTAURATEUR" -> RESTAURATEUR;
+			case "BIBLIOTHEKAR" -> BIBLIOTHEKAR;
+			case "ADMIN" -> ADMIN;
+			case "MANAGER" -> MANAGER;
+			default -> throw new IllegalArgumentException("Ungültige Rolle");
+		};
+	}
+
+	public Collection<Angestellter> getAngestellte (Bereich bereich) {
+		return Collections.unmodifiableSet(angestellterRepository.findByBereich(bereich).toSet());
+	}
+
+	public <T extends Angestellter> T save (T angestellter) {
 		return angestellterRepository.save(angestellter);
 	}
 
-	public Iterable<Angestellter> findAll() {
+	public Iterable<Angestellter> findAll () {
 		return angestellterRepository.findAll();
 	}
 
-	public Optional<Angestellter> findByUserAccount(UserAccount userAccount) {
+	public Optional<Angestellter> findByUserAccount (UserAccount userAccount) {
 		return angestellterRepository.findByUserAccount(userAccount);
 	}
 }

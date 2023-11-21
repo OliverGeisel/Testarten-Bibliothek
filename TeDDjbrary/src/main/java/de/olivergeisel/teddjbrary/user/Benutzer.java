@@ -27,7 +27,7 @@ public abstract class Benutzer implements Person {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "id", nullable = false)
 	private UUID id;
-	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne
 	private UserAccount userAccount;
 
 	protected Benutzer() {}

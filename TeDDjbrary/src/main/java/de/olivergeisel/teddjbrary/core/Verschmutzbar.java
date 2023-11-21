@@ -28,7 +28,7 @@ public interface Verschmutzbar {
 
 	/**
 	 * Eine Methode, die das Objekt zu einem gewissen Anteil verschmutzt. Nach einer gewissen Verschmutzung muss isDreckig()
-	 * true zurück geben.
+	 * true zurückgeben.
 	 */
 	void verschmutzen();
 

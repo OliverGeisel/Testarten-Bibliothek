@@ -18,23 +18,26 @@ package de.olivergeisel.teddjbrary.rooms;
 
 import de.olivergeisel.teddjbrary.core.Buch;
 import de.olivergeisel.teddjbrary.core.ZuSchmutzigException;
-import de.olivergeisel.teddjbrary.inventory.BestandsVerwaltung;
-import de.olivergeisel.teddjbrary.user.staff.Restaurator;
+import de.olivergeisel.teddjbrary.user.staff.Restaurateur;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class Werkstatt extends Arbeitsplatz<Restaurator> {
+@Entity
+public class Werkstatt extends Arbeitsplatz<Restaurateur> {
+
+	@OneToMany
 	private final List<Buch>         beschaedigteBuecher;
-	private final List<Buch>         reparierteBuecher = new LinkedList<>();
-	private final BestandsVerwaltung bestand;
+	@OneToMany
+	private final List<Buch>         reparierteBuecher;
 
 
-	public Werkstatt(BestandsVerwaltung bestand) {
-		this.bestand = bestand;
+	public Werkstatt () {
 		beschaedigteBuecher = new LinkedList<>();
-
+		reparierteBuecher = new LinkedList<>();
 	}
 
 	public boolean zurReparaturHinzufuegen(Buch buch) {
@@ -64,10 +67,11 @@ public class Werkstatt extends Arbeitsplatz<Restaurator> {
 		return back;
 	}
 
-	private boolean zurueckstellen(Buch b) {
-		reparierteBuecher.remove(b);
-		bestand.inEinRegalStellen(b);
-		return true;
+	private boolean zurueckstellen (Buch b) throws IllegalArgumentException {
+		if (!isRepariert(b) || !reparierteBuecher.contains(b)) {
+			throw new IllegalArgumentException("Buch ist nicht als repariert markiert oder in dieser Werkstatt!");
+		}
+		return reparierteBuecher.remove(b);
 	}
 
 	public boolean isRepariert(Buch buch) {

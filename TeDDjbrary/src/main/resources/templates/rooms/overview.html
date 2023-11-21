@@ -45,7 +45,8 @@
             <div class="block-content" th:remove="all-but-first">
                 <div class="clean-blog-post" th:each="raum:${raeume}">
                     <div class="row">
-                        <div class="col-lg-5"><img class="rounded img-fluid" src="assets/img/tech/image4.jpg"></div>
+                        <div class="col-lg-5"><img alt="Raum Bild" class="rounded img-fluid"
+                                                   src="/assets/img/tech/image4.jpg"></div>
                         <div class="col-lg-7">
                             <h3 th:text="${raum.name}">Raum X</h3>
                             <div class="info">
@@ -123,12 +124,7 @@
     </section>
 </main>
 <div th:replace="~{fragments::footer}"></div>
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="/assets/js/bs-init.js"></script>
-<script src="/assets/js/baguetteBox.min.js"></script>
-<script src="/assets/js/vanilla-zoom.js"></script>
-<script src="/assets/js/theme.js"></script>
+<div th:replace="~{fragments::bootstrap-footer-scripts}"></div>
 </body>
 
 </html>

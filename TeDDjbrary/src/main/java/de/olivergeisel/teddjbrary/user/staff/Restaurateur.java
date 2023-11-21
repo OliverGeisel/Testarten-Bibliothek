@@ -16,9 +16,18 @@
 
 package de.olivergeisel.teddjbrary.user.staff;
 
-public enum Bereich {
-	REINIGUNG,
-	WERKSTATT,
-	KUNDENBETREUUNG,
-	VERWALTUNG
+import de.olivergeisel.teddjbrary.user.Geschlecht;
+import jakarta.persistence.Entity;
+import org.salespointframework.useraccount.UserAccount;
+
+@Entity
+public class Restaurateur extends Angestellter {
+
+	protected Restaurateur () {
+		super();
+	}
+
+	public Restaurateur (UserAccount userAccount, Geschlecht geschlecht, int alter) throws IllegalArgumentException {
+		super(userAccount, geschlecht, alter);
+	}
 }
