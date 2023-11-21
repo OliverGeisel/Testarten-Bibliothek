@@ -1,0 +1,179 @@
+### Landing page mit Test
+# @no-cookie-jar
+GET {{host}}/
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Content-Type is present", function () {
+        client.assert(response.headers.valueOf("Content-Type").startsWith("text/html"), "Content-Type is not present");
+    });
+%}
+
+### Registrierung eines neuen Benutzers
+# @no-redirect
+# @no-cookie-jar
+
+
+< {%
+
+    client.global.set("username", "Gastbesucher");
+    client.global.set("password", "1Qa!2");
+
+%}
+POST {{host}}/register
+Content-Type: application/x-www-form-urlencoded
+
+username = {{username}} &
+passwort = {{password}} &
+passwortWiederholung = {{password}} &
+rolle = STUDIERENDER &
+nachname = Doe &
+vorname = John &
+email = john@doe.test &
+alter = 18
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 302, "Response status is not 302");
+    });
+
+    client.test("Correct redirect", function () {
+        client.assert(response.headers.valueOf("Location") === request.environment.get("host") + "/login",
+            "Redirection-Address is not correct. Expected: " + request.environment.get("host") + " Actual: " + response.headers.valueOf
+            ("Location"));
+    });
+
+%}
+
+### Login mit neuen Benutzer ohne speichern der Cookies
+# @no-cookie-jar
+# @no-redirect
+POST {{host}}/login
+Content-Type: application/x-www-form-urlencoded
+
+username = {{username}} &
+password = {{password}}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 302, "Response status is not 302");
+    });
+
+    client.test("Correct redirect", function () {
+        client.assert(response.headers.valueOf("Location") === request.environment.get("host") + "/",
+            "Redirection-Address is not correct. Expected: " + request.environment.get("host") + " Actual: " + response.headers.valueOf
+            ("Location"));
+    });
+
+%}
+
+### Profilseite ohne Login
+# @no-cookie-jar
+# @no-redirect
+GET {{host}}/profile
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 302, "Response status is not 302");
+    });
+
+    client.test("Correct redirect", function () {
+        client.assert(response.headers.valueOf("Location") === request.environment.get("host") + "/login",
+            "Redirection-Address is not correct. Expected: " + request.environment.get("host") + " Actual: " + response.headers.valueOf
+            ("Location"));
+    });
+%}
+
+### Login mit speichern der Cookies
+POST {{host}}/login
+Content-Type: application/x-www-form-urlencoded
+
+username = {{username}} &
+password = {{password}}
+
+
+> {%
+
+
+%}
+
+
+### Profilseite
+
+GET {{host}}/profile
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.length > 0, "Response body is empty");
+    });
+
+    client.test("Content-Type is present", function () {
+        client.assert(response.headers.valueOf("Content-Type").startsWith("text/html"), "Content-Type is not present");
+    });
+
+    client.test("Response contains username", function () {
+        client.assert("Profilbild ändern" in response.body, "Response does not contain username");
+    });
+%}
+
+### Logout
+# @no-redirect
+POST {{host}}/logout
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 302, "Response status is not 302");
+    });
+
+    client.test("Correct redirect", function () {
+        client.assert(response.headers.valueOf("Location") === request.environment.get("host") + "/",
+            "Redirection-Address is not correct. Expected: " + request.environment.get("host") + " Actual: " + response.headers.valueOf
+            ("Location"));
+    });
+
+%}
+
+
+### Login mit falschen Passwort
+# @no-cookie-jar
+POST {{host}}/login
+Content-Type: application/x-www-form-urlencoded
+
+username = {{username}} &
+password = 1234567
+
+
+> {%
+
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response contains error message", function () {
+        client.assert(response.body.indexOf("Benutzername oder Passwort falsch!") >= 0, "Response does not contain error message");
+    });
+%}
+
+### Login für Delete
+POST {{host}}/login
+Content-Type: application/x-www-form-urlencoded
+
+username = {{username}} &
+password = {{password}}
+
+
+### Löschen des Benutzers
+
+DELETE {{host}}/profile/delete
+
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+%}

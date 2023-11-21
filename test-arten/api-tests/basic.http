@@ -1,0 +1,39 @@
+### Anfrage landing page
+GET localhost:8080/
+
+### Anfrage landing page mit host-header (Äquivalent mit voheriger Anfrage)
+GET /
+Host: localhost:8080
+
+### Post-Request zu /register
+# Erstelle neuen Benutzer
+POST /register
+Host: localhost:8080
+Content-Type: application/x-www-form-urlencoded
+
+username = Gastbesucher &
+passwort = Ab2t!5 &
+passwortWiederholung = Ab2t!5 &
+rolle = STUDIERENDER &
+nachname = Doe &
+vorname = John &
+email = john@doe.test &
+alter = 18
+
+
+### POST Login als John Doe
+# @no-redirect
+POST /login
+Host: localhost:8080
+Content-Type: application/x-www-form-urlencode
+
+username = Gastbesucher &
+password = 12345
+
+### Delete John Doe
+# Es muss vorher ein Login erfolgen
+# @no-redirect
+DELETE /profile/delete
+Content-Type: application/x-www-form-urlencoded
+
+
