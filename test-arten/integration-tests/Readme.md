@@ -3,20 +3,14 @@
 ## Was sind Integrationstests?
 
 Integrationstests sind Tests, die die Interaktion zwischen Komponenten eines Systems testen.
-Dabei wird das System als Ganzes betrachtet. Es wird nicht nur eine Komponente getestet, sondern auch die Interaktion
-zwischen den Komponenten.
+Dabei wird das System als Ganzes betrachtet. Es wird nicht nur eine Komponente getestet, sondern auch die Interaktion zwischen den Komponenten.
 
-Nach dem ISTQB ist ein Integrationstest: "Integrationstests konzentrieren sich auf die Interaktion zwischen Komponenten oder Systemen" [deutscher ISTQB-Lehrplan S.35](https://www.german-testing-board.info/wp-content/uploads/2022/01/GTB-CTFL_Lehrplan_v3.1_DE.pdf)
+Nach dem ISTQB ist ein Integrationstest:
 
-### Unterschied zu Unittests
+> "Integrationstests konzentrieren sich auf die Interaktion zwischen Komponenten oder Systemen" [deutscher ISTQB-Lehrplan S.35](https://www.german-testing-board.info/wp-content/uploads/2022/01/GTB-CTFL_Lehrplan_v3.1_DE.pdf)
 
-Im Gegensatz zu Unittests, die nur eine Komponente testen, testen Integrationstests das Zusammenwirken von mehreren
-Komponenten.
-
-Dadurch sind Integrationstests komplexer als Unittests.
-Oft
-
-### Ziele von Integrationstests
+Im Gegensatz zu Unittests, die nur eine Komponente testen, testen Integrationstests folglich das Zusammenwirken von mehreren Komponenten.
+Die Komplexität ist durch die Verbindung der verschiedenen Komponenten höher, als bei Unittests.
 
 ### Unterscheidung innerhalb von Integrationstests
 
@@ -29,22 +23,35 @@ er Unterschied steht bereits in den Namen. Komponentenintegrationstests testen d
 Beide Stufen werden "nach" der entsprechenden Stufe der Komponenten- bzw. Systemtests durchgeführt. \
 Was ist mit "nach" gemeint?
 Im Normalfall sollten erst alle Unittests ausgeführt werden und erst danach die Integrationstests. Der Grund ist relativ offensichtlich.
-Wenn bereits in der isolierten Komponente ein Fehler ist, wieso sollte der Fehler in der Integration dann verschwinden? Deshalb führt man die Integrationstests erst nach den Unittests aus.
+Wenn bereits in der isolierten Komponente ein Fehler ist, wieso sollte der Fehler in der Integration dann verschwinden? Deshalb führt man die Integrationstests erst nach den Unittests bzw. Systemtests aus.
 
 <hr>
 
 ## Spring Boot Integrationstests
 
-Spring Boot bietet die Möglichkeit, Integrationstests zu schreiben.
-Dies wird durch die Annotation `@SpringBootTest` ermöglicht.
+Spring Boot besitzt Tools, die das Erstellen von Integrationstests erleichtern.
+Eine erste Möglichkeit ist die Annotation `@SpringBootTest`.
 Jede Testklasse, die diese Annotation besitzt, wird als Integrationstest ausgeführt.
 Weil die gesamte Spring Boot Umgebung gestartet wird, dauert das Ausführen der Tests länger als bei Unittests.
-Deswegen sollte die Anzahl der Integrationstests nicht übertrieben groß sein.
-Ein weiterer Nachteil ist, dass die Spring Boot Umgebung für jeden Test neu gestartet wird.
-Dadurch dauert das Ausführen der Tests noch länger. Hier kann aber die Annotation konfiguriert werden, sodass die
+Deswegen sollte die Anzahl der Tests mit dieser Annotation nicht übertrieben sein.
+Ein weiterer Nachteil ist, dass die Spring Boot Umgebung für jeden Test bzw. Testklasse neu gestartet wird.
+Dadurch dauert das Ausführen der Tests noch länger.
+Folgender Code zeigt ein Beispiel für einen Integrationstest mit `@SpringBootTest`:
+
+```java
+
+@SpringBootTest
+class MyTest {
+
+	@Test
+	void contextStart () {
+	}
+}
+```
 
 Dieser Test lädt die Spring Boot Umgebung und prüft, ob diese geladen werden kann.
 Wenn die Spring Boot Umgebung nicht geladen werden kann, schlägt der Test fehl.
+Das ist ein simpler Test. Er testet nur, ob die Spring Boot Umgebung geladen werden kann.
 
 ### Repository Integrationstests
 
@@ -65,8 +72,8 @@ Nachdem die Tests durchgeführt wurden, wird der Container mit der Datenbank wie
 
 ### Entitäten Integrationstests
 
-> **Hinweis:
-** Integrationstests für Entitäten sind nur bedingt sinnvoll bzw. notwendig. Dieser Abschnitt zeigt nur Möglichkeiten und könnte übersprungen werden.
+> **Hinweis:**
+> Integrationstests für Entitäten sind nur bedingt sinnvoll bzw. notwendig. Dieser Abschnitt zeigt nur Möglichkeiten und könnte übersprungen werden.
 
 Es gibt nicht viele Tests für die Entitäten. Das liegt daran, dass die Entitäten nur Getter, Setter und sehr wenig Logik besitzen. Das ist aber bereits in den Unittests getestet worden.
 Das was übrig bleibt sind die Konfigurationen der Entitäten für die Datenbank. Diese werden in den Integrationstests getestet.
@@ -117,26 +124,27 @@ Was ist damit gemeint? Nun das MockMvc-Objekt besitzt eine Methode `perform()`, 
 Ein Beispiel für einen Test mit MockMvc sieht so aus:
 
 ```java
+
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {MyController.class})
 class ControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    void test() {
-        mockMvc.perform(get("/"));
-    }
+	@Test
+	void test () {
+		mockMvc.perform(get("/"));
+	}
 }
 
 @Controller
 class MyController {
 
-    @GetMapping("/")
-    public String get() {
-        return "index";
-    }
+	@GetMapping("/")
+	public String get () {
+		return "index";
+	}
 }
 ```
 
@@ -185,7 +193,7 @@ Die Methode `andExpect()` kann auch mehrmals aufgerufen werden. Dadurch können 
 		mockMvc.perform(get("/"))
 			   .andExpect(status().isOk())
 			   .andExpect(content().string("Hello World!"));
-}
+	}
 ```
 
 #### Alles drumherum
@@ -210,41 +218,43 @@ Wenn z.B. ein Controller eine Methode besitzt, die nur für bestimmte Nutzer zug
 ##### Controller mit Service
 
 ```java
+
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {MyController.class})
 class ControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockBean
-    private MyService myService;
+	@MockBean
+	private MyService myService;
 
-    @Test
-    void test() {
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Hello World!"));
-    }
+	@Test
+	void test () {
+		mockMvc.perform(get("/"))
+			   .andExpect(status().isOk())
+			   .andExpect(content().string("Hello World!"));
+	}
 }   
 ```
 
 ##### Controller mit eingeschränktem Zugriff
 
 ```java
+
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {MyController.class})
 class ControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    @WithMockUser(username = "user", roles = "USER")
-    void test() {
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Hello World!"));
-    }
+	@Test
+	@WithMockUser(username = "user", roles = "USER")
+	void test () {
+		mockMvc.perform(get("/"))
+			   .andExpect(status().isOk())
+			   .andExpect(content().string("Hello World!"));
+	}
 }   
 ```

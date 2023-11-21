@@ -53,7 +53,13 @@ Ein (Software)Test ist nach diesen Definitionen eine Prüfung, ob Software die b
 Wikipedia und der Duden sind jedoch nicht Institutionen, die besten Definitionen für Softwaretests festlegen.
 Es gibt eine Organisation, welche sich mit allem befasst, was mit dem Thema "Tests für Software" beschäftigt. Diese Organisation ist das [International Software Testing Qualifications Board](https://www.istqb.org/) (ISTQB).
 Es gibt auch einen deutschen Ableger, das [German Testing Board](https://www.german-testing-board.info/).
-Auf der Webseite des German Testing Boards gibt es eine [Seite](https://www.german-testing-board.info/wp-content/uploads/2018/09/ISTQB®_GTB_Standardglossar_der_Testbegriffe_Deutsch_Englisch_V3_2.pdf) die unter anderem den Bergriff Test definieren. Darin heist es, dass ein Test: "Eine Menge von einem oder mehreren Testfällen" ist. \
+> **Hinweis:**
+> Das ISTQB ist nicht die Instanz, die immer genommen werden kann bzw. sollte.
+> Es gibt verschiedene Organisationen bzw. Situationen in denen die Begriffe anders definiert bzw. verwendet werden. Im weiteren Verlauf dieses Dokumentes werden wir uns immer auf das ISTQB beziehen.
+
+Auf der Webseite des German Testing Boards gibt es eine [Seite](https://www.german-testing-board.info/wp-content/uploads/2018/09/ISTQB®_GTB_Standardglossar_der_Testbegriffe_Deutsch_Englisch_V3_2.pdf), die unter anderem den Bergriff Test definieren. Darin heist es, dass ein Test:
+> "Eine Menge von einem oder mehreren Testfällen" ist.
+
 Ein Testfall ist laut dieser Seite: "Eine Menge von Vorbedingungen, Eingaben, Aktionen (falls anwendbar), erwarteten Ergebnissen und Nachbedingungen, welche auf Basis von Testbedingungen entwickelt wurden. [Nach ISO 29119]" \
 Der darin erwähnte ISO Standard kann [hier](https://standards.iso.org/ittf/PubliclyAvailableStandards/index.html) nachgelesen werden.
 
@@ -80,6 +86,53 @@ Das ISTQB bzw German Testing Board definiert diese beiden Begriffe [hier](https:
 
 Vereinfacht gesagt ist Validierung die Prüfung, ob die Software die ist, die man haben wollte und Verifikation ist die Prüfung, ob die Software das Richtige tut. \
 
+### Testarten
+
+Nach dem ISTQB gibt es vier Testarten:
+
+* Funktionale Tests
+* Nicht-funktionale Tests
+* White-Box Tests
+* Änderungsbezogene Tests
+
+Hauptsächlich werden in diesem Projekt die ersten beiden Testarten behandelt. Die anderen beiden werden nur kurz erwähnt.
+
+Der **funktionale Test
+** beschäftigt sich mit der Funktionalität der Software. Es wird also geprüft, ob die Software das tut, was sie tun soll. \
+Der **nicht-funktionale Test** beschäftigt sich mit der Qualität der Software.
+Es wird also geprüft, ob die Software die Anforderungen an die Qualität erfüllt. Es gibt dabei 8 Qualitätsmerkmale, die nach dem ISO 25010 definiert sind:
+
+* Funktionalität
+* Zuverlässigkeit
+* Benutzbarkeit
+* Effizienz
+* Wartbarkeit
+* Portabilität
+* IT-Sicherheit
+* Kompatibilität
+
+Alle vier Testarten können in allen **Teststufen** verwendet werden.
+
+### Teststufen
+
+Nach dem ISTQB gibt es 5 Teststufen:
+
+1. Unittests
+2. Integrationstests
+3. Systemtests
+4. Systemintegrationstests
+5. Abnahmetests
+
+Im Normalfall sollten die Tests in dieser Reihenfolge durchgeführt werden.
+
+#### Ist die Stufe notwendig oder nicht?
+
+Prinzipiell sollte alles so früh wie möglich getestet werden. Das heißt sowohl zeitlich wie die Teststufe.
+Manche Teile einer Software können aber erst ab einem gewissen Zeitpunkt getestet werden. \
+Ein Beispiel ist die Validierung von Formularen (Forms), in einer in Spring Boot mithilfe der Jakarta-Validation-API.
+Das Formular kann erst mithilfe des Spring Frameworks validiert werden. Es muss also die Spring Boot Umgebung laufen. Das ist aber ein Integrationstest. Unittests machen wenig bis keinen Sinn. Besonders wenn das Formular als Record in Java implementiert ist.
+
+<span style="color:yellow">TODO: 7 Grundprinzipien des Testens nennen</span>
 <hr>
 
 ## Unittests
@@ -93,9 +146,15 @@ Zwischendurch wird auch das Teilprojekt zu TDD und Mocking benötigt. Dieses ist
 
 ## Integrationstests
 
+Dieses Kapitel beschäftigt sich mit Integrationstests. Es wird erklärt, was Integrationstests sind und wie sie geschrieben werden.
+Das Teilprojekt zu Unittests ist unter `testarten/integrationstests` zu finden.
+
 <hr>
 
 ## Systemtests
+
+Das Kapitel zu Systemtests ist nur eine kleine oberflächliche Einführung. Es wird nur erklärt, was Systemtests sind und wie sie geschrieben werden. Als Beispiele für Systemtests werden hier API-Tests behandelt. Das Teilprojekt zu Systemtests ist unter `testarten/api-tests` zu finden.
+
 
 <hr>
 
