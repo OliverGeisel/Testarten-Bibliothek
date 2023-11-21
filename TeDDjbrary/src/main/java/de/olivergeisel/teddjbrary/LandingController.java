@@ -19,14 +19,18 @@ package de.olivergeisel.teddjbrary;
 import de.olivergeisel.teddjbrary.auxiliary.BasicService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.net.URI;
 import java.util.Arrays;
+import java.util.Locale;
 
 @Controller
 public class LandingController {
@@ -108,6 +112,17 @@ public class LandingController {
 		basicService.createPost(content, from, role);
 		model.addAttribute("posts", basicService.getAllPosts());
 		return "testimonials";
+	}
+
+	@GetMapping("/changeLocale")
+	public String changeLocale (@RequestParam("locale") String locale, HttpSession session,
+			HttpServletRequest request) {
+		// Todo maybe not necessary. Config check only  request param
+		var builder = new Locale.Builder();
+		builder.setLanguageTag(locale);
+		session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME, builder.build());
+		var uri = URI.create(request.getHeader("Referer"));
+		return "redirect:" + uri.getPath();
 	}
 
 }

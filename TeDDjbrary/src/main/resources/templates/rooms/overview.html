@@ -39,21 +39,19 @@
     <section class="clean-block clean-blog-list dark">
         <div class="container">
             <div class="block-heading">
-                <h2 class="text-info">Unsere Leseräume</h2>
+                <h2 class="text-info" th:text="#{rooms.our_rooms}">Unsere Leseräume</h2>
                 <p>Hier finden Sie eine Übersicht über unsere Leseräume. Kommen Sie! Treten Sie ein!</p>
             </div>
             <div class="block-content" th:remove="all-but-first">
                 <div class="clean-blog-post" th:each="raum:${raeume}">
                     <div class="row">
-                        <div class="col-lg-5"><img alt="Raum Bild" class="rounded img-fluid"
-                                                   src="/assets/img/tech/image4.jpg"></div>
+                        <div class="col-lg-5"><img class="rounded img-fluid" src="/assets/img/tech/image4.jpg"></div>
                         <div class="col-lg-7">
                             <h3 th:text="${raum.name}">Raum X</h3>
                             <div class="info">
-                                <span class="text-muted">Kapazität:&nbsp;
-                                    <span th:remove="tag"
-                                          th:text="${raum.maxPersonen}"
-                                    >23</span>
+                                <span class="text-muted">
+                                    <span th:remove="tag" th:text="#{capacity}">Kapazität</span>:
+                                    <span th:remove="tag" th:text="${raum.maxPersonen}">23</span>
                             </span>
                             </div>
                             <p th:text="${raum.beschreibung}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -61,16 +59,21 @@
                                 auctor in, mattis vitae leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                 Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
                             <a th:href="@{'rooms/'+${raum.id}}">
-                                <button class="btn btn-outline-primary btn-sm" type="button">Read More</button>
+                                <button class="btn btn-outline-primary btn-sm" th:text="#{rooms.moreInfo}"
+                                        type="button">Read More
+                                </button>
                             </a>
                             <div class="pt-2" sec:authorize="isAuthenticated() and hasRole('ADMIN')">
-                        <span>
-                        <a th:href="@{'rooms/'+${raum.id}+'/edit'}">
-                            <button class="btn btn-outline-primary btn-sm" type="button">Edit</button>
-                        </a>
-                        </span>
+                                <span>
+                                <a th:href="@{'rooms/'+${raum.id}+'/edit'}">
+                                    <button class="btn btn-outline-primary btn-sm" th:text="#{edit}" type="button">Edit
+                                    </button>
+                                </a>
+                                </span>
                                 <form method="post" th:action="@{'rooms/'+${raum.id}+'/delete'}">
-                                    <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
+                                    <button class="btn btn-outline-danger btn-sm" th:text="#{delete}"
+                                            type="submit">Delete
+                                    </button>
                                 </form>
                             </div>
                         </div>

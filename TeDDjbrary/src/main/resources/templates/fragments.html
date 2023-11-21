@@ -20,18 +20,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <th:block th:fragment="head-links">
-        <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
-              rel="stylesheet">
-        <link href="/assets/fonts/ionicons.min.css" rel="stylesheet">
-        <link href="/assets/fonts/simple-line-icons.min.css" rel="stylesheet">
-        <link href="/assets/css/baguetteBox.min.css" rel="stylesheet">
-        <link href="/assets/css/vanilla-zoom.min.css" rel="stylesheet">
-    </th:block>
 </head>
 
+<th:block th:fragment="head">
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
+          rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link href="/assets/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="/assets/fonts/simple-line-icons.min.css" rel="stylesheet">
+    <link href="/assets/css/baguetteBox.min.css" rel="stylesheet">
+    <link href="/assets/css/vanilla-zoom.min.css" rel="stylesheet">
+</th:block>
 <body>
 <nav class="navbar navbar-dark navbar-expand-lg fixed-top text-info bg-gradient text-nowrap fs-1 visible clean-navbar"
      style="background-color: #0b13e1" th:fragment="nav">
@@ -41,7 +43,8 @@
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="index.html" th:href="@{/}">Start</a></li>
-                <li class="nav-item"><a class="nav-link" href="catalog-page.html" th:href="@{/inventory}">Katalog
+                <li class="nav-item"><a class="nav-link" href="catalog-page.html" th:href="@{/inventory}"
+                                        th:text="#{nav.cataloge}">Katalog
                 </a></li>
                 <li class="nav-item" sec:authorize="hasRole('BESONDERS')"><a class="nav-link" th:href="@{/geheim}">
                     <svg class="bi bi-gift" fill="currentColor" height="1em" viewBox="0 0 16 16"
@@ -50,13 +53,34 @@
                     </svg>
                 </a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="rooms/overview.html" th:href="@{/rooms}">Räume</a></li>
+
+                <li
+                        class="nav-item"><a class="nav-link" href="rooms/overview.html" th:href="@{/rooms}"
+                                            th:text="#{nav.rooms}">Räume
+                </a></li>
                 <li class="nav-item"><a class="nav-link" href="features.html">Features</a></li>
                 <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
                 <li class="nav-item"><a class="nav-link" href="slider.html">Slider</a></li>
                 <li class="nav-item"><a class="nav-link" href="testimonials.html"
-                                        th:href="@{/testimonials}">Gästebuch</a></li>
+                                        th:href="@{/testimonials}" th:text="#{nav.testimonials}">Gästebuch</a></li>
+                <li class="nav-item dropdown show">
+                    <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><i
+                            class="icon sp-large ion-android-globe"></i></a>
+                    <div class="dropdown-menu" data-bs-popper="none">
+                        <a class="dropdown-item" href="/changeLocale?locale=de"
+                           th:classappend="${#locale.equals(#locale.GERMAN)}? 'bg-primary': _">
+                            <span class="dropdown-item-text"
+                                  th:text="#{language.german}">Deutsch
+                            </span></a>
+                        <a class="dropdown-item"
+                           href="/changeLocale?locale=en"
+                           th:classappend="${#locale.equals(#locale.ENGLISH)}? 'bg-primary': _">
+                            <span class="dropdown-item-text"
+                                  th:text="#{language.english}">Englisch
+                            </span></a>
+                    </div>
+                </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" href="profile.html" style="margin-top: -7px;" th:href="@{/profile}">
                         <i class="icon ion-person" style="height:39px;font-size: 22px;"></i>
