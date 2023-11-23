@@ -18,9 +18,7 @@
     <developers>
         <developer>
             <name>Oliver Geisel</name>
-            <email>oliver.geisel@tu-dresden.de</email>
-            <organization>Technische Universität Dresden</organization>
-            <organizationUrl>https://tu-dresden.de/ing/informatik/smt/st</organizationUrl>
+            <email>geisel.oliver@gmail.com</email>
             <timezone>"Europe/Berlin"</timezone>
         </developer>
     </developers>
