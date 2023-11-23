@@ -39,7 +39,6 @@ Dadurch dauert das Ausführen der Tests noch länger.
 Folgender Code zeigt ein Beispiel für einen Integrationstest mit `@SpringBootTest`:
 
 ```java
-
 @SpringBootTest
 class MyTest {
 
@@ -199,6 +198,8 @@ Die Methode `andExpect()` kann auch mehrmals aufgerufen werden. Dadurch können 
 #### Alles drumherum
 
 `@MockBean`
+Eine Annotation, die es ermöglicht, Mocks in den Test zu laden. Diese kann aber nur in Kombination mit `@SpringBootTest` verwendet werden und ist für Services gedacht.
+
 
 `@WithMockUser` ist hilfreich, wenn ein Nutzer benötigt wird, aber eben nicht erstellt werden soll.
 Folgende Attribute können gesetzt werden:
@@ -218,7 +219,6 @@ Wenn z.B. ein Controller eine Methode besitzt, die nur für bestimmte Nutzer zug
 ##### Controller mit Service
 
 ```java
-
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {MyController.class})
 class ControllerTest {
@@ -241,7 +241,6 @@ class ControllerTest {
 ##### Controller mit eingeschränktem Zugriff
 
 ```java
-
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {MyController.class})
 class ControllerTest {
