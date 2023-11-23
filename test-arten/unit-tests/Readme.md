@@ -216,7 +216,7 @@ Und trotzdem müssen die Methoden getestet werden. Sicher ein 'save()' oder 'fin
 Das kann man auch bei den einfachen Methoden, die nur nach einem Attribut filtern so machen.
 Komplexere Methoden sollten aber unbedingt getestet werden.
 Nicht nur die mit Methodennamen, sondern auch die mit Query-Annotationen.
-
+> Es gibt diskussionen, ob die Tests jetzt Unit- oder Integrationstests sind. Im Projekt wurden sie als Unit-Tests behandelt. Es wird aber niemanden stören, wenn sie als Integrationstests behandelt werden.
 #### Annotationen für Repository-Tests
 
 Damit die Repositories getestet werden können, müssen sie als Testklassen gekennzeichnet werden.
@@ -224,7 +224,7 @@ Damit kann Spring die Methoden implementieren und die Repositories können getes
 Die Annotation dafür ist `@DataJpaTest`.
 Zusätzlich wird noch `@AutoConfigureTestDatabase` benötigt.
 > Hinweis! \
-> Wenn Spring Security genutzt wird, dann muss ein UserDetailsService vorhanden sein. Wir können das hier "umgehen" indem wir `@AutoConfigureMockMvc` nutzen. Das ist aber nur eine Notlösung.
+> Wenn Spring Security genutzt wird, dann muss ein UserDetailsService vorhanden sein. Wir können das hier "umgehen" indem wir `@AutoConfigureMockMvc` nutzen. Das ist aber nur eine Notlösung. Eine bessere Lösung wird gerade gesucht bzw. getestet.
 
 #### Beispiele für Repository-Tests
 
@@ -234,7 +234,7 @@ Es gibt komplexe Methoden in den Repositories.
 Diese sollen verdeutlichen, dass bereits eine Logik in den Repositories vorhanden ist.
 Diese Logik muss getestet werden. Deshalb gibt es die Tests. \
 Die Tests sind sehr einfach gehalten.
-Es wird ein Repository-Objekt erstellt und mit der Annotation `@Autowired` wird das Repository-Objekt injiziert. Dann wird die Methode aufgerufen und das Ergebnis überprüft. \
+Es wird ein Repository-Objekt erstellt und mit der Annotation `@Autowired` wird das Repository-Objekt injiziert. Dann wird die Methode aufgerufen und das Ergebnis überprüft.
 
 #### Aufgabe zum Üben
 
@@ -248,7 +248,7 @@ Sie können also direkt getestet werden.
 Es sollten nur Mocks von Klassen geben, die selbst Entity-Klassen sind.
 Value-Objekte werden nicht gemockt.
 
-Einige Dinge können in Unittest nicht getestet werden. Sollte es z.B. so sein, dass die Attribute der Entity mit Validation-constraints versehen sind, dann kann das nicht getestet werden. Das liegt daran, dass die Validation-constraints erst zur Laufzeit überprüft werden. Deshalb sind das eher (Komponenten-)Integrationstests.
+Einige Dinge können in Unittest nicht getestet werden. Sollte es z.B. so sein, dass die Attribute der Entity mit Validation-Constraints versehen sind, dann kann das nicht getestet werden. Das liegt daran, dass die Validation-Constraints erst zur Laufzeit überprüft werden. Deshalb sind das eher (Komponenten-)Integrationstests.
 
 #### Besonderheiten bei Entity-Tests
 
