@@ -42,6 +42,7 @@ Dies erstellt ein selbst signiertes Zertifikat mit dem Alias `library`, das 1825
 Das Zertifikat wird in der Datei `library.p12` gespeichert.
 Bei der Erstellung wird nach einem Passwort gefragt. Dieses Passwort muss in der Datei `application.properties`.
 Das Passwort für das Zertifikat ist `library`.
+
 ##### Aufgabe
 Aktiviere HTTPS in der TeDDjbrary.
 Öffne die Seite im Browser.
@@ -52,10 +53,11 @@ Wer ist der Aussteller?
 #### Https in Spring
 In Spring kann HTTPS über die Datei `application.properties` aktiviert werden.
 Dazu muss die Zeile `server.ssl.enabled=true` hinzugefügt werden.
-Außerdem muss ein Zertifikat erstellt werden. Dieses Zertifikat muss in der Datei `application.properties` angegeben 
-werden.
+Außerdem muss ein Zertifikat erstellt werden.
+Dieses Zertifikat muss in der Datei `application.properties` angegeben werden.
 Dazu muss die Eigenschaft `server.ssl.key-store` den Pfad des Zertifikates enthalten.
-In der TeDDjbrary ist HTTPS deaktiviert. Es sind aber alle Voraussetzungen für HTTPS vorhanden. 
+In der TeDDjbrary ist HTTPS deaktiviert.
+Es sind aber alle Voraussetzungen für HTTPS vorhanden.
 Zuerst müssen die auskommentierten Zeilen in der Datei `application.properties` aktiviert werden.
 Das Zertifikat ist der Einfachheit halber relativ zum Classpath angegeben.
 Das Zertifikat ist in der Datei `src/main/resources/keystore/library.p12` zu finden.
@@ -83,15 +85,18 @@ void testHttps() throws Exception {
 ```
 
 
-#### Übung 
+#### Übung
+
+TODO
 
 
 
 ## Brute-force - Hydra
 
+> Um diese Aufgaben machen zu können, sollte https deaktiviert werden und port 8080 oder 80 verwendet werden.
+
 Hydra ist ein Kommandozeilentool, das Zugangsdaten für verschiedene Dienste testet.
-Es kann für Brute-Force-Angriffe verwendet werden, um Benutzernamen und Passwörter zu erraten und zu überprüfen, ob ein
-Benutzername und ein Passwort gültig sind.
+Es kann für Brute-Force-Angriffe verwendet werden, um Benutzernamen und Passwörter zu erraten und zu überprüfen, ob ein Benutzername und ein Passwort gültig sind.
 
 ### Installation
 
@@ -121,14 +126,14 @@ hydra -l Oliver -p 12345 http://localhost
 ```
 
 Dieser Befehl testet den Nutzer Oliver (-l) mit dem Passwort 12345 (-p) auf dem lokalen Webserver.
-Sollen mehrere Passwörter oder Nutzer getestet werden muss ein Wortbuch verwendet werden.
+Sollen mehrere Passwörter oder Nutzer getestet werden, muss ein Wörterbuch verwendet werden.
 Dazu muss der entsprechen Parameter großgeschrieben werden.
 
 ```bash 
 hydra -l Oliver -P pass.txt http://localhost
 ```
 
-In diesem Fall werden nun alle Passwörter aus der Datei pass.txt getestet mit dem Nutzer *Oliver*.
+In diesem Fall werden nun alle Passwörter aus der Datei `pass.txt` getestet mit dem Nutzer *Oliver*.
 
 ### HTTP-Formular
 
@@ -161,6 +166,8 @@ hydra -l admin -P pass.txt -w 2 <IP_DES_COMPUTERS> http-post-form "/login:userna
 
 ### Übung
 
+> Nicht fertig; wird ergänzt
+
 Es gibt einen weiteren Nutzer, der ein schlechtes Passwort hat. Finde ihn heraus.
 
 #### Tipps
@@ -174,11 +181,13 @@ Es gibt einen weiteren Nutzer, der ein schlechtes Passwort hat. Finde ihn heraus
 
 Bei einer SQL-Injection wird versucht, eine SQL-Abfrage zu manipulieren, um Daten aus der Datenbank zu erhalten, die
 nicht für den Nutzer bestimmt sind.
-In Spring wird die Datenbank über JPA angesprochen. JPA verwendet Hibernate, um die Datenbank zu verwalten. 
+In Spring wird die Datenbank über JPA angesprochen.
+Spring nutzt zudem Hibernate, um die Daten aus Datenbank zu Objekten umzuwandeln.
 Hibernate ist ein ORM (Object-Relational-Mapping). Das bedeutet, dass die Datenbank als Objekte dargestellt wird. 
 Diese Objekte werden dann in der Datenbank gespeichert.
-Spring ist somit nicht direkt von einer SQL-Injection betroffen. Jedoch kann Hibernate so konfiguriert werden, dass es 
-SQL-Abfragen ausführt. Diese Abfragen können dann manipuliert werden. 
+Spring ist somit nicht direkt von einer SQL-Injection betroffen.
+Jedoch kann Hibernate so konfiguriert werden, dass es SQL-Abfragen ausführt.
+Diese Abfragen können dann manipuliert werden.
 
 ## Cross-Site-Scripting (XSS)
 
@@ -191,8 +200,8 @@ Auch wenn der Nutzer nicht auf den Kommentar klickt, wird der Code ausgeführt.
 Im Normalfall wird der Code in einem `<script>`-Tag geschrieben. Jedoch kann auch ein Bild oder ein Link verwendet
 werden.
 
-Eine Springanwendung mit Thymeleaf filtert die Eingaben im Normalfall nicht. Jedoch kann durch die Nutzung von `th:text`
-ein XSS-Angriff verhindert werden.
+Eine Springanwendung mit Thymeleaf filtert die Eingaben im Normalfall nicht.
+Jedoch kann durch die Nutzung von `th:text` ein XSS-Angriff verhindert werden.
 In diesem Fall werden Sonderzeichen wie `<` und `>` in HTML-Entities umgewandelt.
 Ein Beispiel ist `<` wird zu `&lt;` und `>` wird zu `&gt;`.\
 Es gibt aber auch `th:utext`, das die Eingabe nicht umwandelt.
@@ -202,10 +211,10 @@ Die TeDDjbrary hat eine XSS-Lücke. Diese ist im Gästebuch der Bibliothek.
 
 ### Übung
 
-Finde die XSS-Lücke und schreibe einen Kommentar, der JavaScript-Code ausführt.
+Finde die XSS-Lücke und erstelle einen Kommentar, der JavaScript-Code ausführt.
 Das Script soll eine Alert-Box mit dem Text "Hallo" anzeigen.
-Die Anwendung soll nicht untersucht werden. Nur durch die Eingabe bzw durch die Untersuchung des HTML-Codes, den der
-Client bekommt, soll die Lücke gefunden werden.
+Die Anwendung soll nicht untersucht werden.
+Nur durch die Eingabe bzw. durch die Untersuchung des HTML-Codes, den der Client bekommt, soll die Lücke gefunden werden.
 
 #### Tipps
 
