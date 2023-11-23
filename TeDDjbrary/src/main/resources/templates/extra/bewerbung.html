@@ -18,11 +18,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+    <th:block th:replace="~{fragments :: head-links}"></th:block>
     <title>Neue Bewerbung</title>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments :: nav}"></div>
 <header>
     <h1>Hallo <span th:remove="tag" th:text="${name}"></span></h1>
 </header>
@@ -48,5 +49,6 @@
     </section>
 </main>
 <div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: bootstrap-footer-scripts}"></div>
 </body>
 </html>

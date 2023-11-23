@@ -25,14 +25,6 @@
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
     <title>Start - TeDDjbrary</title>
     <meta content="website" property="og:type">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
-          rel="stylesheet">
-    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
-    <link href="assets/fonts/simple-line-icons.min.css" rel="stylesheet">
-    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
-    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
     <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
 
@@ -58,21 +50,22 @@
         </div>
     </section>
     <section class="clean-block clean-hero"
-             style="background-image: url(&quot;/assets/img/tech/image4.jpg&quot;);color: rgba(9, 162, 255, 0.85);">
+             style="background-image: url(&quot;/images/scenery/image2.jpg&quot;);color: rgba(9, 162, 255, 0.85);">
         <div class="text">
-            <h2><span sec:authentication="name" sec:authorize="isAuthenticated" th:remove="tag"/>Willkommen in unserer
-                Bibliothek</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis
-                vitae leo.</p>
-            <button class="btn btn-outline-light btn-lg" type="button">Learn More</button>
+            <h2>Hallo <span sec:authentication="name" sec:authorize="isAuthenticated" th:remove="tag"/> Willkommen in
+                unserer Bibliothek</h2>
+            <p>Wir haben eine große Auswahl an Büchern. Gib einfach etwas oben in der Suchleiste ein!
+                Oder brauchst du einen stillen Ort? Dann sind unsere <a class="link-primary" href="/rooms">Leseräume</a>
+                sicher
+                eine Hilfe für dich!</p>
         </div>
     </section>
     <section class="clean-block clean-info dark">
         <div class="container">
             <div class="block-heading">
                 <h2 class="text-info">Info</h2>
-                <p>Wir sind eine neue und moderne Bibliothek. Such doch in unserem Katalog oder geh in einen Raum
-                    mit Freunden zum Lernen.</p>
+                <p>Wir sind eine neue und moderne Bibliothek. Viele unsere Dienste sind online verfügbar. Und wir
+                    haben auch lange Öffnungszeiten!</p>
             </div>
             <div class="row align-items-center">
                 <div class="col-md-6"><img alt="Öffnungszeiten" class="img-thumbnail" src="/images/open.png"></div>
@@ -90,7 +83,7 @@
         <div class="container">
             <div class="block-heading">
                 <h2 class="text-info">Funktionen</h2>
-                <p>Unser Bibliothek hat tolle Angebote und Funktionen!&nbsp;</p>
+                <p>Unser Bibliothek hat tolle Angebote und Funktionen!&nbsp</p>
             </div>
             <div class="row justify-content-center block-content">
                 <div class="col-md-5 feature-box">
@@ -102,18 +95,20 @@
                         <path d="M9 12l2 2l4 -4"></path>
                         <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"></path>
                     </svg>
-                    <h4>Sicherheit</h4>
-                    <p>Du denkst, wir nehmen Sicherheit nicht ernst? Dann sieh doch&nbsp;<a href="#">hier</a>!</p>
+                    <h4 th:text="#{index.security}">Sicherheit</h4>
+                    <p>Du denkst, wir nehmen Sicherheit nicht ernst? Dann sieh doch&nbsp;<a
+                            href="/testimonials">hier</a>!
+                    </p>
                 </div>
                 <div class="col-md-5 feature-box"><i class="icon-pencil icon"></i>
-                    <h4>Customizable</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                        mattis vitae leo.</p>
+                    <h4 th:text="#{index.change}">Customizable</h4>
+                    <p>Du bist bei uns sicher! Wenn du es nicht möchtest, dann ändere es doch
+                        <a class="link-danger" th:href="@{/insecure}">hier</a>.</p>
                 </div>
                 <div class="col-md-5 feature-box"><i class="icon-screen-smartphone icon"></i>
-                    <h4>Responsive</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                        mattis vitae leo.</p>
+                    <h4 th:text="#{index.secure}">Responsive</h4>
+                    <p>Du hast schon die Sicherheit abgegeben? Willst du es wieder ändern? Dann klick
+                        <a class="link-primary" th:href="@{/secure}">hier</a>.</p>
                 </div>
                 <div class="col-md-5 feature-box"><i class="icon-refresh icon"></i>
                     <h4>All Browser Compatibility</h4>
@@ -132,12 +127,16 @@
             </div>
             <div class="carousel slide" data-bs-ride="carousel" id="carousel-1">
                 <div class="carousel-inner">
-                    <div class="carousel-item active"><img alt="Slide Image" class="w-100 d-block"
-                                                           src="assets/img/scenery/image1.jpg"></div>
-                    <div class="carousel-item"><img alt="Slide Image" class="w-100 d-block"
-                                                    src="assets/img/scenery/image4.jpg"></div>
-                    <div class="carousel-item"><img alt="Slide Image" class="w-100 d-block"
-                                                    src="assets/img/scenery/image6.jpg"></div>
+                    <div class="carousel-item active">
+                        <img alt="Slide Image" class="w-100 d-block" src="/images/scenery/image1.jpg"></div>
+                    <div class="carousel-item">
+                        <img alt="Slide Image" class="w-100 d-block" src="/images/scenery/image3.jpg"></div>
+                    <div class="carousel-item">
+                        <img alt="Slide Image" class="w-100 d-block" src="/images/scenery/image4.jpg"></div>
+                    <div class="carousel-item">
+                        <img alt="Slide Image" class="w-100 d-block" src="/images/scenery/image5.jpg"></div>
+                    <div class="carousel-item">
+                        <img alt="Slide Image" class="w-100 d-block" src="/images/scenery/image6.jpg"></div>
                 </div>
                 <div><a class="carousel-control-prev" data-bs-slide="prev" href="#carousel-1" role="button"><span
                         class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span></a><a
@@ -147,6 +146,8 @@
                     <li class="active" data-bs-slide-to="0" data-bs-target="#carousel-1"></li>
                     <li data-bs-slide-to="1" data-bs-target="#carousel-1"></li>
                     <li data-bs-slide-to="2" data-bs-target="#carousel-1"></li>
+                    <li data-bs-slide-to="3" data-bs-target="#carousel-1"></li>
+                    <li data-bs-slide-to="4" data-bs-target="#carousel-1"></li>
                 </ol>
             </div>
         </div>
@@ -154,44 +155,41 @@
     <section class="clean-block about-us">
         <div class="container">
             <div class="block-heading">
-                <h2 class="text-info">About Us</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in,
-                    mattis vitae leo.</p>
+                <h2 class="text-info" th:text="#{footer.about_us}">About Us</h2>
+                <p>Hier siehst du unser Team. Wenn du auch Teil unseres Teams sein möchtest, dann
+                    <a class="link-success" th:href="@{/jobs}">bewirb dich doch einfach bei uns</a></p>
             </div>
             <div class="row justify-content-center">
                 <div class="col-sm-6 col-lg-4">
-                    <div class="card text-center clean-card"><img class="card-img-top w-100 d-block"
-                                                                  src="assets/img/avatars/avatar1.jpg">
+                    <div class="card text-center clean-card">
+                        <img class="card-img-top w-100 d-block" src="/images/koala.png">
                         <div class="card-body info">
                             <h4 class="card-title">John Smith</h4>
                             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                             <div class="icons"><a href="#"><i class="icon-social-facebook"></i></a><a href="#"><i
-                                    class="icon-social-instagram"></i></a><a href="#"><i
-                                    class="icon-social-twitter"></i></a></div>
+                                    class="icon-social-instagram"></i></a></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
-                    <div class="card text-center clean-card"><img class="card-img-top w-100 d-block"
-                                                                  src="assets/img/avatars/avatar2.jpg">
+                    <div class="card text-center clean-card">
+                        <img class="card-img-top w-100 d-block" src="/images/pinguin.png">
                         <div class="card-body info">
                             <h4 class="card-title">Robert Downturn</h4>
                             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                             <div class="icons"><a href="#"><i class="icon-social-facebook"></i></a><a href="#"><i
-                                    class="icon-social-instagram"></i></a><a href="#"><i
-                                    class="icon-social-twitter"></i></a></div>
+                                    class="icon-social-instagram"></i></a></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
-                    <div class="card text-center clean-card"><img class="card-img-top w-100 d-block"
-                                                                  src="assets/img/avatars/avatar3.jpg">
+                    <div class="card text-center clean-card">
+                        <img class="card-img-top w-100 d-block" src="/images/faultier.png">
                         <div class="card-body info">
                             <h4 class="card-title">Ally Sanders</h4>
                             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                             <div class="icons"><a href="#"><i class="icon-social-facebook"></i></a><a href="#"><i
-                                    class="icon-social-instagram"></i></a><a href="#"><i
-                                    class="icon-social-twitter"></i></a></div>
+                                    class="icon-social-instagram"></i></a></div>
                         </div>
                     </div>
                 </div>

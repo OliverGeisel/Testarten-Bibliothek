@@ -19,6 +19,7 @@
 <head>
     <th:block th:replace="~{fragments::head-links}"></th:block>
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
     <title>403 - Unberechtigt</title>
 </head>
 <body style="display: flex; flex-direction: column;min-height: 100vh;">
@@ -28,11 +29,17 @@
         <header>
             <h1>Unberechtigt</h1>
         </header>
-        <section>
-            Du bist nicht berechtigt, diese Seite zu sehen.
-            Du solltest lieber schnell zurückgehen. Wir wissen, wer du bist und wo du wohnst.
-            Deine Eltern wurden informiert.
-            <a href="/">Zurück zur Startseite</a>
+        <section class="row">
+            <div class="col">
+                Du bist nicht berechtigt, diese Seite zu sehen.
+                Du solltest lieber schnell zurückgehen. Wir wissen, wer du bist und wo du wohnst.
+                Deine Eltern wurden informiert.
+                <a href="/">Zurück zur Startseite</a>
+            </div>
+            <div class="col-4">
+                <img alt="Unberechtigt!" class="image img-fluid rounded-2" src="/images/liegen.png">
+            </div>
+
         </section>
     </div>
 </main>

@@ -15,42 +15,19 @@
   -->
 
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
     <title>FAQ - TeDDjbrary</title>
     <meta content="website" property="og:type">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
-          rel="stylesheet">
-    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
-    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
-    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
 
 <body>
-<nav class="navbar navbar-dark navbar-expand-lg fixed-top text-info bg-dark bg-gradient text-nowrap fs-1 text-bg-success visible clean-navbar">
-    <div class="container-fluid"><a class="navbar-brand logo" href="#">TeDDjbrary</a>
-        <button class="navbar-toggler" data-bs-target="#navcol-1" data-bs-toggle="collapse"><span
-                class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navcol-1">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="index.html">Start</a></li>
-                <li class="nav-item"><a class="nav-link" href="catalog-page.html">Katalog</a></li>
-                <li class="nav-item"><a class="nav-link" href="service-page.html">Räume</a></li>
-                <li class="nav-item"><a class="nav-link" href="features.html">Features</a></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                <li class="nav-item"><a class="nav-link" href="slider.html">Slider</a></li>
-                <li class="nav-item"><a class="nav-link" href="blog-post-list.html">Blog</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.html" style="margin-top: -7px;"><i
-                        class="icon ion-log-in" style="height: 39px;font-size: 22px;"></i></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:replace="~{fragments::nav}"></div>
 <main class="page faq-page">
     <section class="clean-block clean-faq dark">
         <div class="container">
@@ -88,53 +65,8 @@
         </div>
     </section>
 </main>
-<footer class="page-footer dark">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <h5>Get started</h5>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="registration.html">Sign up</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>About us</h5>
-                <ul>
-                    <li><a href="#">Company Information</a></li>
-                    <li><a href="#">Contact us</a></li>
-                    <li><a href="#">Reviews</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>Support</h5>
-                <ul>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="#">Help desk</a></li>
-                    <li><a href="#">Forums</a></li>
-                </ul>
-            </div>
-            <div class="col-sm-3">
-                <h5>Legal</h5>
-                <ul>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        <p>© 2023 Copyright Oliver Geisel</p>
-    </div>
-</footer>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/bs-init.js"></script>
-<script src="assets/js/baguetteBox.min.js"></script>
-<script src="assets/js/vanilla-zoom.js"></script>
-<script src="assets/js/theme.js"></script>
+<div th:replace="~{fragments::footer}"></div>
+<div th:replace="~{fragments::bootstrap-footer-scripts}"></div>
 </body>
 
 </html>

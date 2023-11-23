@@ -53,14 +53,13 @@
                     </svg>
                 </a>
                 </li>
-
-                <li
-                        class="nav-item"><a class="nav-link" href="rooms/overview.html" th:href="@{/rooms}"
-                                            th:text="#{nav.rooms}">Räume
-                </a></li>
-                <li class="nav-item"><a class="nav-link" href="features.html">Features</a></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                <li class="nav-item"><a class="nav-link" href="rooms/overview.html" th:href="@{/rooms}"
+                                        th:text="#{nav.rooms}">Räume</a></li>
+                <li class="nav-item"
+                    sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"><a class="nav-link" th:href="@{/angestellte}">Angestellte</a></li>
+                <li class="nav-item"><a class="nav-link" href="pricing.html">Infos</a></li>
+                <li class="nav-item"><a class="nav-link" href="gallery.html" th:href="@{/gallery}"
+                                        th:text="#{nav.gallery}">Gallery</a></li>
                 <li class="nav-item"><a class="nav-link" href="slider.html">Slider</a></li>
                 <li class="nav-item"><a class="nav-link" href="testimonials.html"
                                         th:href="@{/testimonials}" th:text="#{nav.testimonials}">Gästebuch</a></li>
@@ -105,15 +104,15 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
-                <h5>Get started</h5>
+                <h5 th:text="#{footer.get_started}">Get started</h5>
                 <ul>
-                    <li><a href="/index.html" th:href="@{/index}">Home</a></li>
-                    <li><a href="/registration.html" th:href="@{/register}">Sign up</a></li>
-                    <li><a href="/login.html" th:href="@{/login}">Login</a></li>
+                    <li><a href="/index.html" th:href="@{/index}" th:text="#{nav.start}">Home</a></li>
+                    <li><a href="/registration.html" th:href="@{/register}" th:text="#{nav.register}">Sign up</a></li>
+                    <li><a href="/login.html" th:href="@{/login}" th:text="#{register.signin}">Login</a></li>
                 </ul>
             </div>
             <div class="col-sm-3">
-                <h5>About us</h5>
+                <h5 th:text="#{footer.about_us}">About us</h5>
                 <ul>
                     <li><a href="#">Company Information</a></li>
                     <li><a href="#">Contact us</a></li>
@@ -123,7 +122,7 @@
             <div class="col-sm-3">
                 <h5>Support</h5>
                 <ul>
-                    <li><a href="/faq.html">FAQ</a></li>
+                    <li><a href="/faq.html" th:href="faq">FAQ</a></li>
                     <li><a href="#">Help desk</a></li>
                     <li><a href="#">Forums</a></li>
                 </ul>

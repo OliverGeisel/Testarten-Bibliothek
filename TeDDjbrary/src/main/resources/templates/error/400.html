@@ -19,6 +19,7 @@
 <head>
     <th:block th:replace="~{fragments::head-links}"></th:block>
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
     <title>400 - Parameter sind falsch!</title>
 </head>
 <body style="display: flex; flex-direction: column;min-height: 100vh;">
@@ -28,9 +29,14 @@
         <header>
             <h1>Fehler in den Parametern</h1>
         </header>
-        <section>
+        <section class="row">
+            <div class="col">
             Du hast etwas falsch gemacht. Bitte überprüfe deine Eingaben. Wir können deine Parameter nicht verarbeiten.
             <a href="/">Zurück zur Startseite</a>
+            </div>
+            <div class="col-4">
+                <img alt="Falsche Parameter!" class="image img-fluid rounded-2" src="/images/vergessen.jpg">
+            </div>
         </section>
     </div>
 </main>

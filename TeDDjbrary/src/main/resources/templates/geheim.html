@@ -22,19 +22,12 @@
     <title>Das Geheimnis der Bibliothek</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
     <meta content="website" property="og:type">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.reflowhq.com/v2/toolkit.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i&amp;display=swap"
-          rel="stylesheet">
-    <link href="assets/fonts/ionicons.min.css" rel="stylesheet">
-    <link href="assets/fonts/simple-line-icons.min.css" rel="stylesheet">
-    <link href="assets/css/baguetteBox.min.css" rel="stylesheet">
-    <link href="assets/css/vanilla-zoom.min.css" rel="stylesheet">
+    <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <div th:replace="~{fragments::nav}"></div>
-<main class="page">
-    <div sec:authorize="not hasRole('BESONDERS')">
+<main class="page flex-grow-1">
+    <div class="container pt-2" sec:authorize="not hasRole('BESONDERS')">
         <h1>Das Geheimnis der Bibliothek</h1>
         <p>Das Geheimnis der Bibliothek bleibt dir verborgen. <strong>NUR</strong> der Auserwählte kann es lüften.</p>
         <p>Wenn du der Auserwählte bist, dann melde dich bitte an.</p>
@@ -43,7 +36,7 @@
             <strong>besten</strong> von allen, der jemals diese Bibliothek betreten wird.
             Erst dann offenbart sich dir das Geheimnis.🚪⛔</p>
     </div>
-    <div class="container" sec:authorize="hasRole('BESONDERS')">
+    <div class="container pt-2" sec:authorize="hasRole('BESONDERS')">
         <header class="heading ">
             <h1>Du bist der <strong>Auserwählte!</strong></h1>
         </header>
@@ -103,8 +96,16 @@
                     Geheimnis der Bibliothek.</p>
             </div>
         </section>
+        <section>
+            <figure>
+                <img alt="Der Auserwählte" class="image img-fluid rounded-2" src="/images/King.png"
+                     style="max-width: 50vw;">
+                <figcaption>Der Auserwählte</figcaption>
+            </figure>
+        </section>
     </div>
 </main>
 <div th:replace="~{fragments::footer}"></div>
+<div th:replace="~{fragments::bootstrap-footer-scripts}"></div>
 </body>
 </html>

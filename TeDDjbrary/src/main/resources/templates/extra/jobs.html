@@ -19,29 +19,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Unsere Jobangebote</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+    <th:block th:replace="~{fragments::head-links}"></th:block>
 </head>
 <body>
-
-<section>
-    <form action="bewerbung.html" th:action="@{/jobs/bewerbung}">
-        <label>
-            <input name="name" placeholder="name">
-        </label>
-        <label>
-            <input name="e-mail" placeholder="E-mail" type="email">
-        </label>
-        <label>
-            <input name="message" placeholder="Deine Nachricht an uns">
-        </label>
-        <label>
-            <select name="job">
-                <option value="Bibliothekar">Bibliothekar</option>
-                <option value="Reinigungskraft">Reinigungskraft</option>
-                <option value="Projektleiter">Projektleiter</option>
-            </select>
-        </label>
-        <button type="submit">Bewerben</button>
-    </form>
-</section>
+<div th:replace="~{fragments::nav}"></div>
+<main>
+    <section>
+        <form action="bewerbung.html" th:action="@{/jobs/bewerbung}">
+            <label>
+                <input name="name" placeholder="name">
+            </label>
+            <label>
+                <input name="e-mail" placeholder="E-mail" type="email">
+            </label>
+            <label>
+                <input name="message" placeholder="Deine Nachricht an uns">
+            </label>
+            <label>
+                <select name="job">
+                    <option value="Bibliothekar">Bibliothekar</option>
+                    <option value="Reinigungskraft">Reinigungskraft</option>
+                    <option value="Projektleiter">Projektleiter</option>
+                </select>
+            </label>
+            <button type="submit">Bewerben</button>
+        </form>
+    </section>
+</main>
 </body>
 </html>
