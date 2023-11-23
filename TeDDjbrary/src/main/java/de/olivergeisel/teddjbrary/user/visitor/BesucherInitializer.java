@@ -58,6 +58,8 @@ public class BesucherInitializer implements DataInitializer {
 				Role.of("BESUCHER"));
 		besucherAccount.setFirstname("Hans");
 		besucherAccount.setLastname("Peter");
+		besucherAccount.setEmail("test@tebid.de");
+		besucherAccount.add(Role.of("STUDIERENDER"));
 		var besucher = new Studierender(besucherAccount);
 		userAccountManagement.save(besucherAccount);
 		userManager.saveBesucher(besucher);

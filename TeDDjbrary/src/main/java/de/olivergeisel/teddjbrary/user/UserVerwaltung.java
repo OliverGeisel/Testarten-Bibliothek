@@ -34,19 +34,19 @@ import java.util.NoSuchElementException;
 @Service
 public class UserVerwaltung {
 
-	private static final Role       ROLE_USER           = Role.of("USER");
-	private static final Role       ROLE_DOZENT         = Role.of("DOZENT");
-	private static final Role       ROLE_STUDIERENDER   = Role.of("STUDIERENDER");
-	static final         List<Role> ALLE_BESUCHER_ROLES = List.of(ROLE_DOZENT, ROLE_STUDIERENDER);
+	static final Role       ROLE_USER           = Role.of("USER");
+	static final Role       ROLE_DOZENT         = Role.of("DOZENT");
+	static final Role       ROLE_STUDIERENDER   = Role.of("STUDIERENDER");
+	static final List<Role> ALLE_BESUCHER_ROLES = List.of(ROLE_DOZENT, ROLE_STUDIERENDER);
 
-	private static final Role       ROLE_ANGESTELLTER      = Role.of("ANGESTELLTER");
-	private static final Role       ROLE_BIBLIOTHEKAR      = Role.of("BIBLIOTHEKAR");
-	private static final Role       ROLE_RESTAURATOR       = Role.of("RESTAURATOR");
-	private static final Role       ROLE_REINIGUNGSKRAFT   = Role.of("REINIGUNGSKRAFT");
-	static final List<Role> ALLE_ROLES = List.of(ROLE_USER, ROLE_DOZENT, ROLE_STUDIERENDER,
+	static final Role       ROLE_ANGESTELLTER      = Role.of("ANGESTELLTER");
+	static final Role       ROLE_BIBLIOTHEKAR      = Role.of("BIBLIOTHEKAR");
+	static final Role       ROLE_RESTAURATOR       = Role.of("RESTAURATOR");
+	static final Role       ROLE_REINIGUNGSKRAFT   = Role.of("REINIGUNGSKRAFT");
+	static final List<Role> ALLE_ROLES             = List.of(ROLE_USER, ROLE_DOZENT, ROLE_STUDIERENDER,
 			ROLE_ANGESTELLTER, ROLE_BIBLIOTHEKAR, ROLE_RESTAURATOR, ROLE_REINIGUNGSKRAFT);
-	private static final Role       ROLE_ADMIN             = Role.of("ADMIN");
-	static final         List<Role> ALLE_ANGESTELLTE_ROLES =
+	static final Role       ROLE_ADMIN             = Role.of("ADMIN");
+	static final List<Role> ALLE_ANGESTELLTE_ROLES =
 			List.of(ROLE_ANGESTELLTER, ROLE_BIBLIOTHEKAR, ROLE_RESTAURATOR, ROLE_REINIGUNGSKRAFT, ROLE_ADMIN);
 
 
@@ -54,7 +54,7 @@ public class UserVerwaltung {
 	private final BesucherRepository     besucherRepository;
 	private final AngestelltenVerwaltung angestellte;
 
-	public UserVerwaltung(UserAccountManagement userAccountManagement, BesucherRepository besucherRepository,
+	public UserVerwaltung (UserAccountManagement userAccountManagement, BesucherRepository besucherRepository,
 			AngestelltenVerwaltung angestellte) {
 		this.userAccountManagement = userAccountManagement;
 		this.besucherRepository = besucherRepository;
@@ -79,7 +79,7 @@ public class UserVerwaltung {
 		return besucherRepository.save(nutzer);
 	}
 
-	public Benutzer findByAccount(UserAccount userAccount) throws NoSuchElementException {
+	public Benutzer findByAccount (UserAccount userAccount) throws NoSuchElementException {
 		if (userAccount.getRoles().stream().anyMatch(ALLE_BESUCHER_ROLES::contains)) {
 			return besucherRepository.findByUserAccount(userAccount).orElseThrow();
 		} else if (userAccount.getRoles().stream().anyMatch(ALLE_ANGESTELLTE_ROLES::contains)) {
@@ -90,16 +90,15 @@ public class UserVerwaltung {
 	}
 
 
-
-	public <T extends Angestellter> T saveAngestellten(T angestellter) {
+	public <T extends Angestellter> T saveAngestellten (T angestellter) {
 		return angestellte.save(angestellter);
 	}
 
-	public <T extends Besucher> T saveBesucher(T besucher) {
+	public <T extends Besucher> T saveBesucher (T besucher) {
 		return besucherRepository.save(besucher);
 	}
 
-	public void updatePersonalData(PersonalDataUpdateForm form, UserAccount userAccount) {
+	public void updatePersonalData (PersonalDataUpdateForm form, UserAccount userAccount) {
 		userAccount.setFirstname(form.getVorname());
 		userAccount.setLastname(form.getNachname());
 		userAccount.setEmail(form.getEmail());

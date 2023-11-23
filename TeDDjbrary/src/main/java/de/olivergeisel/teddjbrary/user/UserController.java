@@ -69,7 +69,7 @@ public class UserController {
 	}
 
 	@GetMapping("/profile")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated")
 	public String profile (Model model, @LoggedIn Optional<UserAccount> userAccount) {
 		if (userAccount.isEmpty()) {
 			return "redirect:/login";

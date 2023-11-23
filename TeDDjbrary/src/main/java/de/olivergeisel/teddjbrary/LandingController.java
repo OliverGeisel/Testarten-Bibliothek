@@ -125,4 +125,8 @@ public class LandingController {
 		return "redirect:" + uri.getPath();
 	}
 
+	@GetMapping("/faq")
+	String faq () {
+		return "faq";
+	}
 }
