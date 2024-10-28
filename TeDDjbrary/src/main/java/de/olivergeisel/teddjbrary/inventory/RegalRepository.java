@@ -31,11 +31,12 @@ public interface RegalRepository extends CrudRepository<Regal, UUID> {
 
 	Optional<Regal> findByInhalt_Buecher_Isbn (ISBN isbn);
 
+//region setter/getter
 	@Query("""
 			select r from Regal r where (
-			(SELECT SUM(size(rb.buecher)) FROM RegalBrett rb inner JOIN r.inhalt WHERE rb = r.inhalt)
-			< r.kapazitaet )""")
+			(SELECT SUM(size(rb.buecher)) FROM RegalBrett rb WHERE rb MEMBER OF r.inhalt) < r.kapazitaet )""")
 	Streamable<Regal> getNichtVolleRegale ();
+//endregion
 
 	@Query("select r from Regal r inner join r.inhalt.buecher buecher where buecher.id = ?1")
 	Regal findByBuchId (UUID id);

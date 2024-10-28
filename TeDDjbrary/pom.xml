@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.3.2</version>
         <relativePath/>
     </parent>
 
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>de.tudresden.inf.st</groupId>
             <artifactId>salespoint-framework</artifactId>
-            <version>9.0.0</version>
+            <version>10.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -103,27 +103,27 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.8.1</version>
+            <version>4.22.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>7.0.2</version>
+            <version>7.4.0</version>
         </dependency>
 
         <!-- Chrome WebDriver -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.5.0</version>
+            <version>5.8.0</version>
         </dependency>
 
         <!-- CSV -->
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.7.1</version>
+            <version>5.9</version>
         </dependency>
         <!-- Jpackage
         <dependency>

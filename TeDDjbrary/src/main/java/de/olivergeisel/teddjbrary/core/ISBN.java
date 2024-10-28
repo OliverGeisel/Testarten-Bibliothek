@@ -66,7 +66,7 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 		}
 	}
 
-	public ISBN () {
+	public ISBN() {
 		this(978, 0, 0, 0, 0);
 	}
 
@@ -75,9 +75,10 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	 *
 	 * @param isbn String der eine ISBN-13 ist.
 	 * @return ISBN die zu dem angegeben String passt
+	 *
 	 * @throws IllegalArgumentException, wenn der String keine gültige ISBN-13 ist.
 	 */
-	public static ISBN fromString (String isbn) throws IllegalArgumentException {
+	public static ISBN fromString(String isbn) throws IllegalArgumentException {
 		var numbers = isbn.split("-");
 		var intNumbers = Arrays.stream(numbers).mapToInt(Integer::parseInt).toArray();
 		if (intNumbers.length < 5) {
@@ -86,13 +87,28 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 		return new ISBN(intNumbers[0], intNumbers[1], intNumbers[2], intNumbers[3], intNumbers[4]);
 	}
 
-	public static ISBN fromStringOhneTrennung (String isbn) {
+	/**
+	 * Nimmt eine ISBN-Stringrepräsentation und gibt das passende ISBN-Objekt zurück.
+	 * Sollte die Prüfziffer keine Zahl sein, wird sie ignoriert und auf 0 gesetzt.
+	 *
+	 * @param isbn String der eine ISBN-10 ist.
+	 * @return ISBN die zu dem angegeben String passt
+	 *
+	 * @throws IllegalArgumentException, wenn der String keine gültige ISBN-10 ist.
+	 */
+	public static ISBN fromStringOhneTrennung(String isbn) {
+		if (isbn == null) {
+			return NullISBN;
+		}
+		if (isbn.length() != 10) {
+			throw new IllegalArgumentException("ISBN nicht korrekt. Es wird eine ISBN-10 ohne Trennstriche benötigt!");
+		}
 		var pre = 978;
 		var grp = Integer.parseInt(isbn.substring(0, 1));
 		var verlag = Integer.parseInt(isbn.substring(1, 6));
 		var titel = Integer.parseInt(isbn.substring(6, 9));
 		int pruef = 0;
-		try {
+		try { // ignoriere pruefziffer wenn keine Nummer
 			pruef = Integer.parseInt(isbn.substring(9, 10));
 		} catch (Exception ignored) {
 		}
@@ -104,7 +120,7 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	 *
 	 * @return Die ISBN mit führenden Nullen und Trennstrichen.
 	 */
-	public String mitTrennstrich () {
+	public String mitTrennstrich() {
 		return String.format("%d-%d-%05d-%03d-%d", praefix, gruppe, verlagnr, titelnr, pruefziffer);
 	}
 
@@ -113,12 +129,12 @@ public record ISBN(int praefix, int gruppe, int verlagnr, int titelnr, int pruef
 	 *
 	 * @return Die ISBN mit führenden Nullen und Leerzeichen.
 	 */
-	public String ohneTrennstrich () {
+	public String ohneTrennstrich() {
 		return String.format("%d %d %05d %03d %d", praefix, gruppe, verlagnr, titelnr, pruefziffer);
 	}
 
 	@Override
-	public int compareTo (ISBN isbn) {
+	public int compareTo(ISBN isbn) {
 		return mitTrennstrich().compareTo(isbn.mitTrennstrich());
 	}
 }

@@ -29,7 +29,6 @@ import java.util.UUID;
  * Repräsentiert ein Buch in einer Bibliothek.
  * Wenn es mehrere Instanzen des gleichen physischen Buches gibt, so werden diese durch einen Code unterschieden.
  */
-
 @Entity
 public class Buch implements Comparable<Buch>, Verschmutzbar {
 	private final String  titel;
@@ -50,15 +49,15 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 
 	private double verschmutzung;
 
-	public Buch () {
+	public Buch() {
 		this("", new ISBN());
 	}
 
-	public Buch (String titel, ISBN isbn) {
+	public Buch(String titel, ISBN isbn) {
 		this(titel, "", isbn, URI.create("http://localhost:8080/images/placeholder.png"));
 	}
 
-	public Buch (String titel, String autor, ISBN isbn, URI bild) {
+	public Buch(String titel, String autor, ISBN isbn, URI bild) {
 		this.titel = titel;
 		code = new Random().nextInt();
 		this.autor = autor;
@@ -69,7 +68,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	/**
 	 * Setzt den Status auf ausgeliehen. Kann nicht ausgeliehen werden, wenn es nicht verfügbar ist.
 	 */
-	public void ausleihen () {
+	public void ausleihen() {
 		ausgeliehen = true;
 		ausleihdatum = LocalDate.now();
 	}
@@ -77,7 +76,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	/**
 	 * Erlaubt das Ausleihen des Buches.
 	 */
-	public void verfuegbarMachen () {
+	public void verfuegbarMachen() {
 		ausgeliehen = false;
 		ausleihdatum = null;
 	}
@@ -85,21 +84,21 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	/**
 	 * Fügt eine kleine Beschädigung hinzu.
 	 */
-	public void beschaedigen () {
+	public void beschaedigen() {
 		beschaedigung += Math.random() * 0.5;
 	}
 
 	/**
 	 * Das Buch wird stark beschädigt und ist zur Reparatur zu bringen.
 	 */
-	public void starkBeschaedigen () {
+	public void starkBeschaedigen() {
 		beschaedigung = Math.max(0.8, beschaedigung + 0.1);
 	}
 
 	/**
 	 * Repariert das Buch wieder und macht es wieder nutzbar.
 	 */
-	public void reparieren () {
+	public void reparieren() {
 		beschaedigung = 0.01;
 	}
 
@@ -109,7 +108,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	 * @param buch das zu vergleichende Buch
 	 * @return true, wenn die ISBN gleich ist.
 	 */
-	public boolean isGleichesBuch (Buch buch) {
+	public boolean isGleichesBuch(Buch buch) {
 		return isbn.equals(buch.isbn);
 	}
 
@@ -121,7 +120,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	 * @param buch das zu vergleichende Buch
 	 * @return true, wenn die ISBN und der Code gleich ist.
 	 */
-	public boolean isIdentischesBuch (Buch buch) {
+	public boolean isIdentischesBuch(Buch buch) {
 		return this.isbn.equals(isbn) && this.code == buch.code;
 	}
 
@@ -129,7 +128,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	 * Reinigt das Buch vollständig.
 	 */
 	@Override
-	public void saeubern () {
+	public void saeubern() {
 		verschmutzung = 0.0;
 	}
 
@@ -137,7 +136,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	 * Verschmutzt das Buch etwas.
 	 */
 	@Override
-	public void verschmutzen () {
+	public void verschmutzen() {
 		verschmutzung += 0.07;
 	}
 
@@ -176,18 +175,19 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	 * @param o the object to be compared.
 	 * @return a negative integer, zero, or a positive integer as this object
 	 * is less than, equal to, or greater than the specified object.
+	 *
 	 * @throws NullPointerException if the specified object is null
 	 * @throws ClassCastException   if the specified object's type prevents it
 	 *                              from being compared to this object.
 	 */
 
 	@Override
-	public int compareTo (Buch o) {
+	public int compareTo(Buch o) {
 		return this.isbn.compareTo(o.isbn);
 	}
 
 	//region setter/getter
-	public UUID getId () {
+	public UUID getId() {
 		return id;
 	}
 
@@ -197,49 +197,57 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	 * @return true, wenn die Verschmutzung größer als 0.5 ist.
 	 */
 	@Override
-	public boolean isDreckig () {
+	public boolean isDreckig() {
 		return verschmutzung > 0.5;
 	}
 
-	public String getTitel () {
+	public String getTitel() {
 		return titel;
 	}
 
-	public String getAutor () {
+	public String getAutor() {
 		return autor;
 	}
 
-	public void setAutor (String autor) {
+	public void setAutor(String autor) {
 		this.autor = autor;
 	}
 
-	public ISBN getIsbn () {
+	public ISBN getIsbn() {
 		return isbn;
 	}
 
-	public long getCode () {
+	public long getCode() {
 		return code;
 	}
 
-	public double getBeschaedigung () {
+	public double getBeschaedigung() {
 		return beschaedigung;
 	}
 
-	public LocalDate getAusleihdatum () {
+	public LocalDate getAusleihdatum() {
 		return ausleihdatum;
 	}
 
-	public boolean isAusgeliehen () {
+	public boolean isAusgeliehen() {
 		return ausgeliehen;
 	}
 
-	public boolean isVerfuegbar () {
+	public boolean isVerfuegbar() {
 		return !isAusgeliehen();
+	}
+
+	public URI getBild() {
+		return bild;
+	}
+
+	public void setBild(URI bild) {
+		this.bild = bild;
 	}
 //endregion
 
 	@Override
-	public boolean equals (Object o) {
+	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Buch buch = (Buch) o;
@@ -247,16 +255,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	}
 
 	@Override
-	public int hashCode () {
+	public int hashCode() {
 		return Objects.hash(isbn, code);
-	}
-
-
-	public URI getBild () {
-		return bild;
-	}
-
-	public void setBild (URI bild) {
-		this.bild = bild;
 	}
 }

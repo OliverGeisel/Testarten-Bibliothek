@@ -43,9 +43,9 @@ public class BuchInitializer implements DataInitializer {
 	private final ResourceLoader resourceLoader;
 	private final Logger         logger = LoggerFactory.getLogger(BuchInitializer.class);
 	@Value("${app.buecher.count:1000}")
-	private       int            bucherCount;
+	private int buecherCount;
 
-	public BuchInitializer (BuchRepository buchRepo, ResourceLoader resourceLoader) {
+	public BuchInitializer(BuchRepository buchRepo, ResourceLoader resourceLoader) {
 		this.buchRepo = buchRepo;
 		this.resourceLoader = resourceLoader;
 	}
@@ -54,7 +54,7 @@ public class BuchInitializer implements DataInitializer {
 	 * Called on application startup to trigger data initialization. Will run inside a transaction.
 	 */
 	@Override
-	public void initialize () {
+	public void initialize() {
 		AtomicInteger count = new AtomicInteger();
 		var resource = resourceLoader.getResource("classpath:buecher.csv");
 		CSVReaderBuilder builder = null;
@@ -63,25 +63,26 @@ public class BuchInitializer implements DataInitializer {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		logger.info("Initialisiere {} Bücher...", buecherCount);
 		var parser = new CSVParserBuilder();
 		parser.withSeparator(';').withQuoteChar('"').withEscapeChar('\\').withIgnoreLeadingWhiteSpace(true);
 		builder.withSkipLines(1).withCSVParser(parser.build()).withVerifyReader(false);
 		try (CSVReader reader = builder.build()) {
 			reader.skip(1);
-
-			for (var line : reader.readAll()) {
-				if (count.get() >= bucherCount) {
+			while (count.get() < buecherCount) {
+				if (reader.peek() == null) {
 					break;
 				}
-				// TODO IBSN-10 TYP erstellen
+				String[] line = reader.readNext();
 				try {
+					// All ISBNs are ISBN-10 input --> convert to ISBN-13
 					ISBN isbn = ISBN.fromStringOhneTrennung(line[0]);
 					var titel = line[1];
 					var autor = line[2];
 					var uri = URI.create(line[6]);
 					var buch = new Buch(titel, autor, isbn, uri);
 					buchRepo.save(buch);
-				} catch (Exception e) {
+				} catch (IllegalArgumentException e) {
 					logger.warn("Fehler beim Initialisieren der Bücher in Zeile {}", count, e);
 				} finally {
 					count.getAndIncrement();
@@ -90,7 +91,7 @@ public class BuchInitializer implements DataInitializer {
 		} catch (Exception e) {
 			logger.error("Unerwarteter Fehler beim Initialisieren der Bücher", e);
 		}
-		logger.info("Bücher initialisiert: %d wurden gefunden.".formatted(buchRepo.count()));
+		logger.info("Bücher initialisiert: {} wurden gefunden.", buchRepo.count());
 	}
 }
 
@@ -103,13 +104,13 @@ class RegalInitializer implements DataInitializer {
 	private final Logger          logger = LoggerFactory.getLogger(RegalInitializer.class);
 
 
-	public RegalInitializer (RegalRepository regalRepo, BuchRepository buchRepo) {
+	public RegalInitializer(RegalRepository regalRepo, BuchRepository buchRepo) {
 		this.regalRepo = regalRepo;
 		this.buchRepo = buchRepo;
 	}
 
 	@Override
-	public void initialize () {
+	public void initialize() {
 
 		int regalCount = 1;
 		Regal regal = new Regal();
@@ -122,6 +123,6 @@ class RegalInitializer implements DataInitializer {
 			regal.hineinStellen(buch);
 		}
 		regalRepo.save(regal);
-		logger.info("Regale initialisiert: %d wurden erstellt.".formatted(regalCount));
+		logger.info("Regale initialisiert: {} wurden erstellt.", regalCount);
 	}
 }
