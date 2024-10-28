@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+<<<<<<<< HEAD:test-arten/integration-tests/src/test/java/de/olivergeisel/integrationtests/IntegrationtestsApplicationTests.java
 package de.olivergeisel.integrationtests;
 
 import org.junit.jupiter.api.Test;
@@ -26,4 +27,9 @@ class IntegrationtestsApplicationTests {
 	void contextLoads() {
 	}
 
+========
+package de.olivergeisel.tdd;
+
+public class TelefonbuchEintrag {
+>>>>>>>> mock_tdd:tdd und mocking/src/main/java/de/olivergeisel/tdd/TelefonbuchEintrag.java
 }

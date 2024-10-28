@@ -22,17 +22,13 @@ public class StackWrapper<T> implements Collection<T> {
 	 * @param list List to be wrapped
 	 */
 	public StackWrapper(List<T> list) {
+		if (list == null) throw new IllegalArgumentException("List must not be null");
 		this.list = list;
 	}
 
 	@Override
 	public int size() {
 		return list.size();
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return list.isEmpty();
 	}
 
 	@Override
@@ -92,6 +88,20 @@ public class StackWrapper<T> implements Collection<T> {
 		return (T[]) back.toArray();
 	}
 
+	public void push(T element) {
+		if (element == null) throw new IllegalArgumentException("Element must not be null");
+		list.add(element);
+	}
+
+	public void push(T[] elements) {
+		if (elements == null) throw new IllegalArgumentException("Elements must not be null");
+		list.addAll(Arrays.asList(elements));
+	}
+
+	public T peek() {
+		return list.get(list.size() - 1);
+	}
+
 	@Override
 	public boolean containsAll(Collection<?> c) {
 		return new HashSet<>(list).containsAll(c);
@@ -123,16 +133,6 @@ public class StackWrapper<T> implements Collection<T> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		return list.equals(o);
-	}
-
-	@Override
-	public int hashCode() {
-		return list.hashCode();
-	}
-
-	@Override
 	public Spliterator<T> spliterator() {
 		return Collection.super.spliterator();
 	}
@@ -145,6 +145,23 @@ public class StackWrapper<T> implements Collection<T> {
 	@Override
 	public Stream<T> parallelStream() {
 		return list.parallelStream();
+	}
+
+	//region setter/getter
+	@Override
+	public boolean isEmpty() {
+		return list.isEmpty();
+	}
+//endregion
+
+	@Override
+	public boolean equals(Object o) {
+		return list.equals(o);
+	}
+
+	@Override
+	public int hashCode() {
+		return list.hashCode();
 	}
 
 }
