@@ -34,7 +34,7 @@ public class Buch implements Comparable<Buch>, Verschmutzbar {
 	private final String  titel;
 	@Embedded
 	private final ISBN    isbn;
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private final long    code;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -18,12 +18,16 @@ package de.olivergeisel.teddjbrary.user.visitor;
 
 import org.salespointframework.useraccount.UserAccount;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public interface BesucherRepository extends CrudRepository<Besucher, UUID> {
 
+
+	@Override
+	Streamable<Besucher> findAll();
 
 	Optional<Besucher> findByUserAccount(UserAccount account);
 }

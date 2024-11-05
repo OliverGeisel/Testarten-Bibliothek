@@ -12,7 +12,7 @@
 
     <groupId>de.olivergeisel</groupId>
     <artifactId>TeDDjbrary</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>TeDDjbrary</name>
     <description>TeDDjbrary is an example project to show various kinds of tests</description>
     <developers>

@@ -18,10 +18,7 @@ package de.olivergeisel.teddjbrary.user;
 
 import de.olivergeisel.teddjbrary.user.staff.AngestelltenVerwaltung;
 import de.olivergeisel.teddjbrary.user.staff.Angestellter;
-import de.olivergeisel.teddjbrary.user.visitor.Besucher;
-import de.olivergeisel.teddjbrary.user.visitor.BesucherRepository;
-import de.olivergeisel.teddjbrary.user.visitor.Dozent;
-import de.olivergeisel.teddjbrary.user.visitor.Studierender;
+import de.olivergeisel.teddjbrary.user.visitor.*;
 import org.salespointframework.useraccount.Password;
 import org.salespointframework.useraccount.Role;
 import org.salespointframework.useraccount.UserAccount;
@@ -53,12 +50,13 @@ public class UserVerwaltung {
 	private final UserAccountManagement  userAccountManagement;
 	private final BesucherRepository     besucherRepository;
 	private final AngestelltenVerwaltung angestellte;
-
+	private final Kundenregister register;
 	public UserVerwaltung (UserAccountManagement userAccountManagement, BesucherRepository besucherRepository,
-			AngestelltenVerwaltung angestellte) {
+			AngestelltenVerwaltung angestellte, Kundenregister register) {
 		this.userAccountManagement = userAccountManagement;
 		this.besucherRepository = besucherRepository;
 		this.angestellte = angestellte;
+		this.register = register;
 	}
 
 	public Besucher registerUser (UserRegistrationForm form) throws IllegalArgumentException {
@@ -95,7 +93,9 @@ public class UserVerwaltung {
 	}
 
 	public <T extends Besucher> T saveBesucher (T besucher) {
-		return besucherRepository.save(besucher);
+		var temp = besucherRepository.save(besucher);
+		register.addBesucher(besucher);
+		return temp;
 	}
 
 	public void updatePersonalData (PersonalDataUpdateForm form, UserAccount userAccount) {

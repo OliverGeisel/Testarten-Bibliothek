@@ -82,10 +82,9 @@ public class BuchInitializer implements DataInitializer {
 					var uri = URI.create(line[6]);
 					var buch = new Buch(titel, autor, isbn, uri);
 					buchRepo.save(buch);
-				} catch (IllegalArgumentException e) {
-					logger.warn("Fehler beim Initialisieren der Bücher in Zeile {}", count, e);
-				} finally {
 					count.getAndIncrement();
+				} catch (IllegalArgumentException e) {
+					logger.warn("Fehler beim Initialisieren der Bücher in Zeile {}", count);
 				}
 			}
 		} catch (Exception e) {

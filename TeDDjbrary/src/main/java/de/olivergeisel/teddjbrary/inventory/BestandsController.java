@@ -21,6 +21,7 @@ import de.olivergeisel.teddjbrary.user.visitor.BesucherRepository;
 import org.salespointframework.useraccount.UserAccount;
 import org.salespointframework.useraccount.web.LoggedIn;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,7 @@ public class BestandsController {
 	}
 
 	@PostMapping("ausleihen/{id}")
+	@PreAuthorize("isAuthenticated()")
 	public String ausleihen (@PathVariable("id") Buch buch, @LoggedIn UserAccount account) {
 		besucherRepository.findByUserAccount(account).ifPresent(besucher -> verwaltung.ausleihen(buch, besucher));
 		return "redirect:/inventory";
