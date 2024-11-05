@@ -13,9 +13,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
-        <junit.version>5.9.2</junit.version>
+        <junit.version>5.11.0</junit.version>
         <aspectj.version>1.9.9.1</aspectj.version>
-        <allure.version>2.21.0</allure.version>
+        <allure.version>2.28.0</allure.version>
     </properties>
 
     <dependencies>
@@ -28,13 +28,13 @@
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>7.0.2</version>
+            <version>7.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.5.0</version>
+            <version>5.8.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>2.0.5</version>
+            <version>2.0.13</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -95,4 +95,11 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
 </project>

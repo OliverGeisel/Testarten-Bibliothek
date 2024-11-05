@@ -35,8 +35,6 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
 
-;
-
 @ExtendWith({SoftAssertsExtension.class})
 @Tag("ui")
 @Tag("anwendung")
