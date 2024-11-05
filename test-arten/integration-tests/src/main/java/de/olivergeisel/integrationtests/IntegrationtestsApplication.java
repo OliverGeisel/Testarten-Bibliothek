@@ -10,4 +10,5 @@ public class IntegrationtestsApplication {
 		SpringApplication.run(IntegrationtestsApplication.class, args);
 	}
 
+
 }

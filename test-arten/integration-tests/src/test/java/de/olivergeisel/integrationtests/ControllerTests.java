@@ -18,8 +18,6 @@ package de.olivergeisel.integrationtests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -28,30 +26,70 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @WithMockUser(username = "admin", roles = {"ADMIN"}, password = "admin")
 @WithAnonymousUser()
 @WithUserDetails
-public class ControllerTests {
+class ControllerTests {
 
-	@Autowired
 	MockMvc mockMvc;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		mockMvc = MockMvcBuilders.standaloneSetup().build();
+		mockMvc = MockMvcBuilders.standaloneSetup(BeispielController.class).build();
 	}
 
 	@Test
-	void test() throws Exception {
-		mockMvc.perform(get("/rooms")).andExpect(status().isOk());
+	void test_okay() throws Exception {
+		mockMvc.perform(get("/beispiel")).andExpect(status().isOk());
 	}
 
 	@Test
-	void test2() throws Exception {
-		mockMvc.perform(get("/rooms")).andExpect(status().isOk());
+	void test_nicht_gefunden() throws Exception {
+		mockMvc.perform(get("/nichtgefunden")).andExpect(status().isNotFound());
+	}
+
+	@Test
+	void test_post_request() throws Exception {
+		// Test mit POST-Request auf "/besonders"
+		mockMvc.perform(post("/besonders")).andExpect(status().isOk());
+	}
+
+	@Test
+	void test_get_request_nicht_erlaubt() throws Exception {
+		// Test mit GET-Request auf "/besonders" - sollte nicht erlaubt sein
+		mockMvc.perform(get("/besonders")).andExpect(status().isMethodNotAllowed());
+	}
+
+
+	@Test
+	void test_mit_forms_okay() throws Exception {
+		mockMvc.perform(get("/form")
+					   .param("name", "Test")
+					   .param("email", "test@t.de")
+					   .param("alter", "25")
+			   )
+			   .andExpect(status().isOk());
+	}
+
+	@Test
+	void test_mit_forms_nicht_okay() throws Exception {
+		mockMvc.perform(get("/form")
+					   .param("name", "Test")
+					   .param("email", "t@t.de")
+					   .param("alter", "Keine Nummer") // Nummer kann nicht geparst werden
+			   )
+			   .andExpect(status().isBadRequest());
+	}
+
+	@Test
+	void test_mit_umleitung() throws Exception {
+		mockMvc.perform(get("/redirect"))
+			   .andExpect(status().is3xxRedirection())
+			   .andExpect(redirectedUrl("/beispiel"));
 	}
 }
